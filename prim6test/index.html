@@ -122,6 +122,18 @@ body { font-family: 'Tajawal', sans-serif; background: linear-gradient(180deg,#e
 .brand-name { line-height: 1.15; }
 .brand-name small { display: block; font-size: 13px; font-weight: 800; letter-spacing: .5px; }
 
+/* ===== التصحيح الفورى ===== */
+.opt.locked { cursor: default; }
+.opt.locked:not(.right):not(.wrong):not(.correct) { opacity: .55; }
+.opt.right { border-color: #16a34a !important; background: #dcfce7 !important; color: #166534 !important; }
+.opt.wrong { border-color: #dc2626 !important; background: #fee2e2 !important; color: #991b1b !important; text-decoration: line-through; }
+.opt.correct { border-color: #16a34a !important; background: #f0fdf4 !important; color: #166534 !important; border-style: dashed !important; }
+.opt.correct::after { content: "✔"; margin-right: auto; font-size: 18px; }
+.fb { margin-top: 8px; padding: 8px 12px; border-radius: 10px; font-weight: 800; font-size: 16px; line-height: 2; }
+.fb-ok { background: #dcfce7; color: #166534; }
+.fb-no { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+.fb b { color: #166534; white-space: nowrap; }
+
 </style>
 </head>
 <body class="text-gray-800 min-h-screen pb-20 relative">
@@ -428,9 +440,9 @@ function renderExam(ex, name) {
             if (sec.type === 'mcq') {
                 html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span>${fmt(it.q)}</span></div>
                     <div class="opts">${it.opts.map((o, k) => `
-                        <label class="opt"><input type="radio" name="${key}" value="${k}" onchange="markAnswered('${key}')">
+                        <label class="opt" data-k="${k}"><input type="radio" name="${key}" value="${k}" onchange="pickMCQ(${si}, ${i}, ${k})">
                         <span class="opt-l">${LETTERS[k]})</span> <span class="opt-v">${fmtOpt(o)}</span></label>`).join('')}
-                    </div></div>`;
+                    </div><div class="fb hidden" id="fb-${key}"></div></div>`;
             } else {
                 html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span>${fmt(it.q)}</span>
                     ${it.figure === 'numline' ? numLine() : ''}</div>
@@ -451,6 +463,26 @@ function numLine() {
         <line x1="40" y1="24" x2="40" y2="44" stroke="#111" stroke-width="2.5"/><line x1="130" y1="24" x2="130" y2="44" stroke="#111" stroke-width="2.5"/>
         <text x="40" y="16" text-anchor="middle" font-size="15" font-weight="700" font-family="Arial">b</text>
         <text x="130" y="16" text-anchor="middle" font-size="15" font-weight="700" font-family="Arial">a</text></svg>`;
+}
+// اختيار نهائى: يُقفل السؤال فورًا ويُظهر الإجابة الصحيحة عند الخطأ
+function pickMCQ(si, i, k) {
+    const key = `s${si}q${i}`, it = current.sections[si].items[i], ok = it.ans.includes(k);
+    const blk = $('blk-' + key);
+    if (blk.dataset.locked) return;
+    blk.dataset.locked = '1';
+    markAnswered(key);
+    blk.querySelectorAll('input').forEach(inp => inp.disabled = true);
+    blk.querySelectorAll('.opt').forEach(o => {
+        const n = +o.dataset.k;
+        o.classList.add('locked');
+        if (n === k) o.classList.add(ok ? 'right' : 'wrong');
+        else if (!ok && it.ans.includes(n)) o.classList.add('correct');
+    });
+    const fb = $('fb-' + key);
+    fb.className = 'fb ' + (ok ? 'fb-ok' : 'fb-no');
+    fb.innerHTML = ok ? '<i class="fa-solid fa-circle-check"></i> إجابة صحيحة .. أحسنت!'
+        : '<i class="fa-solid fa-circle-xmark"></i> إجابة خاطئة .. الإجابة الصحيحة: ' +
+          it.ans.map(n => `<b>${LETTERS[n]}) <span class="opt-v">${fmtOpt(it.opts[n])}</span></b>`).join(' أو ');
 }
 function markAnswered(key) { const b = $('blk-' + key); if (b) b.classList.remove('missing'); }
 
