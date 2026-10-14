@@ -134,6 +134,14 @@ body { font-family: 'Tajawal', sans-serif; background: linear-gradient(180deg,#e
 .fb-no { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
 .fb b { color: #166534; white-space: nowrap; }
 
+.confirm-btn { margin-top: 8px; background: #1e3a8a; color: #fff; font-weight: 800; font-size: 15px; padding: 8px 18px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 3px 8px rgba(30,58,138,.25); }
+.fb-rev { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+.fb-rev b { color: #166534; }
+textarea.ta-ok { background: #dcfce7 !important; border-bottom-color: #16a34a !important; color: #166534; }
+textarea.ta-no { background: #fee2e2 !important; border-bottom-color: #dc2626 !important; color: #991b1b; }
+textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0b !important; }
+#res-review { color: #b45309; }
+
 </style>
 </head>
 <body class="text-gray-800 min-h-screen pb-20 relative">
@@ -190,9 +198,9 @@ body { font-family: 'Tajawal', sans-serif; background: linear-gradient(180deg,#e
                 <p class="font-bold text-gray-600" id="res-exam"></p>
                 <p class="text-xl font-extrabold text-blue-800 mt-2" id="res-name"></p>
                 <div class="res-score-box">
-                    <p class="text-sm font-bold text-gray-500">درجتك فى الاختيار من متعدد</p>
+                    <p class="text-sm font-bold text-gray-500">درجتك فى الاختبار</p>
                     <p class="text-4xl font-extrabold" id="res-score"></p>
-                    <p class="text-xs font-bold text-gray-500 mt-1">الأسئلة المقالية يصححها المستر</p>
+                    <p class="text-xs font-bold text-amber-700 mt-1" id="res-review"></p>
                 </div>
                 <p id="res-status" class="res-status"></p>
                 <button onclick="goHome()" class="w-full mt-5 bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg text-lg btn-bounce">العودة للاختبارات</button>
@@ -356,6 +364,188 @@ const EXAMS = [
  }
 ];
 
+// ===== مفاتيح تصحيح الأسئلة المقالية (بالترتيب لكل اختبار) =====
+// t: val = قيمة واحدة (آخر رقم يكتبه الطالب) | set = مجموعة أرقام بأى ترتيب | order = ترتيب محدد
+//    between = أى عدد بين lo و hi | mult = أى عدد يقبل القسمة على m | pick = أيهما أكبر/أصغر | ab = حرف | words = كلمات
+// show = الإجابة النموذجية التى تظهر للطالب بعد التأكيد
+const KEYS = {
+ 1: [
+  { t: 'val', v: '1', show: '1' },
+  { t: 'val', v: '21', show: '21' },
+  { t: 'set', v: ['2', '3', '5'], ignore: ['10', '15'], show: '2 ، 3 ، 5' },
+  { t: 'set', v: ['12', '16', '20', '24', '28', '32', '36', '40', '44', '48'], ignore: ['4', '10', '50'], show: '12 ، 16 ، 20 ، 24 ، 28 ، 32 ، 36 ، 40 ، 44 ، 48' }
+ ],
+ 2: [
+  { t: 'val', v: '-3000', show: '-3000' },
+  { t: 'val', v: '-1', show: '-1' },
+  { t: 'pick', c: ['3', '-7'], want: 'max', show: '3' },
+  { t: 'val', v: '-7', show: '-7' },
+  { t: 'val', v: '-4', show: '-4' }
+ ],
+ 3: [
+  { t: 'pick', c: ['-9', '-20'], want: 'max', show: '-9' },
+  { t: 'val', v: '-10', show: '-10' },
+  { t: 'pick', c: ['0', '-32'], want: 'min', show: '-32' },
+  { t: 'val', v: '-2', show: '-2' },
+  { t: 'val', v: '-3', show: '-3' }
+ ],
+ 4: [
+  { t: 'val', v: '3/4', frac: true, show: '{3/4}' },
+  { t: 'between', lo: '2.1', hi: '2.2', show: 'أى عدد أكبر من 2.1 وأصغر من 2.2 (مثل 2.15)' },
+  { t: 'val', v: '3 7/25', frac: true, show: '3 {7/25}' },
+  { t: 'order', v: ['-2.9', '-0.8', '0', '1', '1.8'], show: '-2.9 ، -0.8 ، 0 ، 1 ، 1.8' }
+ ],
+ 5: [
+  { t: 'val', v: '1/4', frac: true, show: '{1/4}' },
+  { t: 'val', v: '3 7/25', frac: true, show: '3 {7/25}' },
+  { t: 'between', lo: '0.15', hi: '0.16', show: 'أى عدد أكبر من 0.15 وأصغر من 0.16 (مثل 0.155)' },
+  { t: 'between', lo: '1/8', hi: '2/8', show: 'أى عدد أكبر من {1/8} وأصغر من {2/8} (مثل {3/16})' },
+  { t: 'order', v: ['-2.3', '2.8', '3.4', '3.5'], show: '-2.3 ، 2.8 ، 3.4 ، 3.5' }
+ ],
+ 6: [
+  { t: 'val', v: '17', show: '17' },
+  { t: 'val', v: '1/20', frac: true, show: '{5/100} = {1/20}' },
+  { t: 'val', v: '48', show: '12 × (3 + 1) = 12 × 4 = 48' },
+  { t: 'val', v: '4', show: '4' },
+  { t: 'set', v: ['6', '9', '12', '15', '18', '21', '24'], ignore: ['3', '5', '25'], show: '6 ، 9 ، 12 ، 15 ، 18 ، 21 ، 24' },
+  { t: 'val', v: '24', show: '24' },
+  { t: 'val', v: '-22', show: '-22' },
+  { t: 'val', v: '46', show: 'X = 46' },
+  { t: 'val', v: '7', show: '7' },
+  { t: 'val', v: '4', show: '4' },
+  { t: 'val', v: '2', show: '2' },
+  { t: 'val', v: '-5', show: '-5' },
+  { t: 'set', v: ['5', '-5'], show: '[[X = 5]] أو [[X = -5]]' },
+  { t: 'ab', want: 'a', show: 'a' },
+  { t: 'order', v: ['-4.3', '-0.5', '2.28', '3.4'], show: '-4.3 ، -0.5 ، 2.28 ، 3.4' }
+ ],
+ 7: [
+  { t: 'mult', m: 10, ignore: ['2', '5'], show: 'أى عدد رقم آحاده صفر (مثل 10 أو 20 أو 30)' },
+  { t: 'val', v: '3', show: '3' },
+  { t: 'set', v: ['36', '42', '48', '54', '60'], ignore: ['6', '30', '65'], show: '36 ، 42 ، 48 ، 54 ، 60' },
+  { t: 'set', v: ['2', '3', '5', '7'], ignore: ['35', '60'], show: '35 = 5 × 7 ، 60 = 2 × 2 × 3 × 5' },
+  { t: 'val', v: '1', show: '{7/7} = 1' },
+  { t: 'val', v: '7', show: '7' },
+  { t: 'val', v: '70', show: '14 × (3 + 2) = 14 × 5 = 70' },
+  { t: 'pick', c: ['-15', '-1'], want: 'max', show: '-1' },
+  { t: 'words', w: [['العد', 'N'], ['الطبيعي', 'W'], ['الصحيح', 'Z']], show: 'مجموعة أعداد العد ، مجموعة الأعداد الطبيعية ، مجموعة الأعداد الصحيحة' },
+  { t: 'between', lo: '1.34', hi: '1.35', show: 'أى عدد أكبر من 1.34 وأصغر من 1.35 (مثل 1.345)' }
+ ]
+};
+
+</script>
+<script>
+// ===== تصحيح الأسئلة المقالية آليًا =====
+// النتيجة: 'ok' صحيحة | 'no' خاطئة | 'review' يراجعها المستر
+const GRADE = (() => {
+    const AR = '٠١٢٣٤٥٦٧٨٩', FA = '۰۱۲۳۴۵۶۷۸۹';
+    function norm(s) {
+        s = String(s)
+            .replace(/[٠-٩]/g, d => AR.indexOf(d)).replace(/[۰-۹]/g, d => FA.indexOf(d))
+            .replace(/٫/g, '.').replace(/[−–—‐‑]/g, '-').replace(/[÷∕⁄]/g, '/')
+            .replace(/[‎‏⁦-⁩‪-‮]/g, '')
+            .replace(/سالب\s*/g, '-').replace(/ناقص\s*/g, '-');
+        // "5-" المكتوبة من اليمين لليسار تعنى سالب 5
+        s = s.replace(/(\d+(?:\.\d+)?(?:\s*\/\s*\d+)?)\s*-(?=\s*(?:$|[^\d\s(]|\s[^\d\s(]))/g, '-$1');
+        return s;
+    }
+    function frac(a, b) { return b === 0 ? NaN : a / b; }
+    // استخراج كل الأعداد بالترتيب (كسور ، أعداد كسرية ، عشرية ، سالبة)
+    function nums(raw, thousands) {
+        let s = norm(raw);
+        if (thousands) s = s.replace(/(\d),(\d{3})(?!\d)/g, '$1$2');
+        const out = [];
+        const re = /(-?)\s*(\d+(?:\.\d+)?)(?:\s+(\d+)\s*\/\s*(\d+)|\s*\/\s*(\d+))?/g;
+        let m;
+        while ((m = re.exec(s))) {
+            // الإشارة السالبة تُحسب فقط إذا لم تكن عملية طرح بعد عدد أو قوس
+            let neg = m[1] === '-';
+            if (neg) { const before = s.slice(0, m.index).trimEnd(); if (/[\d)|]$/.test(before)) neg = false; }
+            let v;
+            if (m[3] !== undefined) v = +m[2] + frac(+m[3], +m[4]);
+            else if (m[5] !== undefined) v = frac(+m[2], +m[5]);
+            else v = +m[2];
+            out.push({ v: neg ? -v : v, hasFrac: m[3] !== undefined || m[5] !== undefined, idx: m.index });
+        }
+        return out;
+    }
+    const val = s => nums(s)[0].v;
+    const eq = (a, b) => Math.abs(a - b) < 1e-9;
+    const normWords = s => String(s).replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/[ً-ْ]/g, '');
+
+    function grade(k, ans) {
+        const a = String(ans || '').trim();
+        if (!a) return 'no';
+        if (k.t === 'val') {
+            const ns = nums(a, true);
+            if (!ns.length) return 'review';
+            const target = val(k.v), last = ns[ns.length - 1];
+            if (eq(last.v, target)) return (k.frac && !last.hasFrac) ? 'review' : 'ok';
+            // قبول كسر غير مختصر يساوى القيمة (مثل 6/8 = 3/4) أو 7/7 = 1
+            return ns.some(n => eq(n.v, target)) ? 'review' : 'no';
+        }
+        if (k.t === 'set') {
+            const ign = (k.ignore || []).map(val);
+            const got = [...new Set(nums(a).map(n => n.v).filter(v => !ign.some(x => eq(x, v))).map(v => +v.toFixed(9)))];
+            const want = k.v.map(val);
+            if (!got.length) return 'review';
+            const allIn = want.every(w => got.some(g => eq(g, w)));
+            const extra = got.filter(g => !want.some(w => eq(g, w)));
+            return allIn ? (extra.length ? 'review' : 'ok') : 'no';
+        }
+        if (k.t === 'order') {
+            const got = nums(a).map(n => n.v), want = k.v.map(val);
+            if (got.length !== want.length) return got.length ? 'no' : 'review';
+            return want.every((w, i) => eq(w, got[i])) ? 'ok' : 'no';
+        }
+        if (k.t === 'between') {
+            const lo = val(k.lo), hi = val(k.hi);
+            const ns = nums(a).map(n => n.v).filter(v => !eq(v, lo) && !eq(v, hi));
+            if (!ns.length) return 'review';
+            return ns.some(v => v > lo + 1e-12 && v < hi - 1e-12) ? 'ok' : 'no';
+        }
+        if (k.t === 'mult') {
+            const ign = (k.ignore || []).map(val);
+            const ns = nums(a, true).map(n => n.v).filter(v => !ign.some(x => eq(x, v)));
+            if (!ns.length) return 'review';
+            return ns.some(v => v !== 0 && Number.isInteger(v) && v % k.m === 0) ? 'ok' : 'no';
+        }
+        if (k.t === 'pick') {
+            const c = k.c.map(val), right = k.want === 'max' ? Math.max(...c) : Math.min(...c);
+            const ns = nums(a);
+            const present = c.filter(x => ns.some(n => eq(n.v, x)));
+            if (present.length === 1) return eq(present[0], right) ? 'ok' : 'no';
+            if (present.length === 2) {
+                const s = norm(a);
+                const first = ns.find(n => c.some(x => eq(x, n.v)));
+                const after = s.slice(first.idx);
+                // "X > Y" أو "X أكبر من Y" تعنى أن X هو الأكبر
+                if (/^[^<>]*?>/.test(after) || /^[^<>]*?اكبر|^[^<>]*?أكبر/.test(after)) return eq(k.want === 'max' ? first.v : c.find(x => !eq(x, first.v)), right) ? 'ok' : 'no';
+                if (/^[^<>]*?</.test(after) || /^[^<>]*?اصغر|^[^<>]*?أصغر/.test(after)) return eq(k.want === 'min' ? first.v : c.find(x => !eq(x, first.v)), right) ? 'ok' : 'no';
+            }
+            return 'review';
+        }
+        if (k.t === 'ab') {
+            const s = norm(a).replace(/\s+/g, ' ').toLowerCase();
+            const other = k.want === 'a' ? 'b' : 'a', w = k.want;
+            const has = x => new RegExp('(^|[^a-z])' + x + '([^a-z]|$)').test(s);
+            if (has(w) && !has(other)) return 'ok';
+            if (has(other) && !has(w)) return 'no';
+            const sp = s.replace(/\s/g, '');
+            if (sp.includes(w + '>' + other) || sp.includes(other + '<' + w) || new RegExp(w + '(هو)?(ال)?(ا|أ)كبر').test(sp)) return 'ok';
+            if (sp.includes(other + '>' + w) || sp.includes(w + '<' + other) || new RegExp(other + '(هو)?(ال)?(ا|أ)كبر').test(sp)) return 'no';
+            return 'review';
+        }
+        if (k.t === 'words') {
+            const s = normWords(a);
+            const hits = k.w.filter(alts => alts.some(x => /^[A-Z]$/.test(x) ? new RegExp('(^|[^A-Za-z])' + x + '([^A-Za-z]|$)').test(a) : s.includes(normWords(x)))).length;
+            return hits === k.w.length ? 'ok' : 'review';
+        }
+        return 'review';
+    }
+    return { grade, nums, norm };
+})();
+
 </script>
 <script>
 // ===== تطبيق الاختبارات - مستر السيد حمزة =====
@@ -448,7 +638,9 @@ function renderExam(ex, name) {
                     ${it.figure === 'numline' ? numLine() : ''}</div>
                     ${it.list ? `<div class="num-list"><span class="m" dir="ltr">${esc(it.list)}</span></div>` : ''}
                     <div class="w-ans">${it.label ? `<span class="w-label">${esc(it.label)}</span>` : ''}
-                    <textarea name="${key}" rows="${it.lines > 1 ? 3 : 1}" placeholder="اكتب إجابتك هنا ..." oninput="markAnswered('${key}')"></textarea></div>
+                    <textarea dir="auto" name="${key}" rows="${it.lines > 1 ? 3 : 1}" placeholder="اكتب إجابتك هنا ..." oninput="markAnswered('${key}')"></textarea></div>
+                    <button class="confirm-btn btn-bounce" id="cb-${key}" onclick="confirmWritten(${si}, ${i})"><i class="fa-solid fa-check"></i> تأكيد الإجابة</button>
+                    <div class="fb hidden" id="fb-${key}"></div>
                     </div>`;
             }
         });
@@ -484,12 +676,32 @@ function pickMCQ(si, i, k) {
         : '<i class="fa-solid fa-circle-xmark"></i> إجابة خاطئة .. الإجابة الصحيحة: ' +
           it.ans.map(n => `<b>${LETTERS[n]}) <span class="opt-v">${fmtOpt(it.opts[n])}</span></b>`).join(' أو ');
 }
+// تأكيد إجابة مقالية: تُصحح وتُقفل فورًا
+function confirmWritten(si, i, silent) {
+    const key = `s${si}q${i}`, blk = $('blk-' + key);
+    if (blk.dataset.locked) return blk.dataset.res;
+    const ta = blk.querySelector('textarea'), v = ta.value.trim();
+    if (!v && !silent) { ta.focus(); blk.classList.add('missing'); return; }
+    const k = KEYS[current.id][i];
+    const res = v ? GRADE.grade(k, v) : 'no';
+    blk.dataset.locked = '1'; blk.dataset.res = res;
+    ta.readOnly = true; ta.classList.add('ta-' + res);
+    const cb = $('cb-' + key); if (cb) cb.remove();
+    markAnswered(key);
+    const model = '<b><span class="m" dir="ltr">' + fracs(esc(k.show)) + '</span></b>';
+    const modelAr = /[\u0600-\u06FF]|\[\[/.test(k.show) ? '<b>' + fmt(k.show) + '</b>' : model;
+    const fb = $('fb-' + key);
+    if (res === 'ok') { fb.className = 'fb fb-ok'; fb.innerHTML = '<i class="fa-solid fa-circle-check"></i> إجابة صحيحة .. أحسنت!'; }
+    else if (res === 'no') { fb.className = 'fb fb-no'; fb.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> ' + (v ? 'إجابة خاطئة' : 'لم تُجب') + ' .. الإجابة الصحيحة: ' + modelAr; }
+    else { fb.className = 'fb fb-rev'; fb.innerHTML = '<i class="fa-solid fa-user-check"></i> سيراجع المستر إجابتك .. الإجابة النموذجية: ' + modelAr; }
+    return res;
+}
 function markAnswered(key) { const b = $('blk-' + key); if (b) b.classList.remove('missing'); }
 
 // ---------- جمع الإجابات والإرسال ----------
 function collect(ex) {
     const cols = [], missing = [];
-    let score = 0, total = 0;
+    let score = 0, total = 0, review = 0;
     ex.sections.forEach((sec, si) => {
         sec.items.forEach((it, i) => {
             const key = `s${si}q${i}`;
@@ -504,13 +716,16 @@ function collect(ex) {
                 } else missing.push(key);
                 cols.push({ h: `اختيار ${i + 1}`, v });
             } else {
+                total++;
                 const v = document.querySelector(`textarea[name="${key}"]`).value.trim();
                 if (!v) missing.push(key);
-                cols.push({ h: `سؤال ${i + 1}`, v });
+                const res = $('blk-' + key).dataset.res;
+                if (res === 'ok') score++; else if (res === 'review') review++;
+                cols.push({ h: `سؤال ${i + 1}`, v: v ? `${v} ${res === 'ok' ? '✔' : res === 'review' ? '⚠ للمراجعة' : '✘'}` : '' });
             }
         });
     });
-    return { cols, missing, score, total };
+    return { cols, missing, score, total, review };
 }
 
 async function postToSheet(payload) {
@@ -527,7 +742,7 @@ async function flushQueue() {
 
 async function submitExam() {
     const ex = current, name = store.get('student-name') || $('student-name').value.trim();
-    const r = collect(ex);
+    let r = collect(ex);
     document.querySelectorAll('.q-block.missing').forEach(b => b.classList.remove('missing'));
     if (r.missing.length) {
         r.missing.forEach(k => $('blk-' + k).classList.add('missing'));
@@ -536,11 +751,14 @@ async function submitExam() {
             return;
         }
     }
+    ex.sections.forEach((sec, si) => { if (sec.type === 'written') sec.items.forEach((it, i) => confirmWritten(si, i, true)); });
+    document.querySelectorAll('.opts').forEach(o => o.querySelectorAll('input').forEach(inp => inp.disabled = true));
+    r = collect(ex);
     const btn = $('send-btn'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جارٍ الإرسال ...';
     const payload = {
         sheet: 'اختبار ' + ex.id, exam: ex.title, name,
         time: new Date().toLocaleString('en-GB', { hour12: true }),
-        score: `${r.score} / ${r.total}`, cols: r.cols
+        score: `${r.score} / ${r.total}` + (r.review ? ` (+${r.review} للمراجعة)` : ''), review: r.review, cols: r.cols
     };
     let sent = true;
     try { await postToSheet(payload); } catch (e) { sent = false; const q = queue(); q.push(payload); store.set('pending', JSON.stringify(q)); }
@@ -548,6 +766,7 @@ async function submitExam() {
     $('res-name').innerText = name;
     $('res-exam').innerText = ex.title;
     $('res-score').innerHTML = `<span dir="ltr">${r.score} / ${r.total}</span>`;
+    $('res-review').innerText = r.review ? `+ ${r.review} إجابة يراجعها المستر وقد تُضاف لدرجتك` : '';
     $('res-status').innerHTML = sent
         ? '<i class="fa-solid fa-circle-check"></i> تم إرسال إجاباتك للمستر بنجاح'
         : '<i class="fa-solid fa-triangle-exclamation"></i> تعذّر الإرسال الآن .. سيُعاد الإرسال تلقائيًا عند فتح الصفحة مع وجود إنترنت';
