@@ -426,6 +426,37 @@ textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0
 .g-goal .goal-target.long .m { white-space: normal; }
 .paper[dir="ltr"] .ans-box { width: 48px; height: 28px; margin: 0 6px; }
 
+/* ===== ملاءمة الموبايل ===== */
+.q-text { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; line-height: 1.8; }
+.q-text > .q-body { flex: 1 1 0; min-width: 0; }
+.qn-circle, .qn-paren { flex-shrink: 0; }
+.m { white-space: nowrap !important; }
+.opt .opt-v, .g-item .opt-v { min-width: 0; }
+.g-item .m { white-space: nowrap !important; }
+.g-q .q-text { font-size: 18px; }
+.g-big { font-size: 30px; font-weight: 800; color: #be123c; line-height: 1; }
+.g-goal .goal-target .g-big { font-size: 28px; }
+.g-legend { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.g-legend:empty { display: none; }
+.g-row { display: flex; align-items: center; gap: 10px; width: 100%; text-align: start; background: #fff; border: 2px solid #c7d2fe; border-radius: 12px; padding: 8px 12px; font-weight: 800; font-size: 18px; color: #1e3a8a; min-height: 48px; }
+.g-row .g-l { color: #be123c; flex-shrink: 0; font-size: 18px; }
+.g-row .opt-v { flex: 1 1 0; min-width: 0; overflow: hidden; }
+.g-row.g-right { background: #bbf7d0; border-color: #16a34a; }
+.g-row.g-wrong { background: #fecaca; border-color: #dc2626; }
+.g-row.g-correct { background: #dcfce7; border: 3px dashed #16a34a; }
+.g-row.g-dim { opacity: .5; }
+.g-row:disabled { cursor: default; }
+@media (max-width: 480px) {
+  .q-text, .paper[dir="ltr"] .q-text { font-size: 17px; }
+  .g-q .q-text { font-size: 17px; }
+  .g-row { font-size: 16px; padding: 7px 10px; }
+  .opt { font-size: 16px; padding: 6px 8px; }
+}
+@media (max-width: 480px) { .goal-flash { font-size: 19px; padding: 5px 12px; white-space: nowrap; max-width: 94%; } }
+.g-goal .goal-target > span { white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; } .g-goal .goal-target { max-width: 44%; } @media (max-width: 480px) { .g-goal .goal-target { min-width: 0; padding: 6px 8px; } .g-goal .goal-target .opt-v { font-size: 16px; } .g-goal .goal-target .g-l { font-size: 13px; } }
+.g-bubbles .g-item { width: 104px; height: 104px; max-width: none; aspect-ratio: auto; border-radius: 50%; } @media (max-width: 480px) { .g-bubbles .g-item { width: 78px; height: 78px; } .g-bubbles .g-item .opt-v { font-size: 15px; } .g-top { gap: 6px; } .g-badge { font-size: 13px; padding: 4px 10px; white-space: nowrap; } .g-count { font-size: 13px; white-space: nowrap; } }
+.g-bubbles .g-arena { --bw: 104px; } @media (max-width: 480px) { .g-bubbles .g-arena { --bw: 78px; } }
+
 </style>
 </head>
 <body class="text-gray-800 min-h-screen pb-20 relative">
@@ -783,6 +814,31 @@ function lockOrder(blk, res) {
 
 </script>
 <script>
+// ===== ملاءمة الموبايل: كل مسألة رياضية فى سطر واحد ، ويصغر الخط تلقائيًا لو المسألة أعرض من الشاشة =====
+function fmtQ(q) {
+    // سؤال كله أرقام ورموز (بدون كلمات) => يُعرض كمسألة واحدة لا تنقسم
+    const bare = String(q).replace(/\[\[|\]\]|\{[^}]*\}/g, '');
+    if (!/\[\[/.test(q) && !/[A-Za-zء-ي]/.test(bare)) return '<span class="m" dir="ltr">' + fracs(esc(q)) + '</span>';
+    return fmt(q);
+}
+function fitMath(root) {
+    (root || document).querySelectorAll('.m').forEach(el => {
+        if (!el.offsetParent) return;                        // مخفى
+        const box = el.closest('.q-body, .g-row, .g-item, .opt, .fb, .num-list, .q-sub, .q-fig, .ord-wrap');
+        if (!box) return;
+        el.style.fontSize = '';
+        const cs = getComputedStyle(box);
+        const avail = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 2;
+        let fs = parseFloat(getComputedStyle(el).fontSize), guard = 0;
+        while (el.getBoundingClientRect().width > avail && fs > 10 && guard++ < 60) { fs -= 0.5; el.style.fontSize = fs + 'px'; }
+    });
+}
+let _fitT = null;
+window.addEventListener('resize', () => { clearTimeout(_fitT); _fitT = setTimeout(() => fitMath(), 120); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitMath());
+
+</script>
+<script>
 // ===== المؤثرات الصوتية (تُولَّد داخل المتصفح بدون ملفات صوت - تعمل بدون إنترنت) =====
 const SFX = (() => {
     let ctx = null, muted = false;
@@ -886,6 +942,7 @@ function gamePanel(ex, si) {
         <div class="g-progress"><i id="g-prog-${si}"></i></div>
         <div class="g-q" id="g-q-${si}"></div>
         <div class="g-arena" id="g-arena-${si}"></div>
+        <div class="g-legend" id="g-legend-${si}"></div>
         <p class="g-hint">${hint}</p>
         <div class="fb hidden" id="g-fb-${si}"></div>
         <button class="g-next btn-bounce hidden" id="g-next-${si}" onclick="nextGameQ(${si})"></button>
@@ -898,25 +955,31 @@ function loadGameQ(si) {
     const ex = current, sec = ex.sections[si], i = GS[si], it = sec.items[i], n = sec.items.length;
     $('g-count-' + si).innerText = tr(`السؤال ${i + 1} من ${n}`, `Question ${i + 1} of ${n}`);
     $('g-prog-' + si).style.width = (i / n * 100) + '%';
-    $('g-q-' + si).innerHTML = `<div class="q-text">${qNum(ex, i)} <span>${fmt(it.q)}</span></div>${qExtras(it)}`;
+    $('g-q-' + si).innerHTML = `<div class="q-text">${qNum(ex, i)} <span class="q-body">${fmtQ(it.q)}</span></div>${qExtras(it)}`;
     $('g-fb-' + si).className = 'fb hidden';
     $('g-next-' + si).classList.add('hidden');
     const area = $('g-arena-' + si);
     area.dataset.locked = '';
+    // اختيارات طويلة => الحرف فقط على الهدف ، والاختيار كاملًا فى سطر تحت الملعب
+    const longOpts = it.opts.some(o => plain(o).replace(/\s/g, '').length > 6);
+    const lt = k => (typeof letterOf === 'function' ? letterOf(it, k) : LETTERS[k]);
+    const lbl = k => longOpts ? `<span class="g-big">${lt(k)}</span>` : optLabel(it, k);
+    $('g-legend-' + si).innerHTML = longOpts ? it.opts.map((o, k) => `<button class="g-row" data-k="${k}" onclick="gamePick(${si}, ${k})">${optLabel(it, k)}</button>`).join('') : '';
+    setTimeout(() => fitMath($('game-' + si)), 0);
     if (ex.game === 'bubbles') {
         const xs = [76, 52, 28, 4], delays = [0, -4, -8, -12].sort(() => Math.random() - .5);
         area.innerHTML = it.opts.map((o, k) => `<button class="g-item game-anim-element anim-fall game-bubble" data-k="${k}"
-            style="right:${xs[k]}%;left:auto;animation-delay:${delays[k]}s" onclick="gamePick(${si}, ${k}, this)"><span>${optLabel(it, k)}</span></button>`).join('');
+            style="right:calc((100% - var(--bw)) * ${k / 3});left:auto;animation-delay:${delays[k]}s" onclick="gamePick(${si}, ${k}, this)"><span>${lbl(k)}</span></button>`).join('');
     } else if (ex.game === 'shoot') {
         const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b'], ys = [3, 27, 51, 75], dirs = ['anim-right', 'anim-left', 'anim-right', 'anim-left'];
         const delays = [0, -4, -8, -11].sort(() => Math.random() - .5);
         area.innerHTML = it.opts.map((o, k) => `<button class="g-item game-anim-element ${dirs[k]} horizontal-target" data-k="${k}"
             style="top:${ys[k]}%;border-color:${colors[k]};animation-delay:${delays[k]}s" onclick="gamePick(${si}, ${k}, this)">
-            <i class="fa-solid fa-bullseye" style="color:${colors[k]}"></i><span>${optLabel(it, k)}</span></button>`).join('');
+            <i class="fa-solid fa-bullseye" style="color:${colors[k]}"></i><span>${lbl(k)}</span></button>`).join('');
     } else {
         area.innerHTML = `<div class="goal-pitch"><div class="goal-frame"><div class="goal-net"></div></div>
             <div class="goal-keeper"><i class="fa-solid fa-user-shield"></i></div>
-            ${it.opts.map((o, k) => `<button class="g-item goal-target${plain(o).length > 9 ? ' long' : ''}" data-k="${k}" style="left:${GOAL_SPOTS[k].x}%;top:${GOAL_SPOTS[k].y}%" onclick="gamePick(${si}, ${k}, this)"><span>${optLabel(it, k)}</span></button>`).join('')}
+            ${it.opts.map((o, k) => `<button class="g-item goal-target" data-k="${k}" style="left:${GOAL_SPOTS[k].x}%;top:${GOAL_SPOTS[k].y}%" onclick="gamePick(${si}, ${k}, this)"><span>${lbl(k)}</span></button>`).join('')}
             <div class="goal-ball"><i class="fa-solid fa-futbol"></i></div><div class="goal-flash"></div></div>`;
         const ball = area.querySelector('.goal-ball'), keeper = area.querySelector('.goal-keeper');
         place(ball, { x: 50, y: 86 }); ball.style.transform = 'translate(-50%,-50%) scale(1)';
@@ -937,7 +1000,7 @@ function gamePick(si, k, el) {
     const radio = document.querySelector(`input[name="${key}"][value="${k}"]`);
     radio.checked = true; pickMCQ(si, i, k);
     area.querySelectorAll('.game-anim-element').forEach(t => t.style.animationPlayState = 'paused');
-    area.querySelectorAll('.g-item').forEach(b => {
+    document.querySelectorAll(`#g-arena-${si} .g-item, #g-legend-${si} .g-row`).forEach(b => {
         const n = +b.dataset.k; b.disabled = true;
         if (n === k) b.classList.add(ok ? 'g-right' : 'g-wrong');
         else if (!ok && it.ans.includes(n)) b.classList.add('g-correct');
@@ -956,7 +1019,7 @@ function gamePick(si, k, el) {
     try { ok ? SFX.correct(current.game === 'goal') : SFX.wrong(); } catch (e) {}
     setTimeout(() => {
         const fb = $('g-fb-' + si);
-        fb.className = $('fb-' + key).className; fb.innerHTML = $('fb-' + key).innerHTML;
+        fb.className = $('fb-' + key).className; fb.innerHTML = $('fb-' + key).innerHTML; fitMath(fb);
         const last = i === current.sections[si].items.length - 1;
         const nb = $('g-next-' + si);
         nb.innerHTML = last ? '<i class="fa-solid fa-flag-checkered"></i> ' + tr('إنهاء أسئلة الاختيار', 'Finish') : (EN() ? 'Next question <i class="fa-solid fa-arrow-right"></i>' : 'السؤال التالى <i class="fa-solid fa-arrow-left"></i>');
@@ -1063,13 +1126,13 @@ function renderExam(ex, name) {
         sec.items.forEach((it, i) => {
             const key = `s${si}q${i}`;
             if (sec.type === 'mcq') {
-                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span>${fmt(it.q)}</span></div>${qExtras(it)}
+                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span class="q-body">${fmtQ(it.q)}</span></div>${qExtras(it)}
                     <div class="opts">${it.opts.map((o, k) => `
                         <label class="opt" data-k="${k}"><input type="radio" name="${key}" value="${k}" onchange="pickMCQ(${si}, ${i}, ${k})">
                         <span class="opt-l">${letterOf(it, k)})</span> <span class="opt-v">${fmtOpt(o)}</span></label>`).join('')}
                     </div><div class="fb hidden" id="fb-${key}"></div></div>`;
             } else {
-                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span>${fmt(it.q)}</span>
+                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span class="q-body">${fmtQ(it.q)}</span>
                     ${it.figure === 'numline' ? numLine() : ''}</div>${qExtras(it)}
                     ${it.list ? `<div class="num-list"><span class="m" dir="ltr">${esc(it.list)}</span></div>` : ''}
                     ${isOrderQ(ex, si, i) ? orderWidget(key, it) : ''}
@@ -1085,6 +1148,7 @@ function renderExam(ex, name) {
     html += `<button class="send-btn btn-bounce" id="send-btn" onclick="submitExam()"><i class="fa-solid fa-paper-plane"></i> ${tr('إرسال الإجابات للمستر', 'Send my answers')}</button></div>`;
     $('exam-body').innerHTML = html;
     document.querySelectorAll('.ord-wrap').forEach(w => initOrder(w));
+    setTimeout(() => fitMath(), 0);
     ex.sections.forEach((sec, si) => { if (sec.type === 'mcq' && ex.game) { GS[si] = 0; loadGameQ(si); } });
 }
 function qExtras(it) {
@@ -1106,7 +1170,8 @@ function numLine() {
         <text x="130" y="16" text-anchor="middle" font-size="15" font-weight="700" font-family="Arial">a</text></svg>`;
 }
 // اختيار نهائى: يُقفل السؤال فورًا ويُظهر الإجابة الصحيحة عند الخطأ
-function pickMCQ(si, i, k) {
+function pickMCQ(si, i, k) { _pickMCQ(si, i, k); fitMath($(`blk-s${si}q${i}`)); }
+function _pickMCQ(si, i, k) {
     const key = `s${si}q${i}`, it = current.sections[si].items[i], ok = it.ans.includes(k);
     const blk = $('blk-' + key);
     if (blk.dataset.locked) return;
@@ -1126,7 +1191,8 @@ function pickMCQ(si, i, k) {
           it.ans.map(n => `<b>${letterOf(it, n)}) <span class="opt-v">${fmtOpt(it.opts[n])}</span></b>`).join(tr(' أو ', ' or '));
 }
 // تأكيد إجابة مقالية: تُصحح وتُقفل فورًا
-function confirmWritten(si, i, silent) {
+function confirmWritten(si, i, silent) { const r = _confirmWritten(si, i, silent); fitMath($(`blk-s${si}q${i}`)); return r; }
+function _confirmWritten(si, i, silent) {
     const key = `s${si}q${i}`, blk = $('blk-' + key);
     if (blk.dataset.locked) return blk.dataset.res;
     const ta = blk.querySelector('textarea'), v = ta.value.trim();
