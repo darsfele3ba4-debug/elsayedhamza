@@ -142,6 +142,30 @@ textarea.ta-no { background: #fee2e2 !important; border-bottom-color: #dc2626 !i
 textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0b !important; }
 #res-review { color: #b45309; }
 
+/* ===== أسئلة الترتيب (سحب وإفلات) ===== */
+.ord-wrap { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 14px; padding: 10px; margin-top: 6px; }
+.ord-help { font-size: 13px; font-weight: 800; color: #475569; margin-bottom: 8px; }
+.ord-help b { color: #be123c; }
+.ord-pool { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 52px; padding: 6px; border-radius: 10px; background: #eef2ff; }
+.ord-chip { display: inline-flex; align-items: center; justify-content: center; min-width: 64px; height: 44px; padding: 0 10px; border-radius: 10px; background: #fff; border: 2px solid #6366f1; color: #1e3a8a; font-weight: 800; font-size: 19px; cursor: grab; touch-action: none; user-select: none; box-shadow: 0 3px 8px rgba(30,58,138,.15); }
+.ord-chip.ord-dragging { opacity: .3; }
+.ord-ghost { position: fixed; z-index: 100; pointer-events: none; transform: scale(1.08); box-shadow: 0 10px 22px rgba(0,0,0,.25); }
+.ord-ends { display: flex; align-items: center; justify-content: space-between; margin: 10px 4px 4px; font-weight: 800; font-size: 13px; color: #be123c; }
+.ord-ends i { flex: 1; text-align: center; color: #94a3b8; }
+.ord-slots { display: flex; gap: 6px; justify-content: space-between; }
+.ord-cell { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 0; }
+.ord-cell small { font-weight: 800; color: #64748b; }
+.ord-slot { width: 100%; height: 52px; border: 2px dashed #94a3b8; border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center; }
+.ord-slot .ord-chip { min-width: 0; width: 100%; height: 100%; font-size: 17px; padding: 0 2px; }
+.ord-slot.ord-over { border-color: #be123c; background: #fff1f2; }
+.ord-reset { margin-top: 8px; font-size: 13px; font-weight: 800; color: #475569; background: #e2e8f0; padding: 4px 12px; border-radius: 8px; }
+.ord-locked .ord-chip { cursor: default; }
+.ord-locked .ord-pool:empty { display: none; }
+.ord-ok .ord-slot { border-style: solid; border-color: #16a34a; } .ord-ok .ord-slot .ord-chip { border-color: #16a34a; background: #dcfce7; color: #166534; }
+.ord-no .ord-slot { border-style: solid; border-color: #dc2626; } .ord-no .ord-slot .ord-chip { border-color: #dc2626; background: #fee2e2; color: #991b1b; }
+@media (max-width: 480px) { .ord-chip { font-size: 16px; min-width: 56px; } .ord-slot .ord-chip { font-size: 14px; } .ord-slots { gap: 4px; } }
+.w-ans.hidden { display: none !important; }
+
 </style>
 </head>
 <body class="text-gray-800 min-h-screen pb-20 relative">
@@ -548,6 +572,105 @@ const GRADE = (() => {
 
 </script>
 <script>
+// ===== أسئلة الترتيب: سحب وإفلات (الترتيب يبدأ من الشمال لليمين) =====
+// تعمل باللمس والماوس ، ويمكن أيضًا النقر على العدد لوضعه فى أول خانة فارغة
+function orderItems(list) {
+    return String(list).split('،').map(x => x.trim().replace(/^([-–−])\s+/, '-').replace(/^[–−]/, '-')).filter(Boolean);
+}
+function orderWidget(key, it) {
+    const items = orderItems(it.list), n = items.length;
+    const desc = /تنازل/.test(it.q);
+    const chips = items.map((t, idx) => `<span class="ord-chip" data-v="${esc(t)}" data-id="${idx}"><span class="m" dir="ltr">${esc(t)}</span></span>`).join('');
+    const slots = items.map((_, idx) => `<div class="ord-cell"><div class="ord-slot" data-pos="${idx}"></div><small>${idx + 1}</small></div>`).join('');
+    return `<div class="ord-wrap" id="ord-${key}" data-key="${key}" data-n="${n}">
+        <p class="ord-help"><i class="fa-solid fa-hand-pointer"></i> اسحب كل عدد وضعه فى خانته (أو انقر عليه) .. الترتيب يبدأ من <b>الشمال</b></p>
+        <div class="ord-pool" dir="ltr">${chips}</div>
+        <div class="ord-ends" dir="ltr"><span>${desc ? 'الأكبر' : 'الأصغر'}</span><i class="fa-solid fa-arrow-right-long"></i><span>${desc ? 'الأصغر' : 'الأكبر'}</span></div>
+        <div class="ord-slots" dir="ltr">${slots}</div>
+        <button type="button" class="ord-reset" onclick="resetOrder('${key}')"><i class="fa-solid fa-rotate-left"></i> إعادة الترتيب</button>
+    </div>`;
+}
+function syncOrder(wrap) {
+    const vals = [...wrap.querySelectorAll('.ord-slot')].map(s => { const c = s.querySelector('.ord-chip'); return c ? c.dataset.v : ''; });
+    const filled = vals.filter(Boolean);
+    const ta = document.querySelector(`textarea[name="${wrap.dataset.key}"]`);
+    // يُكتب من الشمال لليمين بنفس ترتيب الخانات
+    ta.value = filled.length ? '⁦' + vals.map(v => v || '؟').join(' ، ') + '⁩' : '';
+    if (filled.length === vals.length) markAnswered(wrap.dataset.key);
+}
+function placeChip(wrap, chip, slot) {
+    if (wrap.dataset.locked) return;
+    const pool = wrap.querySelector('.ord-pool');
+    if (slot) {
+        const occupant = slot.querySelector('.ord-chip');
+        const from = chip.parentElement;
+        if (occupant && occupant !== chip) {
+            if (from.classList.contains('ord-slot')) from.appendChild(occupant); else pool.appendChild(occupant);
+        }
+        slot.appendChild(chip);
+    } else pool.appendChild(chip);
+    syncOrder(wrap);
+}
+function resetOrder(key) {
+    const wrap = $('ord-' + key); if (!wrap || wrap.dataset.locked) return;
+    const pool = wrap.querySelector('.ord-pool');
+    [...wrap.querySelectorAll('.ord-chip')].sort((a, b) => a.dataset.id - b.dataset.id).forEach(c => pool.appendChild(c));
+    syncOrder(wrap);
+}
+function initOrder(wrap) {
+    wrap.querySelectorAll('.ord-chip').forEach(chip => {
+        chip.addEventListener('pointerdown', e => {
+            if (wrap.dataset.locked) return;
+            e.preventDefault();
+            const r = chip.getBoundingClientRect(), sx = e.clientX, sy = e.clientY;
+            let ghost = null, moved = false;
+            const move = ev => {
+                const dx = ev.clientX - sx, dy = ev.clientY - sy;
+                if (!moved && Math.hypot(dx, dy) < 6) return;
+                if (!moved) {
+                    moved = true;
+                    ghost = chip.cloneNode(true); ghost.classList.add('ord-ghost');
+                    ghost.style.width = r.width + 'px'; ghost.style.height = r.height + 'px';
+                    document.body.appendChild(ghost); chip.classList.add('ord-dragging');
+                }
+                ghost.style.left = (r.left + dx) + 'px'; ghost.style.top = (r.top + dy) + 'px';
+                wrap.querySelectorAll('.ord-slot').forEach(s => s.classList.remove('ord-over'));
+                const under = document.elementFromPoint(ev.clientX, ev.clientY);
+                const slot = under && under.closest('.ord-slot');
+                if (slot && wrap.contains(slot)) slot.classList.add('ord-over');
+            };
+            const up = ev => {
+                document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); document.removeEventListener('pointercancel', up);
+                wrap.querySelectorAll('.ord-slot').forEach(s => s.classList.remove('ord-over'));
+                if (ghost) ghost.remove(); chip.classList.remove('ord-dragging');
+                if (moved) {
+                    const under = document.elementFromPoint(ev.clientX, ev.clientY);
+                    const slot = under && under.closest('.ord-slot');
+                    const pool = under && under.closest('.ord-pool');
+                    if (slot && wrap.contains(slot)) placeChip(wrap, chip, slot);
+                    else if (pool && wrap.contains(pool)) placeChip(wrap, chip, null);
+                } else {
+                    // نقرة: من المجموعة لأول خانة فارغة (من الشمال) ، ومن الخانة للمجموعة
+                    if (chip.parentElement.classList.contains('ord-slot')) placeChip(wrap, chip, null);
+                    else { const empty = [...wrap.querySelectorAll('.ord-slot')].find(s => !s.querySelector('.ord-chip')); if (empty) placeChip(wrap, chip, empty); }
+                }
+            };
+            document.addEventListener('pointermove', move); document.addEventListener('pointerup', up); document.addEventListener('pointercancel', up);
+        });
+    });
+}
+function orderIncomplete(blk) {
+    const w = blk.querySelector('.ord-wrap');
+    return w && w.querySelectorAll('.ord-slot .ord-chip').length < +w.dataset.n;
+}
+function lockOrder(blk, res) {
+    const w = blk.querySelector('.ord-wrap'); if (!w) return;
+    w.dataset.locked = '1'; w.classList.add('ord-locked', 'ord-' + res);
+    const rb = w.querySelector('.ord-reset'); if (rb) rb.remove();
+}
+
+</script>
+<script>
 // ===== تطبيق الاختبارات - مستر السيد حمزة =====
 // رابط Google Apps Script (Web App) الذى يستقبل الإجابات ويكتبها فى Google Sheet
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbwv5u-ogoJgX-HmVzI7tdmWtlHIMJEuUjPUABGvubrXZfljFT2WYMXW-XDVwvFtoi9giQ/exec";
@@ -637,7 +760,8 @@ function renderExam(ex, name) {
                 html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span>${fmt(it.q)}</span>
                     ${it.figure === 'numline' ? numLine() : ''}</div>
                     ${it.list ? `<div class="num-list"><span class="m" dir="ltr">${esc(it.list)}</span></div>` : ''}
-                    <div class="w-ans">${it.label ? `<span class="w-label">${esc(it.label)}</span>` : ''}
+                    ${isOrderQ(ex, si, i) ? orderWidget(key, it) : ''}
+                    <div class="w-ans ${isOrderQ(ex, si, i) ? 'hidden' : ''}">${it.label ? `<span class="w-label">${esc(it.label)}</span>` : ''}
                     <textarea dir="auto" name="${key}" rows="${it.lines > 1 ? 3 : 1}" placeholder="اكتب إجابتك هنا ..." oninput="markAnswered('${key}')"></textarea></div>
                     <button class="confirm-btn btn-bounce" id="cb-${key}" onclick="confirmWritten(${si}, ${i})"><i class="fa-solid fa-check"></i> تأكيد الإجابة</button>
                     <div class="fb hidden" id="fb-${key}"></div>
@@ -647,6 +771,7 @@ function renderExam(ex, name) {
     });
     html += `<button class="send-btn btn-bounce" id="send-btn" onclick="submitExam()"><i class="fa-solid fa-paper-plane"></i> إرسال الإجابات للمستر</button></div>`;
     $('exam-body').innerHTML = html;
+    document.querySelectorAll('.ord-wrap').forEach(w => initOrder(w));
 }
 function numLine() {
     return `<svg class="numline" viewBox="0 0 200 50" aria-label="خط أعداد عليه b على اليسار و a على اليمين">
@@ -681,20 +806,29 @@ function confirmWritten(si, i, silent) {
     const key = `s${si}q${i}`, blk = $('blk-' + key);
     if (blk.dataset.locked) return blk.dataset.res;
     const ta = blk.querySelector('textarea'), v = ta.value.trim();
+    if (!silent && orderIncomplete(blk)) {
+        const fb0 = $('fb-' + key); fb0.className = 'fb fb-rev'; fb0.innerHTML = '<i class="fa-solid fa-circle-info"></i> ضع كل الأعداد فى الخانات أولًا ثم اضغط تأكيد الإجابة';
+        return;
+    }
     if (!v && !silent) { ta.focus(); blk.classList.add('missing'); return; }
     const k = KEYS[current.id][i];
     const res = v ? GRADE.grade(k, v) : 'no';
     blk.dataset.locked = '1'; blk.dataset.res = res;
     ta.readOnly = true; ta.classList.add('ta-' + res);
+    lockOrder(blk, res);
     const cb = $('cb-' + key); if (cb) cb.remove();
     markAnswered(key);
     const model = '<b><span class="m" dir="ltr">' + fracs(esc(k.show)) + '</span></b>';
-    const modelAr = /[\u0600-\u06FF]|\[\[/.test(k.show) ? '<b>' + fmt(k.show) + '</b>' : model;
+    const modelAr = /[\u0621-\u064A]|\[\[/.test(k.show) ? '<b>' + fmt(k.show) + '</b>' : model;
     const fb = $('fb-' + key);
     if (res === 'ok') { fb.className = 'fb fb-ok'; fb.innerHTML = '<i class="fa-solid fa-circle-check"></i> إجابة صحيحة .. أحسنت!'; }
     else if (res === 'no') { fb.className = 'fb fb-no'; fb.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> ' + (v ? 'إجابة خاطئة' : 'لم تُجب') + ' .. الإجابة الصحيحة: ' + modelAr; }
     else { fb.className = 'fb fb-rev'; fb.innerHTML = '<i class="fa-solid fa-user-check"></i> سيراجع المستر إجابتك .. الإجابة النموذجية: ' + modelAr; }
     return res;
+}
+function isOrderQ(ex, si, i) {
+    const it = ex.sections[si].items[i];
+    return !!(it.list && KEYS[ex.id] && KEYS[ex.id][i] && KEYS[ex.id][i].t === 'order');
 }
 function markAnswered(key) { const b = $('blk-' + key); if (b) b.classList.remove('missing'); }
 
