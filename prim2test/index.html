@@ -457,6 +457,15 @@ textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0
 .g-bubbles .g-item { width: 104px; height: 104px; max-width: none; aspect-ratio: auto; border-radius: 50%; } @media (max-width: 480px) { .g-bubbles .g-item { width: 78px; height: 78px; } .g-bubbles .g-item .opt-v { font-size: 15px; } .g-top { gap: 6px; } .g-badge { font-size: 13px; padding: 4px 10px; white-space: nowrap; } .g-count { font-size: 13px; white-space: nowrap; } }
 .g-bubbles .g-arena { --bw: 104px; } @media (max-width: 480px) { .g-bubbles .g-arena { --bw: 78px; } }
 
+/* مساحة أكبر للسؤال على الموبايل */
+@media (max-width: 480px) {
+  #screen-exam { margin: 0 -10px; }
+  .paper { padding: 10px 6px 16px; border-width: 6px; }
+  .game-panel { padding: 8px; }
+  .g-q { padding: 6px 8px; }
+  .q-block { padding: 8px 4px; }
+}
+
 </style>
 </head>
 <body class="text-gray-800 min-h-screen pb-20 relative">
@@ -546,8 +555,8 @@ const EXAMS = [
      { q: "97 - 65 = ………….", opts: ["41", "32", "23", "34"], ans: [1] },
      { q: "908 – 8 = ………….", opts: ["900", "916", "108", "820"], ans: [0] },
      { q: "How do you check that 5 - 3 = 2 using addition?", opts: ["2 + 5", "2 + 3", "5 + 3", "2 + 2"], ans: [1] },
-     { q: "5 - 3 = 2 then ... + 3 = 5", opts: ["5", "3", "8", "2"], ans: [3] },
-     { q: "62 - 18 = 44 then ... + 18 = 62", opts: ["62", "18", "80", "44"], ans: [3] },
+     { q: "[[5 - 3 = 2 then ... + 3 = 5]]", opts: ["5", "3", "8", "2"], ans: [3] },
+     { q: "[[62 - 18 = 44 then ... + 18 = 62]]", opts: ["62", "18", "80", "44"], ans: [3] },
      { q: "How do you check 28 - 6 = 22 using addition", opts: ["22 + 28", "22 + 6", "28 + 6", "22 + 22"], ans: [1] },
      { q: "The value of the digit 8 in the number 78 is ....", opts: ["8", "80", "18", "81"], ans: [0] },
      { q: "The value of the digit 4 in the number 49 is ....", opts: ["4", "40", "400", "ONES"], ans: [1] }
@@ -815,17 +824,39 @@ function lockOrder(blk, res) {
 </script>
 <script>
 // ===== ملاءمة الموبايل: كل مسألة رياضية فى سطر واحد ، ويصغر الخط تلقائيًا لو المسألة أعرض من الشاشة =====
+const AR_LETTERS = /[ء-ي]/;
 function fmtQ(q) {
+    q = String(q);
     // سؤال كله أرقام ورموز (بدون كلمات) => يُعرض كمسألة واحدة لا تنقسم
-    const bare = String(q).replace(/\[\[|\]\]|\{[^}]*\}/g, '');
-    if (!/\[\[/.test(q) && !/[A-Za-zء-ي]/.test(bare)) return '<span class="m" dir="ltr">' + fracs(esc(q)) + '</span>';
+    const bare = q.replace(/\[\[|\]\]|\{[^}]*\}/g, '');
+    if (!/\[\[/.test(q) && !/[A-Za-z]/.test(bare) && !AR_LETTERS.test(bare)) return '<span class="m" dir="ltr">' + fracs(esc(q)) + '</span>';
+    // سؤال إنجليزى فيه معادلة داخل الجملة (مثل: check that 5 - 3 = 2 using) => المعادلة كتلة واحدة لا تنقسم
+    if (!/\[\[/.test(q) && !AR_LETTERS.test(q))
+        { const opnd = '\\(?(?:\\d[\\d.]*|\\.{2,}|…+)\\)?';
+          q = q.replace(new RegExp(opnd + '(?:\\s*[-+=×÷–<>]\\s*' + opnd + ')+', 'g'), m => '[[' + m + ']]'); }
     return fmt(q);
 }
+const ONE_LINE_MIN = 13;   // أصغر خط مقبول لعرض السؤال كله فى سطر واحد
 function fitMath(root) {
+    // 1) السؤال كله فى سطر واحد لو أمكن بخط مقروء
+    (root || document).querySelectorAll('.q-body').forEach(b => {
+        if (!b.offsetParent) return;
+        b.style.fontSize = ''; b.style.whiteSpace = 'nowrap';
+        const fs = parseFloat(getComputedStyle(b).fontSize);
+        const need = b.scrollWidth, have = b.clientWidth - 2;
+        if (need <= have) return;
+        const fit = Math.floor(fs * have / need * 2) / 2;
+        if (fit >= ONE_LINE_MIN) {
+            b.style.fontSize = fit + 'px';
+            let g = 0; while (b.scrollWidth > b.clientWidth && g++ < 20) b.style.fontSize = (parseFloat(b.style.fontSize) - 0.5) + 'px';
+        } else b.style.whiteSpace = '';          // جملة طويلة: الكلام ينزل سطر لكن المعادلة نفسها لا تنقسم
+    });
+    // 2) كل معادلة لا تنقسم ، ويصغر خطها لو أعرض من مكانها
     (root || document).querySelectorAll('.m').forEach(el => {
         if (!el.offsetParent) return;                        // مخفى
         const box = el.closest('.q-body, .g-row, .g-item, .opt, .fb, .num-list, .q-sub, .q-fig, .ord-wrap');
         if (!box) return;
+        if (box.classList.contains('q-body') && box.style.whiteSpace === 'nowrap') return;   // السطر كله اتظبط فوق
         el.style.fontSize = '';
         const cs = getComputedStyle(box);
         const avail = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 2;
