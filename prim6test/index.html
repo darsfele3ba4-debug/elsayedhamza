@@ -35,6 +35,203 @@ body { font-family: 'Tajawal', sans-serif; background: linear-gradient(180deg,#e
 .q-img { max-height: 260px; max-width: 100%; margin: 0 auto 1rem; border-radius: 12px; border: 2px solid #e0e7ff; background: #fff; object-fit: contain; }
 .q-img-sm { max-height: 150px; max-width: 100%; margin: 8px auto 0; border-radius: 10px; background: #fff; object-fit: contain; }
 
+/* التوصيل */
+.match-item { transition: all 0.3s; }
+.match-item.selected { background-color: #fef08a; border-color: #eab308; transform: scale(1.05); }
+.match-item.matched { background-color: #86efac; border-color: #22c55e; opacity: 0.7; pointer-events: none; }
+.match-item.error { background-color: #fca5a5; border-color: #ef4444; animation: shake 0.5s; }
+
+/* الفقاعات */
+.game-bubble {
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(191,219,254,0.8) 60%, rgba(59,130,246,0.45));
+    box-shadow: inset 0 0 15px rgba(255,255,255,0.8), 0 4px 10px rgba(0,0,0,0.15);
+    border: 1px solid rgba(255,255,255,0.6);
+    color: #1e3a8a; text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+.horizontal-target { background-color: white; border: 4px solid; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); }
+
+/* حركة مستمرة بلا وقت محدد: تتكرر حتى يجيب الطالب */
+@keyframes fallDown { from { top: -140px; } to { top: 105%; } }
+@keyframes moveRight { from { left: -140px; } to { left: 105%; } }
+@keyframes moveLeft { from { left: 105%; } to { left: -140px; } }
+.anim-fall { animation: fallDown 16s linear infinite; }
+.anim-right { animation: moveRight 15s linear infinite; }
+.anim-left { animation: moveLeft 15s linear infinite; }
+
+@keyframes shake { 0%,100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
+.popup-anim { animation: popIn 0.3s ease-out forwards; }
+@keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+.game-bubble .frac, .horizontal-target .frac { font-size: 1.3em; }
+.game-bubble .m, .horizontal-target .m { white-space: normal; }
+
+/* رموز الشعاع والمستقيم */
+.geo { position: relative; display: inline-block; padding-top: 0.45em; line-height: 1.1; unicode-bidi: isolate; }
+.geo::before { position: absolute; top: -0.15em; left: 0; right: 0; text-align: center; font-size: 0.8em; line-height: 1; letter-spacing: -2px; }
+.ray::before { content: "⟶"; }
+.gline::before { content: "⟷"; }
+
+/* ===== عناصر مستر سيف محمد (بدون صور) ===== */
+.brand-strip { background: repeating-linear-gradient(90deg,#f59e0b 0 40px,#1e3a8a 40px 80px); }
+.logo-badge { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg,#1e3a8a,#4f46e5); color: #fde68a; font-size: 26px; font-weight: 800; box-shadow: 0 4px 12px rgba(30,58,138,.3); border: 2px solid #fcd34d; flex-shrink: 0; }
+.brand-name { line-height: 1.15; }
+.brand-name small { display: block; font-size: 13px; color: #b45309; font-weight: 800; letter-spacing: .5px; }
+.hero-art { position: relative; width: 100%; max-width: 300px; aspect-ratio: 1/1; border-radius: 20px; border: 4px solid #fbbf24;
+  background: radial-gradient(circle at 30% 25%,#6366f1,#1e3a8a 70%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 12px 30px rgba(30,58,138,.35); overflow: hidden; }
+.hero-art .big { font-size: 64px; font-weight: 800; color: #fde68a; line-height: 1; }
+.hero-art .eq { direction: ltr; font-size: 20px; font-weight: 800; background: rgba(255,255,255,.15); padding: 6px 14px; border-radius: 12px; }
+.hero-art .eq b { color: #fde68a; }
+.hero-art .tag { font-size: 14px; font-weight: 800; color: #c7d2fe; }
+.hero-art::before, .hero-art::after { content: ""; position: absolute; border-radius: 50%; background: rgba(255,255,255,.08); }
+.hero-art::before { width: 160px; height: 160px; top: -50px; left: -50px; }
+.hero-art::after { width: 120px; height: 120px; bottom: -40px; right: -30px; }
+@media (max-width: 767px) { .hero-art { max-width: 240px; } .hero-art .big { font-size: 52px; } }
+.avatar-mini { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg,#1e3a8a,#4f46e5); color: #fde68a; font-weight: 800; border: 2px solid #fbbf24; }
+.lesson-num { width: 64px; height: 64px; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 800; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,.15); }
+.lesson-num span { font-size: 11px; opacity: .9; }
+.lesson-num b { font-size: 24px; line-height: 1; }
+.tips-box { background: #fffbeb; border: 2px dashed #fbbf24; border-radius: 16px; padding: 16px 18px; }
+.tips-box h4 { color: #b45309; font-weight: 800; font-size: 18px; margin-bottom: 8px; }
+.tips-box li { position: relative; padding-right: 22px; margin-bottom: 6px; font-weight: 700; color: #374151; line-height: 1.8; }
+.tips-box li::before { content: "★"; position: absolute; right: 0; color: #f59e0b; }
+.tips-box .m, .hero-art .eq { white-space: nowrap; }
+
+/* ===== أ. أحمد زين العابدين ===== */
+.brand-strip { background: repeating-linear-gradient(90deg,#0d9488 0 40px,#1e3a8a 40px 80px); }
+.brand-name small { color: #0f766e; }
+.logo-badge { width: 46px; height: 46px; font-size: 24px; background: linear-gradient(135deg,#1e3a8a,#0d9488); border-color: #5eead4; color: #fff; }
+
+/* المعادلات: من اليمين لليسار كما فى الكتاب */
+.eq { unicode-bidi: isolate; direction: rtl; white-space: nowrap; display: inline-block; }
+.game-bubble .eq, .horizontal-target .eq, .match-item .eq { white-space: normal; }
+
+/* رسم المستطيلات */
+.bar-fig { max-width: 460px; margin: 4px auto 18px; padding: 30px 8px 0; }
+.bar-row { display: flex; direction: ltr; height: 38px; border: 2px solid #374151; border-radius: 4px; overflow: visible; }
+.bar-seg { position: relative; border-left: 2px solid #374151; min-width: 34px; }
+.bar-seg:first-child { border-left: none; }
+.bar-w { background: #fff; } .bar-g { background: #4ade80; } .bar-y { background: #fde047; }
+.bar-k { background: repeating-conic-gradient(#1f2937 0 25%, #fff 0 50%) 0 0/10px 10px; }
+.bar-lbl { position: absolute; bottom: 100%; left: 0; right: 0; text-align: center; font-size: 13px; font-weight: 800; color: #1e3a8a; white-space: nowrap; padding-bottom: 2px; border-bottom: 2px solid #94a3b8; margin: 0 2px 4px; }
+.bar-total { margin-top: 6px; border-top: 2px solid #94a3b8; text-align: center; font-weight: 800; color: #374151; font-size: 14px; padding-top: 2px; }
+.bar-sm { margin-bottom: 6px; padding-top: 26px; }
+.game-bubble > span, .horizontal-target > span { font-size: 1.35em; }
+
+/* ===== شد الحبل ===== */
+.tug-arena { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+.tug-team { display: flex; flex-direction: column; align-items: center; width: 74px; flex-shrink: 0; }
+.tug-tag { font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 999px; color: #fff; margin-bottom: 4px; white-space: nowrap; }
+.tug-me .tug-tag { background: #2563eb; } .tug-op .tug-tag { background: #dc2626; }
+.tug-men { display: flex; gap: 1px; font-size: 30px; line-height: 1; }
+.tug-me .tug-men { color: #1d4ed8; transform: rotate(12deg); } .tug-op .tug-men { color: #b91c1c; transform: rotate(-12deg); }
+.tug-me.pulling .tug-men { animation: pullR .6s ease-out; } .tug-op.pulling .tug-men { animation: pullL .6s ease-out; }
+@keyframes pullR { 50% { transform: rotate(28deg) translateX(8px); } }
+@keyframes pullL { 50% { transform: rotate(-28deg) translateX(-8px); } }
+.tug-field { position: relative; flex: 1; height: 86px; border-radius: 14px; overflow: hidden; border: 2px solid #e5e7eb; }
+.tug-zone { position: absolute; top: 0; bottom: 0; width: 50%; }
+.tug-zone-me { right: 0; background: linear-gradient(90deg,#dbeafe,#bfdbfe); }
+.tug-zone-op { left: 0; background: linear-gradient(90deg,#fecaca,#fee2e2); }
+.tug-center { position: absolute; top: 0; bottom: 0; left: 50%; border-left: 3px dashed #6b7280; }
+.tug-rope { position: absolute; top: 50%; left: -30%; width: 160%; height: 10px; margin-top: -5px; border-radius: 6px;
+  background: repeating-linear-gradient(45deg,#a16207 0 6px,#ca8a04 6px 12px); box-shadow: 0 2px 4px rgba(0,0,0,.25); transition: transform .6s cubic-bezier(.3,1.6,.5,1); }
+.tug-knot { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 34px; height: 34px; border-radius: 50%; background: #fff; border: 3px solid #f59e0b;
+  display: flex; align-items: center; justify-content: center; color: #dc2626; font-size: 15px; box-shadow: 0 3px 8px rgba(0,0,0,.25); }
+.opt-right { background: #bbf7d0 !important; border-color: #22c55e !important; }
+.opt-wrong { background: #fecaca !important; border-color: #ef4444 !important; }
+
+/* ===== تسجيل الأهداف ===== */
+.goal-pitch { position: relative; width: 100%; height: 360px; border-radius: 16px; overflow: hidden;
+  background: repeating-linear-gradient(180deg,#16a34a 0 36px,#15803d 36px 72px); box-shadow: inset 0 0 30px rgba(0,0,0,.25); }
+.goal-frame { position: absolute; top: 5%; left: 8%; right: 8%; height: 56%; border: 7px solid #fff; border-bottom: none; border-radius: 6px 6px 0 0; box-shadow: 0 4px 10px rgba(0,0,0,.25); }
+.goal-net { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.35) 1px, transparent 1px); background-size: 14px 14px; background-color: rgba(0,0,0,.12); }
+.goal-pitch::after { content: ""; position: absolute; left: 22%; right: 22%; top: 61%; height: 22%; border: 3px solid rgba(255,255,255,.7); border-top: none; }
+.goal-keeper { position: absolute; z-index: 3; font-size: 44px; color: #facc15; text-shadow: 0 3px 6px rgba(0,0,0,.4); transform: translate(-50%,-50%); pointer-events: none; }
+.goal-ball { position: absolute; z-index: 4; font-size: 34px; color: #fff; background: #111; border-radius: 50%; line-height: 1; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  transform: translate(-50%,-50%); pointer-events: none; text-shadow: none; box-shadow: 0 4px 6px rgba(0,0,0,.35); }
+.goal-target { position: absolute; z-index: 2; transform: translate(-50%,-50%); min-width: 92px; max-width: 150px; min-height: 58px; padding: 6px 10px; border-radius: 14px;
+  background: rgba(255,255,255,.92); border: 3px solid #fde047; color: #14532d; font-weight: 800; font-size: 17px; box-shadow: 0 4px 10px rgba(0,0,0,.25); display: flex; align-items: center; justify-content: center; text-align: center; transition: transform .2s; }
+.goal-target.long { font-size: 13px; }
+.goal-target:active { transform: translate(-50%,-50%) scale(.94); }
+.goal-target.hit { background: #bbf7d0; border-color: #22c55e; }
+.goal-target.miss { background: #fecaca; border-color: #ef4444; }
+.goal-flash { position: absolute; z-index: 5; left: 50%; top: 74%; transform: translate(-50%,-50%) scale(.3); opacity: 0; font-size: 28px; font-weight: 800; padding: 6px 18px; border-radius: 14px; color: #fff; white-space: nowrap; transition: all .3s; pointer-events: none; }
+.goal-flash.show { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+.goal-flash.ok { background: #16a34a; border: 3px solid #fde047; } .goal-flash.no { background: #dc2626; border: 3px solid #fff; }
+@media (max-width: 480px) { .goal-target { min-width: 78px; font-size: 15px; } .goal-target.long { font-size: 11px; max-width: 120px; } .goal-pitch { height: 330px; } }
+
+/* ألوان إضافية غير موجودة فى ملف tailwind المضغوط */
+.from-amber-500{--tw-gradient-from:#f59e0b var(--tw-gradient-from-position);--tw-gradient-to:rgba(245,158,11,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}
+.from-emerald-500{--tw-gradient-from:#10b981 var(--tw-gradient-from-position);--tw-gradient-to:rgba(16,185,129,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}
+.from-teal-500{--tw-gradient-from:#14b8a6 var(--tw-gradient-from-position);--tw-gradient-to:rgba(20,184,166,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}
+.to-green-700{--tw-gradient-to:#15803d var(--tw-gradient-to-position)}
+.to-emerald-700{--tw-gradient-to:#047857 var(--tw-gradient-to-position)}
+.bg-amber-500{background-color:#f59e0b} .bg-amber-50{background-color:#fffbeb} .hover\:bg-amber-50:hover{background-color:#fffbeb}
+.border-amber-300{border-color:#fcd34d} .border-amber-200{border-color:#fde68a} .text-amber-900{color:#78350f}
+.bg-emerald-50{background-color:#ecfdf5} .border-emerald-200{border-color:#a7f3d0} .bg-emerald-600{background-color:#059669}
+@media (max-width: 480px) { .nav-txt { display: none; } .brand-name { font-size: 16px; } .brand-name small { font-size: 11px; white-space: nowrap; } }
+
+/* زر نسخ رابط الدرس */
+.lesson-wrap { position: relative; }
+.lesson-wrap > a { display: flex; }
+.copy-btn { position: absolute; bottom: 14px; right: 24px; z-index: 2; background: rgba(255,255,255,.95); color: #1e3a8a; font-weight: 800; font-size: 14px;
+  padding: 6px 14px; border-radius: 999px; box-shadow: 0 3px 8px rgba(0,0,0,.2); border: 2px solid #fcd34d; transition: transform .15s; display: flex; align-items: center; gap: 6px; }
+.copy-btn:active { transform: scale(.94); }
+.copy-btn.done { background: #dcfce7; color: #166534; border-color: #22c55e; }
+.copy-toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 30px); opacity: 0; z-index: 60; padding: 10px 20px; border-radius: 14px; color: #fff; font-weight: 800; transition: all .3s; pointer-events: none; white-space: nowrap; }
+.copy-toast.show { opacity: 1; transform: translate(-50%, 0); }
+.copy-toast.ok { background: #16a34a; } .copy-toast.no { background: #dc2626; }
+.lesson-wrap > a { padding-bottom: 64px !important; min-height: 160px; }
+.icon-text { font-size: 46px; font-weight: 800; opacity: .85; letter-spacing: 6px; line-height: 1; direction: ltr; }
+
+/* ألوان الدرس الرابع */
+.from-sky-500{--tw-gradient-from:#0ea5e9 var(--tw-gradient-from-position);--tw-gradient-to:rgba(14,165,233,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}
+.to-indigo-600{--tw-gradient-to:#4f46e5 var(--tw-gradient-to-position)}
+
+/* ===== من سيربح المليون ===== */
+.mil-wrap { background: linear-gradient(165deg,#6d28d9 0%,#3730a3 45%,#1e3a8a 75%,#0f766e 100%); border-radius: 20px; padding: 12px 12px 18px; color: #fff; box-shadow: 0 12px 30px rgba(49,46,129,.4); }
+.mil-ladder { display: flex; gap: 6px; overflow-x: auto; padding: 6px; background: rgba(15,10,60,.55); border-radius: 14px; scroll-behavior: smooth; scrollbar-width: none; }
+.mil-ladder::-webkit-scrollbar { display: none; }
+.mil-step { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 10px; font-weight: 800; font-size: 13px; color: #c7d2fe; white-space: nowrap; }
+.mil-step b { color: #fde68a; }
+.mil-step.safe span { color: #fff; }
+.mil-step.won { background: rgba(250,204,21,.18); color: #fde68a; }
+.mil-step.next { background: linear-gradient(90deg,#facc15,#f59e0b); color: #3b0764; box-shadow: 0 0 12px rgba(250,204,21,.6); }
+.mil-step.next b { color: #3b0764; }
+.mil-title { text-align: center; font-size: 26px; font-weight: 800; margin: 14px 0 10px; color: #fde047; text-shadow: 0 3px 0 #a21caf, 0 6px 14px rgba(0,0,0,.35); }
+.mil-title i { color: #fbbf24; }
+.mil-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
+.mil-pill { background: rgba(255,255,255,.14); padding: 8px 16px; border-radius: 999px; font-weight: 800; font-size: 15px; }
+.mil-prize { background: linear-gradient(90deg,#fde047,#facc15); color: #3b0764; padding: 8px 16px; border-radius: 999px; font-weight: 800; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,.25); }
+.mil-lifelines { display: flex; justify-content: center; gap: 12px; margin-bottom: 12px; }
+.mil-ll { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(160deg,#fb7185,#f97316); box-shadow: 0 5px 0 #9f1239, 0 8px 14px rgba(0,0,0,.3);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-size: 20px; transition: transform .15s; position: relative; }
+.mil-ll small { font-size: 8.5px; font-weight: 800; line-height: 1.1; margin-top: 2px; }
+.mil-ll:active { transform: translateY(3px); box-shadow: 0 2px 0 #9f1239; }
+.mil-ll.used { filter: grayscale(1); opacity: .45; pointer-events: none; }
+.mil-ll.used::after { content: ""; position: absolute; inset: 8px; border-top: 3px solid #fff; transform: rotate(-45deg) translateY(22px); }
+.mil-help { background: rgba(255,255,255,.95); color: #312e81; border-radius: 14px; padding: 10px 14px; margin-bottom: 12px; font-weight: 800; text-align: center; animation: popIn .3s; }
+.mil-help b { color: #c2410c; }
+.mil-aud { display: flex; justify-content: center; gap: 18px; align-items: flex-end; }
+.mil-aud-col { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 13px; }
+.mil-aud-bar { width: 26px; height: 90px; background: #e0e7ff; border-radius: 6px; display: flex; align-items: flex-end; overflow: hidden; }
+.mil-aud-bar i { display: block; width: 100%; background: linear-gradient(0deg,#6d28d9,#a78bfa); transition: height .8s; }
+.mil-question { border: 4px solid #facc15; border-radius: 22px; background: linear-gradient(160deg,rgba(255,255,255,.18),rgba(255,255,255,.06)); padding: 22px 14px; min-height: 110px;
+  display: flex; align-items: center; justify-content: center; text-align: center; font-size: 20px; font-weight: 800; line-height: 1.8; margin-bottom: 14px; box-shadow: inset 0 0 20px rgba(0,0,0,.15); }
+.mil-options { display: flex; flex-direction: column; gap: 10px; }
+.mil-opt { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 62px; padding: 8px 12px; border-radius: 999px; border: 3px solid #a5b4fc;
+  background: linear-gradient(90deg,#4338ca,#3b82f6); color: #fff; font-weight: 800; font-size: 18px; text-align: right; transition: transform .15s, background .3s; box-shadow: 0 4px 10px rgba(0,0,0,.25); }
+.mil-opt:active { transform: scale(.98); }
+.mil-letter { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%; background: #facc15; color: #3b0764; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.mil-txt { flex: 1; line-height: 1.6; }
+.mil-opt.final { background: linear-gradient(90deg,#f59e0b,#ea580c); border-color: #fde68a; animation: milPulse .5s infinite alternate; }
+.mil-opt.right { background: linear-gradient(90deg,#16a34a,#22c55e); border-color: #bbf7d0; animation: milBlink .35s 3; }
+.mil-opt.wrong { background: linear-gradient(90deg,#dc2626,#ef4444); border-color: #fecaca; }
+.mil-opt.gone { visibility: hidden; }
+@keyframes milPulse { to { transform: scale(1.02); box-shadow: 0 0 18px rgba(245,158,11,.8); } }
+@keyframes milBlink { 50% { filter: brightness(1.4); } }
+@media (max-width: 480px) { .mil-title { font-size: 22px; } .mil-question { font-size: 18px; } .mil-opt { font-size: 16px; min-height: 56px; } }
 
 /* ===== مستر السيد حمزة - الهوية ===== */
 .brand-strip { background: repeating-linear-gradient(90deg,#be123c 0 40px,#1e3a8a 40px 80px); }
@@ -142,6 +339,56 @@ textarea.ta-no { background: #fee2e2 !important; border-bottom-color: #dc2626 !i
 textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0b !important; }
 #res-review { color: #b45309; }
 
+/* ===== الصف الخامس: عنوان فرعى + جدول X ===== */
+.paper-sub { display: block; font-size: 20px; margin-top: 6px; }
+.theme-navy .paper-title { background: #f9d5b8; color: #6d28d9; }
+.theme-navy .sec-title { color: #1d4ed8; }
+.theme-navy .opt { color: #6d28d9; }
+.q-sub { font-weight: 800; font-size: 19px; display: flex; gap: 40px; justify-content: center; margin: 4px 0; }
+.q-fig { display: flex; align-items: center; justify-content: center; gap: 28px; flex-wrap: wrap; margin: 6px 0 4px; }
+.x-table { border-collapse: collapse; font-weight: 800; font-size: 20px; font-family: 'Calibri','Carlito','Tajawal',sans-serif; }
+.x-table td { border: 1.5px solid #333; padding: 4px 22px; text-align: center; min-width: 70px; }
+.x-line { font-size: 19px; }
+
+/* ===== لوحة الألعاب ===== */
+.game-panel { border-radius: 18px; padding: 14px; margin: 6px 0 10px; background: linear-gradient(180deg,#eef2ff,#fff); border: 2px solid #c7d2fe; }
+.g-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.g-badge { font-weight: 800; color: #fff; background: linear-gradient(90deg,#be123c,#1e3a8a); padding: 5px 14px; border-radius: 999px; font-size: 15px; }
+.g-count { font-weight: 800; color: #1e3a8a; }
+.g-progress { height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-bottom: 10px; }
+.g-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,#be123c,#f59e0b); transition: width .4s; }
+.g-q { background: #fff; border-radius: 12px; padding: 8px 12px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
+.g-arena { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: 14px; }
+.g-bubbles .g-arena { background: linear-gradient(180deg,#e0f2fe,#cffafe); box-shadow: inset 0 0 20px rgba(14,116,144,.15); }
+.g-shoot .g-arena { background: #111827; border: 4px solid #374151; }
+.g-goal .g-arena { height: 360px; }
+.g-hint { text-align: center; font-size: 13px; font-weight: 800; color: #64748b; margin-top: 6px; }
+.g-item { position: absolute; z-index: 2; font-weight: 800; color: #1e3a8a; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; }
+.g-item .g-l { font-size: 14px; color: #be123c; }
+.g-item .opt-v { font-size: 20px; }
+.g-bubbles .g-item { width: 22%; max-width: 120px; aspect-ratio: 1 / 1; padding: 4px; }
+.g-shoot .g-item { width: 112px; height: 112px; border-radius: 50%; padding: 4px; font-size: 16px; }
+.g-shoot .g-item i { font-size: 22px; margin-bottom: 2px; }
+.g-goal .goal-target { flex-direction: row; gap: 4px; }
+.g-goal .goal-target .opt-v { font-size: 18px; }
+.goal-pitch .goal-keeper, .goal-pitch .goal-ball { position: absolute; }
+.g-item.g-right { background: #bbf7d0 !important; border-color: #16a34a !important; box-shadow: 0 0 0 5px rgba(22,163,74,.35); }
+.g-item.g-wrong { background: #fecaca !important; border-color: #dc2626 !important; box-shadow: 0 0 0 5px rgba(220,38,38,.35); }
+.g-item.g-correct { background: #dcfce7 !important; border: 3px dashed #16a34a !important; }
+.g-item.g-dim { opacity: .45; }
+.g-item:disabled { cursor: default; }
+.g-next { margin: 10px auto 0; display: flex; align-items: center; gap: 8px; background: #1e3a8a; color: #fff; font-weight: 800; font-size: 17px; padding: 10px 22px; border-radius: 12px; }
+.mcq-review { margin-top: 6px; }
+.review-head { font-weight: 800; color: #166534; background: #f0fdf4; border-radius: 10px; padding: 6px 12px; margin-bottom: 6px; }
+@media (max-width: 640px) {
+  .g-arena { height: 360px; }
+  .g-shoot .g-item { width: 96px; height: 96px; }
+  .g-item .opt-v { font-size: 17px; }
+  .q-sub { gap: 18px; font-size: 17px; }
+  .x-table { font-size: 17px; }
+}
+.g-next.hidden, .fb.hidden { display: none !important; }
+
 /* ===== أسئلة الترتيب (سحب وإفلات) ===== */
 .ord-wrap { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 14px; padding: 10px; margin-top: 6px; }
 .ord-help { font-size: 13px; font-weight: 800; color: #475569; margin-bottom: 8px; }
@@ -166,13 +413,67 @@ textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0
 @media (max-width: 480px) { .ord-chip { font-size: 16px; min-width: 56px; } .ord-slot .ord-chip { font-size: 14px; } .ord-slots { gap: 4px; } }
 .w-ans.hidden { display: none !important; }
 
+/* ===== Grade 2 (English, left to right) ===== */
+.paper[dir="ltr"] { text-align: left; font-family: 'Calibri','Carlito','Tajawal',sans-serif; }
+.paper[dir="ltr"] .paper-title { text-align: center; }
+.paper[dir="ltr"] .qn-paren { margin-left: 0; margin-right: 6px; }
+.paper[dir="ltr"] .q-text { font-size: 20px; }
+.paper[dir="ltr"] .sec-title { text-decoration-color: #c2410c; }
+.vsub { display: inline-flex; flex-direction: column; align-items: flex-end; font-weight: 800; font-size: 20px; line-height: 1.35; font-family: 'Calibri','Carlito','Tajawal',sans-serif; }
+.vsub .vsub-b { border-bottom: 2.5px solid #111; padding: 0 0 2px 22px; }
+.g-goal .goal-target.long { max-width: 46%; min-width: 120px; padding: 6px 6px; }
+.g-goal .goal-target.long .opt-v { font-size: 12px; white-space: normal; }
+.g-goal .goal-target.long .m { white-space: normal; }
+.paper[dir="ltr"] .ans-box { width: 48px; height: 28px; margin: 0 6px; }
+
+/* ===== ملاءمة الموبايل ===== */
+.q-text { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; line-height: 1.8; }
+.q-text > .q-body { flex: 1 1 0; min-width: 0; }
+.qn-circle, .qn-paren { flex-shrink: 0; }
+.m { white-space: nowrap !important; }
+.opt .opt-v, .g-item .opt-v { min-width: 0; }
+.g-item .m { white-space: nowrap !important; }
+.g-q .q-text { font-size: 18px; }
+.g-big { font-size: 30px; font-weight: 800; color: #be123c; line-height: 1; }
+.g-goal .goal-target .g-big { font-size: 28px; }
+.g-legend { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.g-legend:empty { display: none; }
+.g-row { display: flex; align-items: center; gap: 10px; width: 100%; text-align: start; background: #fff; border: 2px solid #c7d2fe; border-radius: 12px; padding: 8px 12px; font-weight: 800; font-size: 18px; color: #1e3a8a; min-height: 48px; }
+.g-row .g-l { color: #be123c; flex-shrink: 0; font-size: 18px; }
+.g-row .opt-v { flex: 1 1 0; min-width: 0; overflow: hidden; }
+.g-row.g-right { background: #bbf7d0; border-color: #16a34a; }
+.g-row.g-wrong { background: #fecaca; border-color: #dc2626; }
+.g-row.g-correct { background: #dcfce7; border: 3px dashed #16a34a; }
+.g-row.g-dim { opacity: .5; }
+.g-row:disabled { cursor: default; }
+@media (max-width: 480px) {
+  .q-text, .paper[dir="ltr"] .q-text { font-size: 17px; }
+  .g-q .q-text { font-size: 17px; }
+  .g-row { font-size: 16px; padding: 7px 10px; }
+  .opt { font-size: 16px; padding: 6px 8px; }
+}
+@media (max-width: 480px) { .goal-flash { font-size: 19px; padding: 5px 12px; white-space: nowrap; max-width: 94%; } }
+.g-goal .goal-target > span { white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; } .g-goal .goal-target { max-width: 44%; } @media (max-width: 480px) { .g-goal .goal-target { min-width: 0; padding: 6px 8px; } .g-goal .goal-target .opt-v { font-size: 16px; } .g-goal .goal-target .g-l { font-size: 13px; } }
+.g-bubbles .g-item { width: 104px; height: 104px; max-width: none; aspect-ratio: auto; border-radius: 50%; } @media (max-width: 480px) { .g-bubbles .g-item { width: 78px; height: 78px; } .g-bubbles .g-item .opt-v { font-size: 15px; } .g-top { gap: 6px; } .g-badge { font-size: 13px; padding: 4px 10px; white-space: nowrap; } .g-count { font-size: 13px; white-space: nowrap; } }
+.g-bubbles .g-arena { --bw: 104px; } @media (max-width: 480px) { .g-bubbles .g-arena { --bw: 78px; } }
+
+/* مساحة أكبر للسؤال على الموبايل */
+@media (max-width: 480px) {
+  #screen-exam { margin: 0 -10px; }
+  .paper { padding: 10px 6px 16px; border-width: 6px; }
+  .game-panel { padding: 8px; }
+  .g-q { padding: 6px 8px; }
+  .q-block { padding: 8px 4px; }
+}
+
 </style>
 </head>
 <body class="text-gray-800 min-h-screen pb-20 relative">
 
     <header class="fixed top-0 w-full bg-white/95 backdrop-blur-md shadow-sm z-40 h-20 flex items-center px-4 md:px-8 border-b border-blue-100">
         <div class="flex items-center gap-3 cursor-pointer" onclick="goHome()"><img class="teacher-avatar" src="data:image/jpeg;base64,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" alt="مستر السيد حمزة"><h1 class="font-extrabold text-blue-900 text-lg md:text-2xl brand-name">مستر السيد حمزة<small dir="ltr">Mr. Elsayed Hamza</small></h1></div>
-        <a href="https://wa.me/201221477305" target="_blank" rel="noopener" class="mr-auto btn-bounce wa-btn px-3 py-2 rounded-lg font-bold text-sm flex items-center gap-2 shadow"><i class="fa-brands fa-whatsapp text-lg"></i><span class="nav-txt" dir="ltr">01221477305</span></a>
+        <button id="sound-btn" onclick="toggleSound()" class="mr-auto btn-bounce bg-white border-2 border-yellow-400 text-blue-900 w-10 h-10 rounded-lg shadow ml-2 text-lg"></button>
+        <a href="https://wa.me/201221477305" target="_blank" rel="noopener" class="btn-bounce wa-btn px-3 py-2 rounded-lg font-bold text-sm flex items-center gap-2 shadow"><i class="fa-brands fa-whatsapp text-lg"></i><span class="nav-txt" dir="ltr">01221477305</span></a>
     </header>
     <div class="fixed top-20 w-full z-40 brand-strip"></div>
 
@@ -233,6 +534,67 @@ textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0
     </div>
 
     <script>
+// ===== اختبارات الصف السادس - تسجيل الأهداف (كما هى فى ملفات المدرس) =====
+const G6_GOAL_1 = {
+  title: "اختبار الصف السادس (1)", card: "اختبار الصف السادس (1) - تسجيل الأهداف", sheet: "الصف السادس (1) - تسجيل الأهداف",
+  num: "paren", theme: "purple", game: "goal",
+  sections: [
+   { title: "اختر الاجابة الصحيحة مما بين القوسين :", type: "mcq", items: [
+     { q: "العدد .......... يقبل القسمة علي 2 ، 5 معاً", opts: ["51", "10", "21", "12"], ans: [1] },
+     { q: "المعكوس الجمعي للعدد [[– 5]] هو ...........", opts: ["- 5", "5", "0", "55"], ans: [1] },
+     { q: "العدد ......... يقبل القسمة علي 3 ، 5 معاً", opts: ["15", "10", "21", "12"], ans: [0] },
+     { q: "......... هو عدد صحيح ليس موجباً وليس سالباً", opts: ["الصفر", "1", "- 1", "100"], ans: [0] },
+     { q: "العدد الذي يمثل نقطة توازن الاعداد المتقابلة علي خط الاعداد هو ............", opts: ["- 1", "1", "0", "10"], ans: [2] },
+     { q: "العدد .......... ينتمي إلي مجموعة الاعداد الصحيحة", opts: ["-{1/4}", "– 4", "0.5", "– 1 {1/2}"], ans: [1] },
+     { q: "العدد ........... ينتمي إلي مجموعة الاعداد الطبيعية", opts: ["2.25", "- 5", "0", "– 1 {1/2}"], ans: [2] },
+     { q: "العدد ........... ينتمي إلي مجموعة الاعداد العد", opts: ["0", "{1/2}", "4", "– 1"], ans: [2] },
+     { q: "العدد ....... يقبل القسمة علي 3 ، 6 معاً", opts: ["33", "21", "12", "9"], ans: [2] },
+     { q: "الاعداد 5 ، 8 تسمي اعداد ...........", opts: ["فردية", "زوجية", "أولية فيما بينهما", "غير أولية"], ans: [2] },
+     { q: "أي التعبيرات الرياضية لا تمثل مقدارا جبرياً ..............", opts: ["3X + 2Y", "X = 4", "5X + 3", "4 M - 5"], ans: [1] },
+     { q: "الحد الجبري الذي معامله 5 هو ............", opts: ["N – 5", "N + 5", "5 N", "{N/5}"], ans: [2] },
+     { q: "مجموعة الاعداد الصحيحة ........... مجموعة الاعداد النسبية", opts: ["تنتمي", "لا تنتمي", "ليست جزئية", "جزئية"], ans: [3] },
+     { q: "العدد 507 يقبل القسمة علي ............ (بدون باقي)", opts: ["2", "5", "3", "13"], ans: [2, 3] },
+     { q: "ارتفاع احدي المدن 15 متراً فوق مستوي سطح البحر يمثلها العدد ........", opts: ["15", "- 15", "0", "13"], ans: [0] },
+     { q: "[[......... > |−4|]]", opts: ["4", "- 4", "5", "- 5"], ans: [2] },
+     { q: "العدد ......... يقبل القسمة علي 5", opts: ["735", "573", "357", "63537"], ans: [0] },
+     { q: "العدد .......... ينتمي إلي مجموعة الاعداد الصحيحة", opts: ["- 0.5", "{1/3}", "- 9", "1.7"], ans: [2] },
+     { q: "[[9 + 15 = 3 × (3 + .......)]]", opts: ["5", "24", "15", "2"], ans: [0] },
+     { q: "[[0.7 > .......... > 0.6]]", opts: ["0.72", "0.56", "0.65", "0.357"], ans: [2] }
+   ]}
+  ]
+};
+const G6_GOAL_2 = {
+  title: "اختبار الصف السادس (2)", card: "اختبار الصف السادس (2) - تسجيل الأهداف", sheet: "الصف السادس (2) - تسجيل الأهداف",
+  num: "paren", theme: "purple", game: "goal",
+  sections: [
+   { title: "اختر الاجابة الصحيحة مما بين القوسين :", type: "mcq", items: [
+     { q: "[[1 {1/9} .......... |− 1 {2/9}|]]", opts: ["<", "=", ">", "≠"], ans: [0, 3] },
+     { q: "[[(......... + 196)]] يقبل القسمة علي 10", opts: ["1", "2", "3", "4"], ans: [3] },
+     { q: "عددان متعاكسان أحدهما العدد [[-9]] يكون العدد الاخر هو .............", opts: ["- 9", "9", "18", "0"], ans: [1] },
+     { q: "اذا كان [[a = |− 22|]] فإن [[a = .........]]", opts: ["12", "22", "- 22", "غير ما سبق"], ans: [1] },
+     { q: "المعكوس الجمعي للعدد [[|− 7|]] هو .........", opts: ["7", "- 7", "|7|", "صفر"], ans: [1] },
+     { q: "اكبر عدد صحيح سالب هو ...........", opts: ["1", "صفر", "- 1", "- 1000"], ans: [2] },
+     { q: "م.م.أ لمقامي الكسرين {1/4} ، {3/8}", opts: ["4", "8", "2", "- 32"], ans: [1] },
+     { q: "[[-12]] .......... مجموعة اعداد العد", opts: ["تنتمي الي", "لا تنتمي الي", "جزئية من", "ليست جزئية"], ans: [1] },
+     { q: "0.25 ........ مجموعة الاعداد النسبية", opts: ["تنتمي الي", "لا تنتمي الي", "جزئية من", "ليست جزئية"], ans: [0] },
+     { q: "[[|− 8| {box} 6]]", opts: ["<", "=", ">", "≤"], ans: [2] },
+     { q: "اصغر عدد صحيح غير سالب هو ............", opts: ["- 1", "1", "0", "7"], ans: [2] },
+     { q: "أوجد م.م.أ لمقامي الكسرين {1/3} ، {3/21}", opts: ["3", "21", "24", "8"], ans: [1] },
+     { q: "العدد الصحيح الذي يقع علي يمين العدد [[– 5]] مباشرة", opts: ["- 4", "- 6", "- 10", "- 12"], ans: [0] },
+     { q: "معامل الحد الجبري في المقدار [[7x - 4]]", opts: ["4", "- 4", "7", "X"], ans: [2] },
+     { q: "عدد حدود المقدار الجبري [[8x + 3 + 5y + 7]] = ...............", opts: ["3", "2", "4", "5"], ans: [2] },
+     { q: "ايهما اكبر a أم b", figure: "numline-ab", opts: ["A", "B", "متساويان"], ans: [1] },
+     { q: "[[{3/4} - {7/24} = ...............]]", opts: ["{4/4}", "{4/24}", "{2/4}", "{11/24}"], ans: [3] },
+     { q: "[[- 5 {box} 0]]", opts: ["<", "=", ">", "≠"], ans: [0, 3] },
+     { q: "اصغر عدد صحيح موجب هو ........", opts: ["1", "5", "0", "غير ما سبق"], ans: [0] },
+     { q: "م.م.أ لمقامي الكسرين {1/3} ، {3/21} هو ...........", opts: ["3", "21", "24", "63"], ans: [1] }
+   ]}
+  ]
+};
+
+</script>
+<script>
+const GRADE_LABEL = "الصف السادس الابتدائى";
 // ===== اختبارات الصف السادس الابتدائى - كما هى فى ملفات المدرس =====
 // صيغة النص:  {a/b} = كسر رأسى  ،  [[ ... ]] = تعبير رياضى يُعرض من اليسار لليمين كما فى الورقة  ،  {box} = مربع فارغ
 // ans = أرقام الاختيارات الصحيحة (0 = أ ، 1 = ب ، 2 = ج ، 3 = د)
@@ -457,6 +819,10 @@ const KEYS = {
  ]
 };
 
+// اختبارات تسجيل الأهداف
+EXAMS.push(Object.assign({ id: 8 }, G6_GOAL_1), Object.assign({ id: 9 }, G6_GOAL_2));
+KEYS[8] = []; KEYS[9] = [];
+
 </script>
 <script>
 // ===== تصحيح الأسئلة المقالية آليًا =====
@@ -489,7 +855,7 @@ const GRADE = (() => {
             if (m[3] !== undefined) v = +m[2] + frac(+m[3], +m[4]);
             else if (m[5] !== undefined) v = frac(+m[2], +m[5]);
             else v = +m[2];
-            out.push({ v: neg ? -v : v, hasFrac: m[3] !== undefined || m[5] !== undefined, idx: m.index });
+            out.push({ v: neg ? -v : v, hasFrac: m[3] !== undefined || m[5] !== undefined, idx: m.index, end: m.index + m[0].length });
         }
         return out;
     }
@@ -503,10 +869,11 @@ const GRADE = (() => {
         if (k.t === 'val') {
             const ns = nums(a, true);
             if (!ns.length) return 'review';
-            const target = val(k.v), last = ns[ns.length - 1];
-            if (eq(last.v, target)) return (k.frac && !last.hasFrac) ? 'review' : 'ok';
-            // قبول كسر غير مختصر يساوى القيمة (مثل 6/8 = 3/4) أو 7/7 = 1
-            return ns.some(n => eq(n.v, target)) ? 'review' : 'no';
+            const targets = (Array.isArray(k.v) ? k.v : [k.v]).map(val), last = ns[ns.length - 1];
+            if (targets.some(t => eq(last.v, t))) return (k.frac && !last.hasFrac) ? 'review' : 'ok';
+            if (k.any && ns.some(n => targets.some(t => eq(n.v, t)))) return 'ok';
+            // القيمة الصحيحة موجودة لكن ليست الناتج النهائى => يراجعها المستر
+            return ns.some(n => targets.some(t => eq(n.v, t))) ? 'review' : 'no';
         }
         if (k.t === 'set') {
             const ign = (k.ignore || []).map(val);
@@ -535,19 +902,61 @@ const GRADE = (() => {
             return ns.some(v => v !== 0 && Number.isInteger(v) && v % k.m === 0) ? 'ok' : 'no';
         }
         if (k.t === 'pick') {
-            const c = k.c.map(val), right = k.want === 'max' ? Math.max(...c) : Math.min(...c);
-            const ns = nums(a);
-            const present = c.filter(x => ns.some(n => eq(n.v, x)));
-            if (present.length === 1) return eq(present[0], right) ? 'ok' : 'no';
-            if (present.length === 2) {
-                const s = norm(a);
-                const first = ns.find(n => c.some(x => eq(x, n.v)));
-                const after = s.slice(first.idx);
-                // "X > Y" أو "X أكبر من Y" تعنى أن X هو الأكبر
-                if (/^[^<>]*?>/.test(after) || /^[^<>]*?اكبر|^[^<>]*?أكبر/.test(after)) return eq(k.want === 'max' ? first.v : c.find(x => !eq(x, first.v)), right) ? 'ok' : 'no';
-                if (/^[^<>]*?</.test(after) || /^[^<>]*?اصغر|^[^<>]*?أصغر/.test(after)) return eq(k.want === 'min' ? first.v : c.find(x => !eq(x, first.v)), right) ? 'ok' : 'no';
+            // كل اختيار: رقم ، أو تعبير {v, parts} (مثل 3.55 + 4.27)
+            const groups = k.c.map(c => typeof c === 'string' ? { v: val(c), parts: null } : { v: val(c.v), parts: c.parts.map(val) });
+            const right = k.want === 'max' ? Math.max(...groups.map(g => g.v)) : Math.min(...groups.map(g => g.v));
+            const ns = nums(a), s = norm(a);
+            groups.forEach(g => {
+                const hits = ns.filter(n => eq(n.v, g.v));
+                const partHits = g.parts ? g.parts.map(p => ns.find(n => eq(n.v, p))) : [];
+                const usable = hits.concat(g.parts && partHits.every(Boolean) ? partHits : []);
+                g.present = usable.length > 0;
+                if (g.present) { g.start = Math.min(...usable.map(n => n.idx)); g.end = Math.max(...usable.map(n => n.end)); }
+            });
+            const pres = groups.filter(g => g.present);
+            if (pres.length === 1) return eq(pres[0].v, right) ? 'ok' : 'no';
+            if (pres.length === 2) {
+                const [A, B] = pres.sort((x, y) => x.start - y.start);
+                // نهاية A = آخر موضع قبل بداية B
+                const between = s.slice(A.start, B.start).replace(/^[^\s<>]*/, '');
+                const after = s.slice(B.end, B.end + 25);
+                let bigger = null;
+                if (/>/.test(between)) bigger = A; else if (/</.test(between)) bigger = B;
+                else if (/[اأ]كبر/.test(between)) bigger = A; else if (/[اأ]صغر/.test(between)) bigger = B;
+                else if (/^[^\d<>]*[اأ]كبر/.test(after)) bigger = B; else if (/^[^\d<>]*[اأ]صغر/.test(after)) bigger = A;
+                if (bigger) {
+                    const chosen = k.want === 'max' ? bigger : (bigger === A ? B : A);
+                    return eq(chosen.v, right) ? 'ok' : 'no';
+                }
             }
             return 'review';
+        }
+        if (k.t === 'letter') {
+            const L = (norm(a).match(/[A-Za-z]/g) || []).map(x => x.toUpperCase());
+            if (!L.length) return nums(a).length ? 'no' : 'review';
+            return L.every(x => x === k.want.toUpperCase()) ? 'ok' : 'no';
+        }
+        if (k.t === 'eqchoice') {
+            const s = norm(a).replace(/[\s)(]/g, '');
+            if (/^ب$/.test(s) || /=/.test(s)) return 'ok';
+            if (/^[اأ]$/.test(s) || /2X/i.test(s)) return 'no';
+            return 'review';
+        }
+        if (k.t === 'eqn') {
+            const s = norm(a), ns = nums(a).map(n => n.v);
+            const hasVar = /[A-Za-z]|[سصعلمن]\s*[=+\-]|[=+\-]\s*[سصعلمن]/.test(s) || /^\s*[سصع]\s*$/.test(s);
+            const allNums = k.nums.map(val).every(x => ns.some(v => eq(v, x)));
+            if (hasVar && /=/.test(s) && allNums) return 'ok';
+            if (!ns.length) return 'no';
+            return 'review';
+        }
+        if (k.t === 'expanded') {
+            const ns = nums(a).map(n => n.v).filter(v => !eq(v, val(k.whole)));
+            if (!ns.length) return 'review';
+            const has = arr => arr.map(val).every(x => ns.some(v => eq(v, x)));
+            if (has(k.terms)) return 'ok';
+            if (has(k.digits) && has(k.places)) return 'ok';   // الصيغة: (9 × 1) + (3 × 0.1) + ...
+            return ns.length >= 3 ? 'no' : 'review';
         }
         if (k.t === 'ab') {
             const s = norm(a).replace(/\s+/g, ' ').toLowerCase();
@@ -671,6 +1080,257 @@ function lockOrder(blk, res) {
 
 </script>
 <script>
+// ===== ملاءمة الموبايل: كل مسألة رياضية فى سطر واحد ، ويصغر الخط تلقائيًا لو المسألة أعرض من الشاشة =====
+const AR_LETTERS = /[ء-ي]/;
+function fmtQ(q) {
+    q = String(q);
+    // سؤال كله أرقام ورموز (بدون كلمات) => يُعرض كمسألة واحدة لا تنقسم
+    const bare = q.replace(/\[\[|\]\]|\{[^}]*\}/g, '');
+    if (!/\[\[/.test(q) && !/[A-Za-z]/.test(bare) && !AR_LETTERS.test(bare)) return '<span class="m" dir="ltr">' + fracs(esc(q)) + '</span>';
+    // سؤال إنجليزى فيه معادلة داخل الجملة (مثل: check that 5 - 3 = 2 using) => المعادلة كتلة واحدة لا تنقسم
+    if (!/\[\[/.test(q) && !AR_LETTERS.test(q))
+        { const opnd = '\\(?(?:\\d[\\d.]*|\\.{2,}|…+)\\)?';
+          q = q.replace(new RegExp(opnd + '(?:\\s*[-+=×÷–<>]\\s*' + opnd + ')+', 'g'), m => '[[' + m + ']]'); }
+    return fmt(q);
+}
+const ONE_LINE_MIN = 13;   // أصغر خط مقبول لعرض السؤال كله فى سطر واحد
+function fitMath(root) {
+    // 1) السؤال كله فى سطر واحد لو أمكن بخط مقروء
+    (root || document).querySelectorAll('.q-body').forEach(b => {
+        if (!b.offsetParent) return;
+        b.style.fontSize = ''; b.style.whiteSpace = '';
+        if (!b.querySelector('.m')) return;     // جملة بدون معادلة: تلتف طبيعيًا بخط مقروء
+        b.style.whiteSpace = 'nowrap';
+        const fs = parseFloat(getComputedStyle(b).fontSize);
+        const need = b.scrollWidth, have = b.clientWidth - 2;
+        if (need <= have) return;
+        const fit = Math.floor(fs * have / need * 2) / 2;
+        if (fit >= ONE_LINE_MIN) {
+            b.style.fontSize = fit + 'px';
+            let g = 0; while (b.scrollWidth > b.clientWidth && g++ < 20) b.style.fontSize = (parseFloat(b.style.fontSize) - 0.5) + 'px';
+        } else b.style.whiteSpace = '';          // جملة طويلة: الكلام ينزل سطر لكن المعادلة نفسها لا تنقسم
+    });
+    // 2) كل معادلة لا تنقسم ، ويصغر خطها لو أعرض من مكانها
+    (root || document).querySelectorAll('.m').forEach(el => {
+        if (!el.offsetParent) return;                        // مخفى
+        const box = el.closest('.q-body, .g-row, .g-item, .opt, .fb, .num-list, .q-sub, .q-fig, .ord-wrap');
+        if (!box) return;
+        if (box.classList.contains('q-body') && box.style.whiteSpace === 'nowrap') return;   // السطر كله اتظبط فوق
+        el.style.fontSize = '';
+        const cs = getComputedStyle(box);
+        const avail = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 2;
+        let fs = parseFloat(getComputedStyle(el).fontSize), guard = 0;
+        while (el.getBoundingClientRect().width > avail && fs > 10 && guard++ < 60) { fs -= 0.5; el.style.fontSize = fs + 'px'; }
+    });
+}
+let _fitT = null;
+window.addEventListener('resize', () => { clearTimeout(_fitT); _fitT = setTimeout(() => fitMath(), 120); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitMath());
+
+</script>
+<script>
+// ===== المؤثرات الصوتية (تُولَّد داخل المتصفح بدون ملفات صوت - تعمل بدون إنترنت) =====
+const SFX = (() => {
+    let ctx = null, muted = false;
+    try { muted = localStorage.getItem('sfx-muted') === '1'; } catch (e) {}
+
+    function ac() {
+        if (!ctx) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; ctx = new C(); }
+        if (ctx.state === 'suspended') ctx.resume();
+        return ctx;
+    }
+    function tone(c, freq, t0, dur, type, vol, dest) {
+        const o = c.createOscillator(), g = c.createGain();
+        o.type = type; o.frequency.setValueAtTime(freq, t0);
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.exponentialRampToValueAtTime(vol, t0 + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+        o.connect(g); g.connect(dest || c.destination); o.start(t0); o.stop(t0 + dur + 0.05);
+    }
+    function noiseBuffer(c, sec) {
+        const b = c.createBuffer(1, Math.floor(c.sampleRate * sec), c.sampleRate), d = b.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+        return b;
+    }
+    // تصفيق
+    function claps(c, t0, n, span) {
+        for (let i = 0; i < n; i++) {
+            const t = t0 + Math.random() * span, s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+            s.buffer = noiseBuffer(c, 0.06); f.type = 'bandpass'; f.frequency.value = 1200 + Math.random() * 1500; f.Q.value = 0.8;
+            g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.35 + Math.random() * 0.25, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
+            s.connect(f); f.connect(g); g.connect(c.destination); s.start(t); s.stop(t + 0.07);
+        }
+    }
+    // هتاف الجمهور
+    function crowd(c, t0, dur) {
+        const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+        s.buffer = noiseBuffer(c, dur); f.type = 'bandpass'; f.frequency.setValueAtTime(700, t0); f.frequency.linearRampToValueAtTime(1100, t0 + dur * 0.4); f.Q.value = 0.6;
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.3, t0 + 0.25); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+        s.connect(f); f.connect(g); g.connect(c.destination); s.start(t0); s.stop(t0 + dur);
+    }
+
+    function correct(big) {
+        if (muted) return; const c = ac(); if (!c) return; const t = c.currentTime + 0.01;
+        [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => { tone(c, f, t + i * 0.08, 0.28, 'triangle', 0.32); tone(c, f * 2, t + i * 0.08, 0.15, 'sine', 0.06); });
+        tone(c, 1318.5, t + 0.34, 0.45, 'triangle', 0.25);
+        crowd(c, t + 0.15, big ? 1.8 : 1.2);
+        claps(c, t + 0.2, big ? 26 : 16, big ? 1.4 : 0.9);
+    }
+    function wrong() {
+        if (muted) return; const c = ac(); if (!c) return; const t = c.currentTime + 0.01;
+        const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1100; lp.connect(c.destination);
+        const notes = [293.66, 277.18, 261.63, 246.94]; // وا وا وا واااا
+        notes.forEach((f, i) => {
+            const st = t + i * 0.32, dur = i === 3 ? 0.9 : 0.3;
+            const o = c.createOscillator(), g = c.createGain();
+            o.type = 'sawtooth'; o.frequency.setValueAtTime(f, st);
+            if (i === 3) { // اهتزاز حزين فى النغمة الأخيرة
+                const lfo = c.createOscillator(), lg = c.createGain(); lfo.frequency.value = 6; lg.gain.value = 7;
+                lfo.connect(lg); lg.connect(o.frequency); lfo.start(st); lfo.stop(st + dur);
+                o.frequency.linearRampToValueAtTime(f * 0.94, st + dur);
+            }
+            g.gain.setValueAtTime(0.0001, st); g.gain.exponentialRampToValueAtTime(0.22, st + 0.04);
+            g.gain.setValueAtTime(0.22, st + dur - 0.08); g.gain.exponentialRampToValueAtTime(0.0001, st + dur);
+            o.connect(g); g.connect(lp); o.start(st); o.stop(st + dur + 0.05);
+        });
+    }
+    function small(ok) { // صوت قصير (التوصيل)
+        if (muted) return; const c = ac(); if (!c) return; const t = c.currentTime + 0.01;
+        if (ok) { tone(c, 659.25, t, 0.15, 'triangle', 0.3); tone(c, 987.77, t + 0.08, 0.25, 'triangle', 0.3); }
+        else { tone(c, 196, t, 0.18, 'sawtooth', 0.15); tone(c, 155.56, t + 0.15, 0.3, 'sawtooth', 0.15); }
+    }
+    function fanfare() {
+        if (muted) return; const c = ac(); if (!c) return; const t = c.currentTime + 0.01;
+        [523.25, 523.25, 523.25, 659.25, 783.99, 659.25, 783.99, 1046.5].forEach((f, i) => tone(c, f, t + i * 0.13, i === 7 ? 0.8 : 0.16, 'triangle', 0.28));
+        crowd(c, t + 0.3, 2.2); claps(c, t + 0.4, 34, 1.8);
+    }
+    function setMuted(m) { muted = m; try { localStorage.setItem('sfx-muted', m ? '1' : '0'); } catch (e) {} }
+    return { correct, wrong, small, fanfare, setMuted, isMuted: () => muted, unlock: ac };
+})();
+
+</script>
+<script>
+// ===== أسئلة الاختيار من متعدد فى شكل ألعاب =====
+// نفس السؤال ونفس الاختيارات (أ ، ب ، ج ، د) بنفس ترتيب الورقة .. محاولة واحدة فقط لكل سؤال
+const GAME_NAMES = {
+    bubbles: { t: 'الفقاعات المتساقطة', icon: 'fa-droplet', hint: 'المس الفقاعة التى بها الإجابة الصحيحة' },
+    goal:    { t: 'تسجيل الأهداف', icon: 'fa-futbol', hint: 'المس الزاوية التى بها الإجابة الصحيحة لتسدد الكرة' },
+    shoot:   { t: 'الأهداف المتحركة', icon: 'fa-bullseye', hint: 'صِد الهدف المتحرك الذى به الإجابة الصحيحة' }
+};
+const GS = {};   // رقم السؤال الحالى فى كل قسم
+const GOAL_SPOTS_RTL = [{ x: 73, y: 20 }, { x: 27, y: 20 }, { x: 73, y: 46 }, { x: 27, y: 46 }];   // أ ب (فوق) ج د (تحت) من اليمين
+const GOAL_SPOTS_LTR = [{ x: 27, y: 20 }, { x: 73, y: 20 }, { x: 27, y: 46 }, { x: 73, y: 46 }];   // A B (top) C D (bottom) from the left
+let GOAL_SPOTS = GOAL_SPOTS_RTL;
+
+function gamePanel(ex, si) {
+    const G = GAME_NAMES[ex.game];
+    GOAL_SPOTS = ex.dir === 'ltr' ? GOAL_SPOTS_LTR : GOAL_SPOTS_RTL;
+    const t = ex.lang === 'en' ? { goal: 'Score the Goal', bubbles: 'Falling Bubbles', shoot: 'Moving Targets' }[ex.game] : G.t;
+    const hint = ex.lang === 'en' ? { goal: 'Tap the corner with the correct answer to shoot the ball', bubbles: 'Tap the bubble with the correct answer', shoot: 'Hit the moving target with the correct answer' }[ex.game] : G.hint;
+    return `<div class="game-panel g-${ex.game}" id="game-${si}">
+        <div class="g-top"><span class="g-badge"><i class="fa-solid ${G.icon}"></i> ${t}</span><span class="g-count" id="g-count-${si}"></span></div>
+        <div class="g-progress"><i id="g-prog-${si}"></i></div>
+        <div class="g-q" id="g-q-${si}"></div>
+        <div class="g-arena" id="g-arena-${si}"></div>
+        <div class="g-legend" id="g-legend-${si}"></div>
+        <p class="g-hint">${hint}</p>
+        <div class="fb hidden" id="g-fb-${si}"></div>
+        <button class="g-next btn-bounce hidden" id="g-next-${si}" onclick="nextGameQ(${si})"></button>
+    </div>`;
+}
+
+function optLabel(it, k) { return `<span class="g-l">${letterOf(it, k)})</span> <span class="opt-v">${fmtOpt(it.opts[k])}</span>`; }
+
+function loadGameQ(si) {
+    const ex = current, sec = ex.sections[si], i = GS[si], it = sec.items[i], n = sec.items.length;
+    $('g-count-' + si).innerText = tr(`السؤال ${i + 1} من ${n}`, `Question ${i + 1} of ${n}`);
+    $('g-prog-' + si).style.width = (i / n * 100) + '%';
+    $('g-q-' + si).innerHTML = `<div class="q-text">${qNum(ex, i)} <span class="q-body">${fmtQ(it.q)}</span></div>${qExtras(it)}`;
+    $('g-fb-' + si).className = 'fb hidden';
+    $('g-next-' + si).classList.add('hidden');
+    const area = $('g-arena-' + si);
+    area.dataset.locked = '';
+    // اختيارات طويلة => الحرف فقط على الهدف ، والاختيار كاملًا فى سطر تحت الملعب
+    const longOpts = it.opts.some(o => plain(o).replace(/\s/g, '').length > 6);
+    const lt = k => (typeof letterOf === 'function' ? letterOf(it, k) : LETTERS[k]);
+    const lbl = k => longOpts ? `<span class="g-big">${lt(k)}</span>` : optLabel(it, k);
+    $('g-legend-' + si).innerHTML = longOpts ? it.opts.map((o, k) => `<button class="g-row" data-k="${k}" onclick="gamePick(${si}, ${k})">${optLabel(it, k)}</button>`).join('') : '';
+    setTimeout(() => fitMath($('game-' + si)), 0);
+    if (ex.game === 'bubbles') {
+        const xs = [76, 52, 28, 4], delays = [0, -4, -8, -12].sort(() => Math.random() - .5);
+        area.innerHTML = it.opts.map((o, k) => `<button class="g-item game-anim-element anim-fall game-bubble" data-k="${k}"
+            style="right:calc((100% - var(--bw)) * ${k / 3});left:auto;animation-delay:${delays[k]}s" onclick="gamePick(${si}, ${k}, this)"><span>${lbl(k)}</span></button>`).join('');
+    } else if (ex.game === 'shoot') {
+        const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b'], ys = [3, 27, 51, 75], dirs = ['anim-right', 'anim-left', 'anim-right', 'anim-left'];
+        const delays = [0, -4, -8, -11].sort(() => Math.random() - .5);
+        area.innerHTML = it.opts.map((o, k) => `<button class="g-item game-anim-element ${dirs[k]} horizontal-target" data-k="${k}"
+            style="top:${ys[k]}%;border-color:${colors[k]};animation-delay:${delays[k]}s" onclick="gamePick(${si}, ${k}, this)">
+            <i class="fa-solid fa-bullseye" style="color:${colors[k]}"></i><span>${lbl(k)}</span></button>`).join('');
+    } else {
+        area.innerHTML = `<div class="goal-pitch"><div class="goal-frame"><div class="goal-net"></div></div>
+            <div class="goal-keeper"><i class="fa-solid fa-user-shield"></i></div>
+            ${it.opts.map((o, k) => `<button class="g-item goal-target" data-k="${k}" style="left:${GOAL_SPOTS[k].x}%;top:${GOAL_SPOTS[k].y}%" onclick="gamePick(${si}, ${k}, this)"><span>${lbl(k)}</span></button>`).join('')}
+            <div class="goal-ball"><i class="fa-solid fa-futbol"></i></div><div class="goal-flash"></div></div>`;
+        const ball = area.querySelector('.goal-ball'), keeper = area.querySelector('.goal-keeper');
+        place(ball, { x: 50, y: 86 }); ball.style.transform = 'translate(-50%,-50%) scale(1)';
+        place(keeper, { x: 50, y: 36 }); keeper.style.transform = 'translate(-50%,-50%)';
+    }
+}
+function place(el, p, anim) {
+    el.style.transition = anim ? 'left .6s ease-out, top .6s ease-out, transform .6s ease-out' : 'none';
+    el.style.left = p.x + '%'; el.style.top = p.y + '%';
+}
+
+function gamePick(si, k, el) {
+    const area = $('g-arena-' + si);
+    if (area.dataset.locked) return;
+    area.dataset.locked = '1';
+    const i = GS[si], it = current.sections[si].items[i], ok = it.ans.includes(k), key = `s${si}q${i}`;
+    // نسجل الإجابة فى ورقة الإجابات (تُقفل نهائيًا ولا يمكن تغييرها)
+    const radio = document.querySelector(`input[name="${key}"][value="${k}"]`);
+    radio.checked = true; pickMCQ(si, i, k);
+    area.querySelectorAll('.game-anim-element').forEach(t => t.style.animationPlayState = 'paused');
+    document.querySelectorAll(`#g-arena-${si} .g-item, #g-legend-${si} .g-row`).forEach(b => {
+        const n = +b.dataset.k; b.disabled = true;
+        if (n === k) b.classList.add(ok ? 'g-right' : 'g-wrong');
+        else if (!ok && it.ans.includes(n)) b.classList.add('g-correct');
+        else b.classList.add('g-dim');
+    });
+    let delay = 350;
+    if (current.game === 'goal') {
+        const ball = area.querySelector('.goal-ball'), keeper = area.querySelector('.goal-keeper');
+        const others = [0, 1, 2, 3].filter(x => x !== k), kSpot = ok ? GOAL_SPOTS[others[Math.floor(Math.random() * 3)]] : GOAL_SPOTS[k];
+        place(ball, GOAL_SPOTS[k], true); ball.style.transform = 'translate(-50%,-50%) scale(.6) rotate(540deg)';
+        place(keeper, { x: 50 + (kSpot.x - 50) * 0.8, y: kSpot.y + 6 }, true);
+        keeper.style.transform = `translate(-50%,-50%) rotate(${kSpot.x < 50 ? -35 : 35}deg)`;
+        setTimeout(() => { const f = area.querySelector('.goal-flash'); f.innerText = ok ? tr('جووووول! ⚽', 'GOAL! ⚽') : tr('تصدّى الحارس! 🧤', 'Saved by the keeper! 🧤'); f.className = 'goal-flash show ' + (ok ? 'ok' : 'no'); }, 600);
+        delay = 900;
+    }
+    try { ok ? SFX.correct(current.game === 'goal') : SFX.wrong(); } catch (e) {}
+    setTimeout(() => {
+        const fb = $('g-fb-' + si);
+        fb.className = $('fb-' + key).className; fb.innerHTML = $('fb-' + key).innerHTML; fitMath(fb);
+        const last = i === current.sections[si].items.length - 1;
+        const nb = $('g-next-' + si);
+        nb.innerHTML = last ? '<i class="fa-solid fa-flag-checkered"></i> ' + tr('إنهاء أسئلة الاختيار', 'Finish') : (EN() ? 'Next question <i class="fa-solid fa-arrow-right"></i>' : 'السؤال التالى <i class="fa-solid fa-arrow-left"></i>');
+        nb.classList.remove('hidden');
+        $('g-prog-' + si).style.width = ((i + 1) / current.sections[si].items.length * 100) + '%';
+    }, delay);
+}
+
+function nextGameQ(si) {
+    GS[si]++;
+    if (GS[si] >= current.sections[si].items.length) return finishGame(si);
+    loadGameQ(si);
+    $('game-' + si).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function finishGame(si) {
+    const panel = $('game-' + si); if (panel) panel.remove();
+    $('review-' + si).classList.remove('hidden');
+}
+
+</script>
+<script>
 // ===== تطبيق الاختبارات - مستر السيد حمزة =====
 // رابط Google Apps Script (Web App) الذى يستقبل الإجابات ويكتبها فى Google Sheet
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbwv5u-ogoJgX-HmVzI7tdmWtlHIMJEuUjPUABGvubrXZfljFT2WYMXW-XDVwvFtoi9giQ/exec";
@@ -678,6 +1338,9 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbwv5u-ogoJgX-HmVzI7td
 const LETTERS = ['أ', 'ب', 'ج', 'د'];
 const CIRCLED = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩', '⑪', '⑫', '⑬', '⑭', '⑮'];
 const $ = id => document.getElementById(id);
+const EN = () => !!(current && current.lang === 'en');
+const tr = (ar, en) => EN() ? en : ar;
+function letterOf(it, k) { return (it.letters || (EN() ? ['A', 'B', 'C', 'D'] : LETTERS))[k]; }
 const store = {
     get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -692,7 +1355,7 @@ function fracs(s) {
 function fmt(raw) {
     let s = esc(raw);
     s = s.replace(/\[\[(.+?)\]\]/g, (m, inner) => '<span class="m" dir="ltr">' + fracs(inner) + '</span>');
-    return fracs(s);
+    return fracs(s).replace(/\n/g, '<br>');
 }
 const hasArabic = s => /[؀-ۿ]/.test(s);
 function fmtOpt(o) { return hasArabic(o) ? fmt(o) : '<span class="m" dir="ltr">' + fracs(esc(o)) + '</span>'; }
@@ -712,7 +1375,7 @@ function renderHome() {
         const done = store.get('sent-' + ex.id);
         return `<button class="exam-card btn-bounce" onclick="openExam(${ex.id})">
             <span class="exam-no">${ex.id}</span>
-            <span class="exam-info"><b>${esc(ex.title)}</b><small>${nM} اختيار من متعدد • ${nW} أسئلة مقالية</small></span>
+            <span class="exam-info"><b>${esc(ex.card || ex.title)}</b><small>${nM} اختيار من متعدد${ex.game ? ' (' + GAME_NAMES[ex.game].t + ')' : ''}${nW ? ' • ' + nW + ' أسئلة مقالية' : ''}</small></span>
             ${done ? '<span class="done-badge"><i class="fa-solid fa-circle-check"></i> تم الإرسال</span>' : '<i class="fa-solid fa-chevron-left go"></i>'}
         </button>`;
     }).join('');
@@ -743,22 +1406,24 @@ function openExam(id) {
 
 // ---------- ورقة الاختبار ----------
 function renderExam(ex, name) {
-    let html = `<div class="paper theme-${ex.theme}">
-        <div class="paper-title">${esc(ex.title)}</div>
-        <div class="paper-student"><i class="fa-solid fa-user-graduate"></i> اسم الطالب: <b>${esc(name)}</b></div>`;
+    let html = `<div class="paper theme-${ex.theme}" dir="${ex.dir || 'rtl'}">
+        <div class="paper-title">${esc(ex.title)}${ex.sub ? '<span class="paper-sub">' + esc(ex.sub) + '</span>' : ''}</div>
+        <div class="paper-student"><i class="fa-solid fa-user-graduate"></i> ${tr('اسم الطالب:', 'Student:')} <b>${esc(name)}</b></div>`;
     ex.sections.forEach((sec, si) => {
         html += `<h3 class="sec-title ${sec.type === 'mcq' ? 'sec-mcq' : 'sec-written'}">${esc(sec.title)}</h3>`;
+        const gameMode = sec.type === 'mcq' && ex.game;
+        if (gameMode) html += gamePanel(ex, si) + `<div class="mcq-review hidden" id="review-${si}"><p class="review-head"><i class="fa-solid fa-clipboard-check"></i> ${tr('إجاباتك فى أسئلة الاختيار من متعدد', 'Your answers')}</p>`;
         sec.items.forEach((it, i) => {
             const key = `s${si}q${i}`;
             if (sec.type === 'mcq') {
-                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span>${fmt(it.q)}</span></div>
+                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span class="q-body">${fmtQ(it.q)}</span></div>${qExtras(it)}
                     <div class="opts">${it.opts.map((o, k) => `
                         <label class="opt" data-k="${k}"><input type="radio" name="${key}" value="${k}" onchange="pickMCQ(${si}, ${i}, ${k})">
-                        <span class="opt-l">${LETTERS[k]})</span> <span class="opt-v">${fmtOpt(o)}</span></label>`).join('')}
+                        <span class="opt-l">${letterOf(it, k)})</span> <span class="opt-v">${fmtOpt(o)}</span></label>`).join('')}
                     </div><div class="fb hidden" id="fb-${key}"></div></div>`;
             } else {
-                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span>${fmt(it.q)}</span>
-                    ${it.figure === 'numline' ? numLine() : ''}</div>
+                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span class="q-body">${fmtQ(it.q)}</span>
+                    ${it.figure === 'numline' ? numLine() : ''}</div>${qExtras(it)}
                     ${it.list ? `<div class="num-list"><span class="m" dir="ltr">${esc(it.list)}</span></div>` : ''}
                     ${isOrderQ(ex, si, i) ? orderWidget(key, it) : ''}
                     <div class="w-ans ${isOrderQ(ex, si, i) ? 'hidden' : ''}">${it.label ? `<span class="w-label">${esc(it.label)}</span>` : ''}
@@ -768,21 +1433,38 @@ function renderExam(ex, name) {
                     </div>`;
             }
         });
+        if (gameMode) html += '</div>';
     });
-    html += `<button class="send-btn btn-bounce" id="send-btn" onclick="submitExam()"><i class="fa-solid fa-paper-plane"></i> إرسال الإجابات للمستر</button></div>`;
+    html += `<button class="send-btn btn-bounce" id="send-btn" onclick="submitExam()"><i class="fa-solid fa-paper-plane"></i> ${tr('إرسال الإجابات للمستر', 'Send my answers')}</button></div>`;
     $('exam-body').innerHTML = html;
     document.querySelectorAll('.ord-wrap').forEach(w => initOrder(w));
+    setTimeout(() => fitMath(), 0);
+    ex.sections.forEach((sec, si) => { if (sec.type === 'mcq' && ex.game) { GS[si] = 0; loadGameQ(si); } });
 }
-function numLine() {
-    return `<svg class="numline" viewBox="0 0 200 50" aria-label="خط أعداد عليه b على اليسار و a على اليمين">
+function qExtras(it) {
+    let h = '';
+    if (it.opts && it.figure === 'numline-ab') h += `<div class="q-fig">${numLine('a', 'b')}</div>`;
+    if (it.sub) h += `<div class="q-sub">${fmt(it.sub)}</div>`;
+    if (it.table || it.xline || it.vsub) h += '<div class="q-fig">';
+    if (it.table) h += `<table class="x-table" dir="ltr"><tr><td colspan="2">${esc(it.table.top)}</td></tr><tr><td>${esc(it.table.left)}</td><td>${esc(it.table.right)}</td></tr></table>`;
+    if (it.xline) h += '<span class="m x-line" dir="ltr">X = .............</span>';
+    if (it.vsub) h += `<div class="vsub" dir="ltr"><div>${esc(it.vsub[0])}</div><div class="vsub-b">${esc(it.vsub[1])}</div><div>……….</div></div>`;
+    if (it.table || it.xline || it.vsub) h += '</div>';
+    return h;
+}
+function numLine(left, right) {
+    left = left || 'b'; right = right || 'a';
+    return `<svg class="numline" viewBox="0 0 200 50" aria-label="خط أعداد عليه ${left} على اليسار و ${right} على اليمين">
         <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#111" stroke-width="2"/></marker></defs>
         <line x1="8" y1="34" x2="192" y2="34" stroke="#111" stroke-width="2.5" marker-start="url(#ah)" marker-end="url(#ah)"/>
         <line x1="40" y1="24" x2="40" y2="44" stroke="#111" stroke-width="2.5"/><line x1="130" y1="24" x2="130" y2="44" stroke="#111" stroke-width="2.5"/>
-        <text x="40" y="16" text-anchor="middle" font-size="15" font-weight="700" font-family="Arial">b</text>
-        <text x="130" y="16" text-anchor="middle" font-size="15" font-weight="700" font-family="Arial">a</text></svg>`;
+        <text x="40" y="16" text-anchor="middle" font-size="15" font-weight="700" font-family="Arial">${left}</text>
+        <text x="130" y="16" text-anchor="middle" font-size="15" font-weight="700" font-family="Arial">${right}</text></svg>`;
 }
+
 // اختيار نهائى: يُقفل السؤال فورًا ويُظهر الإجابة الصحيحة عند الخطأ
-function pickMCQ(si, i, k) {
+function pickMCQ(si, i, k) { _pickMCQ(si, i, k); fitMath($(`blk-s${si}q${i}`)); }
+function _pickMCQ(si, i, k) {
     const key = `s${si}q${i}`, it = current.sections[si].items[i], ok = it.ans.includes(k);
     const blk = $('blk-' + key);
     if (blk.dataset.locked) return;
@@ -797,12 +1479,13 @@ function pickMCQ(si, i, k) {
     });
     const fb = $('fb-' + key);
     fb.className = 'fb ' + (ok ? 'fb-ok' : 'fb-no');
-    fb.innerHTML = ok ? '<i class="fa-solid fa-circle-check"></i> إجابة صحيحة .. أحسنت!'
-        : '<i class="fa-solid fa-circle-xmark"></i> إجابة خاطئة .. الإجابة الصحيحة: ' +
-          it.ans.map(n => `<b>${LETTERS[n]}) <span class="opt-v">${fmtOpt(it.opts[n])}</span></b>`).join(' أو ');
+    fb.innerHTML = ok ? '<i class="fa-solid fa-circle-check"></i> ' + tr('إجابة صحيحة .. أحسنت!', 'Correct! Well done')
+        : '<i class="fa-solid fa-circle-xmark"></i> ' + tr('إجابة خاطئة .. الإجابة الصحيحة: ', 'Wrong .. The correct answer is: ') +
+          it.ans.map(n => `<b>${letterOf(it, n)}) <span class="opt-v">${fmtOpt(it.opts[n])}</span></b>`).join(tr(' أو ', ' or '));
 }
 // تأكيد إجابة مقالية: تُصحح وتُقفل فورًا
-function confirmWritten(si, i, silent) {
+function confirmWritten(si, i, silent) { const r = _confirmWritten(si, i, silent); fitMath($(`blk-s${si}q${i}`)); return r; }
+function _confirmWritten(si, i, silent) {
     const key = `s${si}q${i}`, blk = $('blk-' + key);
     if (blk.dataset.locked) return blk.dataset.res;
     const ta = blk.querySelector('textarea'), v = ta.value.trim();
@@ -846,7 +1529,7 @@ function collect(ex) {
                 if (sel) {
                     const k = +sel.value, ok = it.ans.includes(k);
                     if (ok) score++;
-                    v = `${LETTERS[k]}) ${plain(it.opts[k])} ${ok ? '✔' : '✘'}`;
+                    v = `${letterOf(it, k)}) ${plain(it.opts[k])} ${ok ? '✔' : '✘'}`;
                 } else missing.push(key);
                 cols.push({ h: `اختيار ${i + 1}`, v });
             } else {
@@ -876,6 +1559,7 @@ async function flushQueue() {
 
 async function submitExam() {
     const ex = current, name = store.get('student-name') || $('student-name').value.trim();
+    Object.keys(GS).forEach(si => { if ($('game-' + si)) finishGame(si); });
     let r = collect(ex);
     document.querySelectorAll('.q-block.missing').forEach(b => b.classList.remove('missing'));
     if (r.missing.length) {
@@ -890,7 +1574,7 @@ async function submitExam() {
     r = collect(ex);
     const btn = $('send-btn'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جارٍ الإرسال ...';
     const payload = {
-        sheet: 'اختبار ' + ex.id, exam: ex.title, name,
+        sheet: ex.sheet || ('اختبار ' + ex.id), exam: ex.title, name,
         time: new Date().toLocaleString('en-GB', { hour12: true }),
         score: `${r.score} / ${r.total}` + (r.review ? ` (+${r.review} للمراجعة)` : ''), review: r.review, cols: r.cols
     };
@@ -908,6 +1592,10 @@ async function submitExam() {
     show('screen-result');
 }
 
+function refreshSoundBtn() { const b = $('sound-btn'); if (b) b.innerHTML = SFX.isMuted() ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>'; }
+function toggleSound() { SFX.setMuted(!SFX.isMuted()); refreshSoundBtn(); }
+document.addEventListener('pointerdown', () => SFX.unlock(), { once: true });
+refreshSoundBtn();
 renderHome();
 flushQueue();
 
