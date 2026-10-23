@@ -413,6 +413,59 @@ textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0
 @media (max-width: 480px) { .ord-chip { font-size: 16px; min-width: 56px; } .ord-slot .ord-chip { font-size: 14px; } .ord-slots { gap: 4px; } }
 .w-ans.hidden { display: none !important; }
 
+/* ===== Grade 2 (English, left to right) ===== */
+.paper[dir="ltr"] { text-align: left; font-family: 'Calibri','Carlito','Tajawal',sans-serif; }
+.paper[dir="ltr"] .paper-title { text-align: center; }
+.paper[dir="ltr"] .qn-paren { margin-left: 0; margin-right: 6px; }
+.paper[dir="ltr"] .q-text { font-size: 20px; }
+.paper[dir="ltr"] .sec-title { text-decoration-color: #c2410c; }
+.vsub { display: inline-flex; flex-direction: column; align-items: flex-end; font-weight: 800; font-size: 20px; line-height: 1.35; font-family: 'Calibri','Carlito','Tajawal',sans-serif; }
+.vsub .vsub-b { border-bottom: 2.5px solid #111; padding: 0 0 2px 22px; }
+.g-goal .goal-target.long { max-width: 46%; min-width: 120px; padding: 6px 6px; }
+.g-goal .goal-target.long .opt-v { font-size: 12px; white-space: normal; }
+.g-goal .goal-target.long .m { white-space: normal; }
+.paper[dir="ltr"] .ans-box { width: 48px; height: 28px; margin: 0 6px; }
+
+/* ===== ملاءمة الموبايل ===== */
+.q-text { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; line-height: 1.8; }
+.q-text > .q-body { flex: 1 1 0; min-width: 0; }
+.qn-circle, .qn-paren { flex-shrink: 0; }
+.m { white-space: nowrap !important; }
+.opt .opt-v, .g-item .opt-v { min-width: 0; }
+.g-item .m { white-space: nowrap !important; }
+.g-q .q-text { font-size: 18px; }
+.g-big { font-size: 30px; font-weight: 800; color: #be123c; line-height: 1; }
+.g-goal .goal-target .g-big { font-size: 28px; }
+.g-legend { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.g-legend:empty { display: none; }
+.g-row { display: flex; align-items: center; gap: 10px; width: 100%; text-align: start; background: #fff; border: 2px solid #c7d2fe; border-radius: 12px; padding: 8px 12px; font-weight: 800; font-size: 18px; color: #1e3a8a; min-height: 48px; }
+.g-row .g-l { color: #be123c; flex-shrink: 0; font-size: 18px; }
+.g-row .opt-v { flex: 1 1 0; min-width: 0; overflow: hidden; }
+.g-row.g-right { background: #bbf7d0; border-color: #16a34a; }
+.g-row.g-wrong { background: #fecaca; border-color: #dc2626; }
+.g-row.g-correct { background: #dcfce7; border: 3px dashed #16a34a; }
+.g-row.g-dim { opacity: .5; }
+.g-row:disabled { cursor: default; }
+@media (max-width: 480px) {
+  .q-text, .paper[dir="ltr"] .q-text { font-size: 17px; }
+  .g-q .q-text { font-size: 17px; }
+  .g-row { font-size: 16px; padding: 7px 10px; }
+  .opt { font-size: 16px; padding: 6px 8px; }
+}
+@media (max-width: 480px) { .goal-flash { font-size: 19px; padding: 5px 12px; white-space: nowrap; max-width: 94%; } }
+.g-goal .goal-target > span { white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; } .g-goal .goal-target { max-width: 44%; } @media (max-width: 480px) { .g-goal .goal-target { min-width: 0; padding: 6px 8px; } .g-goal .goal-target .opt-v { font-size: 16px; } .g-goal .goal-target .g-l { font-size: 13px; } }
+.g-bubbles .g-item { width: 104px; height: 104px; max-width: none; aspect-ratio: auto; border-radius: 50%; } @media (max-width: 480px) { .g-bubbles .g-item { width: 78px; height: 78px; } .g-bubbles .g-item .opt-v { font-size: 15px; } .g-top { gap: 6px; } .g-badge { font-size: 13px; padding: 4px 10px; white-space: nowrap; } .g-count { font-size: 13px; white-space: nowrap; } }
+.g-bubbles .g-arena { --bw: 104px; } @media (max-width: 480px) { .g-bubbles .g-arena { --bw: 78px; } }
+
+/* مساحة أكبر للسؤال على الموبايل */
+@media (max-width: 480px) {
+  #screen-exam { margin: 0 -10px; }
+  .paper { padding: 10px 6px 16px; border-width: 6px; }
+  .game-panel { padding: 8px; }
+  .g-q { padding: 6px 8px; }
+  .q-block { padding: 8px 4px; }
+}
+
 </style>
 </head>
 <body class="text-gray-800 min-h-screen pb-20 relative">
@@ -481,6 +534,66 @@ textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0
     </div>
 
     <script>
+// ===== اختبارات الصف السادس - تسجيل الأهداف (كما هى فى ملفات المدرس) =====
+const G6_GOAL_1 = {
+  title: "اختبار الصف السادس (1)", card: "اختبار الصف السادس (1) - تسجيل الأهداف", sheet: "الصف السادس (1) - تسجيل الأهداف",
+  num: "paren", theme: "purple", game: "goal",
+  sections: [
+   { title: "اختر الاجابة الصحيحة مما بين القوسين :", type: "mcq", items: [
+     { q: "العدد .......... يقبل القسمة علي 2 ، 5 معاً", opts: ["51", "10", "21", "12"], ans: [1] },
+     { q: "المعكوس الجمعي للعدد [[– 5]] هو ...........", opts: ["- 5", "5", "0", "55"], ans: [1] },
+     { q: "العدد ......... يقبل القسمة علي 3 ، 5 معاً", opts: ["15", "10", "21", "12"], ans: [0] },
+     { q: "......... هو عدد صحيح ليس موجباً وليس سالباً", opts: ["الصفر", "1", "- 1", "100"], ans: [0] },
+     { q: "العدد الذي يمثل نقطة توازن الاعداد المتقابلة علي خط الاعداد هو ............", opts: ["- 1", "1", "0", "10"], ans: [2] },
+     { q: "العدد .......... ينتمي إلي مجموعة الاعداد الصحيحة", opts: ["-{1/4}", "– 4", "0.5", "– 1 {1/2}"], ans: [1] },
+     { q: "العدد ........... ينتمي إلي مجموعة الاعداد الطبيعية", opts: ["2.25", "- 5", "0", "– 1 {1/2}"], ans: [2] },
+     { q: "العدد ........... ينتمي إلي مجموعة الاعداد العد", opts: ["0", "{1/2}", "4", "– 1"], ans: [2] },
+     { q: "العدد ....... يقبل القسمة علي 3 ، 6 معاً", opts: ["33", "21", "12", "9"], ans: [2] },
+     { q: "الاعداد 5 ، 8 تسمي اعداد ...........", opts: ["فردية", "زوجية", "أولية فيما بينهما", "غير أولية"], ans: [2] },
+     { q: "أي التعبيرات الرياضية لا تمثل مقدارا جبرياً ..............", opts: ["3X + 2Y", "X = 4", "5X + 3", "4 M - 5"], ans: [1] },
+     { q: "الحد الجبري الذي معامله 5 هو ............", opts: ["N – 5", "N + 5", "5 N", "{N/5}"], ans: [2] },
+     { q: "مجموعة الاعداد الصحيحة ........... مجموعة الاعداد النسبية", opts: ["تنتمي", "لا تنتمي", "ليست جزئية", "جزئية"], ans: [3] },
+     { q: "العدد 507 يقبل القسمة علي ............ (بدون باقي)", opts: ["2", "5", "3", "13"], ans: [2, 3] },
+     { q: "ارتفاع احدي المدن 15 متراً فوق مستوي سطح البحر يمثلها العدد ........", opts: ["15", "- 15", "0", "13"], ans: [0] },
+     { q: "[[......... > |−4|]]", opts: ["4", "- 4", "5", "- 5"], ans: [2] },
+     { q: "العدد ......... يقبل القسمة علي 5", opts: ["735", "573", "357", "63537"], ans: [0] },
+     { q: "العدد .......... ينتمي إلي مجموعة الاعداد الصحيحة", opts: ["- 0.5", "{1/3}", "- 9", "1.7"], ans: [2] },
+     { q: "[[9 + 15 = 3 × (3 + .......)]]", opts: ["5", "24", "15", "2"], ans: [0] },
+     { q: "[[0.7 > .......... > 0.6]]", opts: ["0.72", "0.56", "0.65", "0.357"], ans: [2] }
+   ]}
+  ]
+};
+const G6_GOAL_2 = {
+  title: "اختبار الصف السادس (2)", card: "اختبار الصف السادس (2) - تسجيل الأهداف", sheet: "الصف السادس (2) - تسجيل الأهداف",
+  num: "paren", theme: "purple", game: "goal",
+  sections: [
+   { title: "اختر الاجابة الصحيحة مما بين القوسين :", type: "mcq", items: [
+     { q: "[[1 {1/9} .......... |− 1 {2/9}|]]", opts: ["<", "=", ">", "≠"], ans: [0, 3] },
+     { q: "[[(......... + 196)]] يقبل القسمة علي 10", opts: ["1", "2", "3", "4"], ans: [3] },
+     { q: "عددان متعاكسان أحدهما العدد [[-9]] يكون العدد الاخر هو .............", opts: ["- 9", "9", "18", "0"], ans: [1] },
+     { q: "اذا كان [[a = |− 22|]] فإن [[a = .........]]", opts: ["12", "22", "- 22", "غير ما سبق"], ans: [1] },
+     { q: "المعكوس الجمعي للعدد [[|− 7|]] هو .........", opts: ["7", "- 7", "|7|", "صفر"], ans: [1] },
+     { q: "اكبر عدد صحيح سالب هو ...........", opts: ["1", "صفر", "- 1", "- 1000"], ans: [2] },
+     { q: "م.م.أ لمقامي الكسرين {1/4} ، {3/8}", opts: ["4", "8", "2", "- 32"], ans: [1] },
+     { q: "[[-12]] .......... مجموعة اعداد العد", opts: ["تنتمي الي", "لا تنتمي الي", "جزئية من", "ليست جزئية"], ans: [1] },
+     { q: "0.25 ........ مجموعة الاعداد النسبية", opts: ["تنتمي الي", "لا تنتمي الي", "جزئية من", "ليست جزئية"], ans: [0] },
+     { q: "[[|− 8| {box} 6]]", opts: ["<", "=", ">", "≤"], ans: [2] },
+     { q: "اصغر عدد صحيح غير سالب هو ............", opts: ["- 1", "1", "0", "7"], ans: [2] },
+     { q: "أوجد م.م.أ لمقامي الكسرين {1/3} ، {3/21}", opts: ["3", "21", "24", "8"], ans: [1] },
+     { q: "العدد الصحيح الذي يقع علي يمين العدد [[– 5]] مباشرة", opts: ["- 4", "- 6", "- 10", "- 12"], ans: [0] },
+     { q: "معامل الحد الجبري في المقدار [[7x - 4]]", opts: ["4", "- 4", "7", "X"], ans: [2] },
+     { q: "عدد حدود المقدار الجبري [[8x + 3 + 5y + 7]] = ...............", opts: ["3", "2", "4", "5"], ans: [2] },
+     { q: "ايهما اكبر a أم b", figure: "numline-ab", opts: ["A", "B", "متساويان"], ans: [1] },
+     { q: "[[{3/4} - {7/24} = ...............]]", opts: ["{4/4}", "{4/24}", "{2/4}", "{11/24}"], ans: [3] },
+     { q: "[[- 5 {box} 0]]", opts: ["<", "=", ">", "≠"], ans: [0, 3] },
+     { q: "اصغر عدد صحيح موجب هو ........", opts: ["1", "5", "0", "غير ما سبق"], ans: [0] },
+     { q: "م.م.أ لمقامي الكسرين {1/3} ، {3/21} هو ...........", opts: ["3", "21", "24", "63"], ans: [1] }
+   ]}
+  ]
+};
+
+</script>
+<script>
 // ===== اختبارات الصف الخامس الابتدائى - كما هى فى ملفات المدرس =====
 // صيغة النص:  {a/b} = كسر رأسى  ،  [[ ... ]] = تعبير رياضى يُعرض من اليسار لليمين كما فى الورقة  ،  \n = سطر جديد
 // ans = أرقام الاختيارات الصحيحة (0 = أ ، 1 = ب ، 2 = ج ، 3 = د)
@@ -658,6 +771,38 @@ const KEYS = {
   { t: 'order', v: ['3.408', '3.804', '6.097', '6.907'], show: '3.408 ، 3.804 ، 6.097 ، 6.907' }
  ]
 };
+
+// ===== اختبار الصف الخامس (اختيارات) - كله تسجيل الأهداف =====
+EXAMS.forEach(e => { e.sheet = e.sheet || ('الصف الخامس - ' + (e.card || 'اختبار ' + e.id)); });
+EXAMS.push({
+  id: 7, title: "اختبار الصف الخامس (اختيارات)", card: "اختبار الصف الخامس (اختيارات) - تسجيل الأهداف",
+  sheet: "الصف الخامس - اختبار (اختيارات) - تسجيل الأهداف", num: "paren", theme: "purple", game: "goal",
+  sections: [
+   { title: "اختر الاجابة الصحيحة مما بين القوسين:", type: "mcq", items: [
+     { q: "46 جزء من الف + 13 جزء من مائه = ............ جزء من الف", opts: ["76", "67", "167", "176"], ans: [3] },
+     { q: "ناتج تقدير عملية طرح الاعداد العشرية التالية باستخدام استراتيجية أول رقم يسار [[65.934 – 34.528]] هو ............", opts: ["30", "31", "90", "99"], ans: [0] },
+     { q: "المتغير في المعادلة [[2.3 + m = 4.7]] هو ...........", opts: ["4.7", "M", "2.4", "2.3"], ans: [1] },
+     { q: "[[2.735 = 2 + .......... + 0.03 + 0.005]]", opts: ["70", "7", "0.7", "0.07"], ans: [2] },
+     { q: "[[......... < 5.238]]", opts: ["5.328", "5.823", "5.832", "5.138"], ans: [3] },
+     { q: "6 أجزاء من عشرة – 12 جزءاً من مائة = ......... جزء من مائة", opts: ["84", "48", "18", "6"], ans: [1] },
+     { q: "المتغير في المعادلة [[10 – 0.5 = y + 3]] هو ..........", opts: ["3", "0.5", "10", "Y"], ans: [3] },
+     { q: "الرقم الذي يقع في الاجزاء من مائة في الكسر العشري 0.367 هو ..........", opts: ["8", "6", "3", "7"], ans: [1] },
+     { q: "اي من الكسور أو الاعداد العشرية التالية يمثل الاكبر ؟", opts: ["0.8", "0.18", "0.08", "1.8"], ans: [3] },
+     { q: "(لاقرب جزء من مائة) [[13.623 = ...........]]", opts: ["13.6", "13.5", "13.62", "13"], ans: [2] },
+     { q: "[[125.47 = 125 + .........]]", opts: ["47", "7", "4", "0.47"], ans: [3] },
+     { q: "عند ضرب العدد العشري 4.56 في 10 يصبح الناتج ..........", opts: ["0.456", "45.6", "40.56", "4.560"], ans: [1] },
+     { q: "9 أجزاء من عشرة ، 5 أجزاء من مائه ، 3 أجزاء من الف = ..........", opts: ["0.359", "0.539", "0.935", "0.953"], ans: [3] },
+     { q: "[[34.65 = ........... + 0.65]]", opts: ["34", "4", "3", "0.34"], ans: [0] },
+     { q: "[[2.735 = 2 + ........ + 0.03 + 0.005]]", opts: ["70", "7", "0.7", "0.07"], ans: [2] },
+     { q: "أي من الكسور أو الاعداد العشرية التالية يمثل الاصغر ؟", opts: ["12.33", "12.30", "12.03", "12.13"], ans: [2] },
+     { q: "اوجد قيمة x فيما يلي", table: { top: "X", left: "3.46", right: "4.52" }, xline: "x", opts: ["1.06", "43.98", "752", "7.98"], ans: [3] },
+     { q: "ناتج تقدير عملية طرح الاعداد العشرية التالية باستخدام استراتيجية أول رقم يسار [[43.85 – 20.34]] هو ................", opts: ["60", "40", "20", "23"], ans: [2] },
+     { q: "[[6 + 0.2 + 0.07 + 0.004 = ............]]", opts: ["6.724", "6.742", "7.247", "6.274"], ans: [3] },
+     { q: "[[8 + 0.3 + {5/100} + {7/1000} = ...........]]", opts: ["7.538", "8.753", "8.357", "7.835"], ans: [2] }
+   ]}
+  ]
+});
+KEYS[7] = [];
 
 </script>
 <script>
@@ -916,6 +1061,55 @@ function lockOrder(blk, res) {
 
 </script>
 <script>
+// ===== ملاءمة الموبايل: كل مسألة رياضية فى سطر واحد ، ويصغر الخط تلقائيًا لو المسألة أعرض من الشاشة =====
+const AR_LETTERS = /[ء-ي]/;
+function fmtQ(q) {
+    q = String(q);
+    // سؤال كله أرقام ورموز (بدون كلمات) => يُعرض كمسألة واحدة لا تنقسم
+    const bare = q.replace(/\[\[|\]\]|\{[^}]*\}/g, '');
+    if (!/\[\[/.test(q) && !/[A-Za-z]/.test(bare) && !AR_LETTERS.test(bare)) return '<span class="m" dir="ltr">' + fracs(esc(q)) + '</span>';
+    // سؤال إنجليزى فيه معادلة داخل الجملة (مثل: check that 5 - 3 = 2 using) => المعادلة كتلة واحدة لا تنقسم
+    if (!/\[\[/.test(q) && !AR_LETTERS.test(q))
+        { const opnd = '\\(?(?:\\d[\\d.]*|\\.{2,}|…+)\\)?';
+          q = q.replace(new RegExp(opnd + '(?:\\s*[-+=×÷–<>]\\s*' + opnd + ')+', 'g'), m => '[[' + m + ']]'); }
+    return fmt(q);
+}
+const ONE_LINE_MIN = 13;   // أصغر خط مقبول لعرض السؤال كله فى سطر واحد
+function fitMath(root) {
+    // 1) السؤال كله فى سطر واحد لو أمكن بخط مقروء
+    (root || document).querySelectorAll('.q-body').forEach(b => {
+        if (!b.offsetParent) return;
+        b.style.fontSize = ''; b.style.whiteSpace = '';
+        if (!b.querySelector('.m')) return;     // جملة بدون معادلة: تلتف طبيعيًا بخط مقروء
+        b.style.whiteSpace = 'nowrap';
+        const fs = parseFloat(getComputedStyle(b).fontSize);
+        const need = b.scrollWidth, have = b.clientWidth - 2;
+        if (need <= have) return;
+        const fit = Math.floor(fs * have / need * 2) / 2;
+        if (fit >= ONE_LINE_MIN) {
+            b.style.fontSize = fit + 'px';
+            let g = 0; while (b.scrollWidth > b.clientWidth && g++ < 20) b.style.fontSize = (parseFloat(b.style.fontSize) - 0.5) + 'px';
+        } else b.style.whiteSpace = '';          // جملة طويلة: الكلام ينزل سطر لكن المعادلة نفسها لا تنقسم
+    });
+    // 2) كل معادلة لا تنقسم ، ويصغر خطها لو أعرض من مكانها
+    (root || document).querySelectorAll('.m').forEach(el => {
+        if (!el.offsetParent) return;                        // مخفى
+        const box = el.closest('.q-body, .g-row, .g-item, .opt, .fb, .num-list, .q-sub, .q-fig, .ord-wrap');
+        if (!box) return;
+        if (box.classList.contains('q-body') && box.style.whiteSpace === 'nowrap') return;   // السطر كله اتظبط فوق
+        el.style.fontSize = '';
+        const cs = getComputedStyle(box);
+        const avail = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 2;
+        let fs = parseFloat(getComputedStyle(el).fontSize), guard = 0;
+        while (el.getBoundingClientRect().width > avail && fs > 10 && guard++ < 60) { fs -= 0.5; el.style.fontSize = fs + 'px'; }
+    });
+}
+let _fitT = null;
+window.addEventListener('resize', () => { clearTimeout(_fitT); _fitT = setTimeout(() => fitMath(), 120); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitMath());
+
+</script>
+<script>
 // ===== المؤثرات الصوتية (تُولَّد داخل المتصفح بدون ملفات صوت - تعمل بدون إنترنت) =====
 const SFX = (() => {
     let ctx = null, muted = false;
@@ -1005,46 +1199,58 @@ const GAME_NAMES = {
     shoot:   { t: 'الأهداف المتحركة', icon: 'fa-bullseye', hint: 'صِد الهدف المتحرك الذى به الإجابة الصحيحة' }
 };
 const GS = {};   // رقم السؤال الحالى فى كل قسم
-const GOAL_SPOTS = [{ x: 73, y: 20 }, { x: 27, y: 20 }, { x: 73, y: 46 }, { x: 27, y: 46 }];   // أ ب (فوق) ج د (تحت) من اليمين
+const GOAL_SPOTS_RTL = [{ x: 73, y: 20 }, { x: 27, y: 20 }, { x: 73, y: 46 }, { x: 27, y: 46 }];   // أ ب (فوق) ج د (تحت) من اليمين
+const GOAL_SPOTS_LTR = [{ x: 27, y: 20 }, { x: 73, y: 20 }, { x: 27, y: 46 }, { x: 73, y: 46 }];   // A B (top) C D (bottom) from the left
+let GOAL_SPOTS = GOAL_SPOTS_RTL;
 
 function gamePanel(ex, si) {
     const G = GAME_NAMES[ex.game];
+    GOAL_SPOTS = ex.dir === 'ltr' ? GOAL_SPOTS_LTR : GOAL_SPOTS_RTL;
+    const t = ex.lang === 'en' ? { goal: 'Score the Goal', bubbles: 'Falling Bubbles', shoot: 'Moving Targets' }[ex.game] : G.t;
+    const hint = ex.lang === 'en' ? { goal: 'Tap the corner with the correct answer to shoot the ball', bubbles: 'Tap the bubble with the correct answer', shoot: 'Hit the moving target with the correct answer' }[ex.game] : G.hint;
     return `<div class="game-panel g-${ex.game}" id="game-${si}">
-        <div class="g-top"><span class="g-badge"><i class="fa-solid ${G.icon}"></i> ${G.t}</span><span class="g-count" id="g-count-${si}"></span></div>
+        <div class="g-top"><span class="g-badge"><i class="fa-solid ${G.icon}"></i> ${t}</span><span class="g-count" id="g-count-${si}"></span></div>
         <div class="g-progress"><i id="g-prog-${si}"></i></div>
         <div class="g-q" id="g-q-${si}"></div>
         <div class="g-arena" id="g-arena-${si}"></div>
-        <p class="g-hint">${G.hint}</p>
+        <div class="g-legend" id="g-legend-${si}"></div>
+        <p class="g-hint">${hint}</p>
         <div class="fb hidden" id="g-fb-${si}"></div>
         <button class="g-next btn-bounce hidden" id="g-next-${si}" onclick="nextGameQ(${si})"></button>
     </div>`;
 }
 
-function optLabel(it, k) { return `<span class="g-l">${LETTERS[k]})</span> <span class="opt-v">${fmtOpt(it.opts[k])}</span>`; }
+function optLabel(it, k) { return `<span class="g-l">${letterOf(it, k)})</span> <span class="opt-v">${fmtOpt(it.opts[k])}</span>`; }
 
 function loadGameQ(si) {
     const ex = current, sec = ex.sections[si], i = GS[si], it = sec.items[i], n = sec.items.length;
-    $('g-count-' + si).innerText = `السؤال ${i + 1} من ${n}`;
+    $('g-count-' + si).innerText = tr(`السؤال ${i + 1} من ${n}`, `Question ${i + 1} of ${n}`);
     $('g-prog-' + si).style.width = (i / n * 100) + '%';
-    $('g-q-' + si).innerHTML = `<div class="q-text">${qNum(ex, i)} <span>${fmt(it.q)}</span></div>${qExtras(it)}`;
+    $('g-q-' + si).innerHTML = `<div class="q-text">${qNum(ex, i)} <span class="q-body">${fmtQ(it.q)}</span></div>${qExtras(it)}`;
     $('g-fb-' + si).className = 'fb hidden';
     $('g-next-' + si).classList.add('hidden');
     const area = $('g-arena-' + si);
     area.dataset.locked = '';
+    // اختيارات طويلة => الحرف فقط على الهدف ، والاختيار كاملًا فى سطر تحت الملعب
+    const longOpts = it.opts.some(o => plain(o).replace(/\s/g, '').length > 6);
+    const lt = k => (typeof letterOf === 'function' ? letterOf(it, k) : LETTERS[k]);
+    const lbl = k => longOpts ? `<span class="g-big">${lt(k)}</span>` : optLabel(it, k);
+    $('g-legend-' + si).innerHTML = longOpts ? it.opts.map((o, k) => `<button class="g-row" data-k="${k}" onclick="gamePick(${si}, ${k})">${optLabel(it, k)}</button>`).join('') : '';
+    setTimeout(() => fitMath($('game-' + si)), 0);
     if (ex.game === 'bubbles') {
         const xs = [76, 52, 28, 4], delays = [0, -4, -8, -12].sort(() => Math.random() - .5);
         area.innerHTML = it.opts.map((o, k) => `<button class="g-item game-anim-element anim-fall game-bubble" data-k="${k}"
-            style="right:${xs[k]}%;left:auto;animation-delay:${delays[k]}s" onclick="gamePick(${si}, ${k}, this)"><span>${optLabel(it, k)}</span></button>`).join('');
+            style="right:calc((100% - var(--bw)) * ${k / 3});left:auto;animation-delay:${delays[k]}s" onclick="gamePick(${si}, ${k}, this)"><span>${lbl(k)}</span></button>`).join('');
     } else if (ex.game === 'shoot') {
         const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b'], ys = [3, 27, 51, 75], dirs = ['anim-right', 'anim-left', 'anim-right', 'anim-left'];
         const delays = [0, -4, -8, -11].sort(() => Math.random() - .5);
         area.innerHTML = it.opts.map((o, k) => `<button class="g-item game-anim-element ${dirs[k]} horizontal-target" data-k="${k}"
             style="top:${ys[k]}%;border-color:${colors[k]};animation-delay:${delays[k]}s" onclick="gamePick(${si}, ${k}, this)">
-            <i class="fa-solid fa-bullseye" style="color:${colors[k]}"></i><span>${optLabel(it, k)}</span></button>`).join('');
+            <i class="fa-solid fa-bullseye" style="color:${colors[k]}"></i><span>${lbl(k)}</span></button>`).join('');
     } else {
         area.innerHTML = `<div class="goal-pitch"><div class="goal-frame"><div class="goal-net"></div></div>
             <div class="goal-keeper"><i class="fa-solid fa-user-shield"></i></div>
-            ${it.opts.map((o, k) => `<button class="g-item goal-target" data-k="${k}" style="left:${GOAL_SPOTS[k].x}%;top:${GOAL_SPOTS[k].y}%" onclick="gamePick(${si}, ${k}, this)"><span>${optLabel(it, k)}</span></button>`).join('')}
+            ${it.opts.map((o, k) => `<button class="g-item goal-target" data-k="${k}" style="left:${GOAL_SPOTS[k].x}%;top:${GOAL_SPOTS[k].y}%" onclick="gamePick(${si}, ${k}, this)"><span>${lbl(k)}</span></button>`).join('')}
             <div class="goal-ball"><i class="fa-solid fa-futbol"></i></div><div class="goal-flash"></div></div>`;
         const ball = area.querySelector('.goal-ball'), keeper = area.querySelector('.goal-keeper');
         place(ball, { x: 50, y: 86 }); ball.style.transform = 'translate(-50%,-50%) scale(1)';
@@ -1065,7 +1271,7 @@ function gamePick(si, k, el) {
     const radio = document.querySelector(`input[name="${key}"][value="${k}"]`);
     radio.checked = true; pickMCQ(si, i, k);
     area.querySelectorAll('.game-anim-element').forEach(t => t.style.animationPlayState = 'paused');
-    area.querySelectorAll('.g-item').forEach(b => {
+    document.querySelectorAll(`#g-arena-${si} .g-item, #g-legend-${si} .g-row`).forEach(b => {
         const n = +b.dataset.k; b.disabled = true;
         if (n === k) b.classList.add(ok ? 'g-right' : 'g-wrong');
         else if (!ok && it.ans.includes(n)) b.classList.add('g-correct');
@@ -1078,16 +1284,16 @@ function gamePick(si, k, el) {
         place(ball, GOAL_SPOTS[k], true); ball.style.transform = 'translate(-50%,-50%) scale(.6) rotate(540deg)';
         place(keeper, { x: 50 + (kSpot.x - 50) * 0.8, y: kSpot.y + 6 }, true);
         keeper.style.transform = `translate(-50%,-50%) rotate(${kSpot.x < 50 ? -35 : 35}deg)`;
-        setTimeout(() => { const f = area.querySelector('.goal-flash'); f.innerText = ok ? 'جووووول! ⚽' : 'تصدّى الحارس! 🧤'; f.className = 'goal-flash show ' + (ok ? 'ok' : 'no'); }, 600);
+        setTimeout(() => { const f = area.querySelector('.goal-flash'); f.innerText = ok ? tr('جووووول! ⚽', 'GOAL! ⚽') : tr('تصدّى الحارس! 🧤', 'Saved by the keeper! 🧤'); f.className = 'goal-flash show ' + (ok ? 'ok' : 'no'); }, 600);
         delay = 900;
     }
     try { ok ? SFX.correct(current.game === 'goal') : SFX.wrong(); } catch (e) {}
     setTimeout(() => {
         const fb = $('g-fb-' + si);
-        fb.className = $('fb-' + key).className; fb.innerHTML = $('fb-' + key).innerHTML;
+        fb.className = $('fb-' + key).className; fb.innerHTML = $('fb-' + key).innerHTML; fitMath(fb);
         const last = i === current.sections[si].items.length - 1;
         const nb = $('g-next-' + si);
-        nb.innerHTML = last ? '<i class="fa-solid fa-flag-checkered"></i> إنهاء أسئلة الاختيار' : 'السؤال التالى <i class="fa-solid fa-arrow-left"></i>';
+        nb.innerHTML = last ? '<i class="fa-solid fa-flag-checkered"></i> ' + tr('إنهاء أسئلة الاختيار', 'Finish') : (EN() ? 'Next question <i class="fa-solid fa-arrow-right"></i>' : 'السؤال التالى <i class="fa-solid fa-arrow-left"></i>');
         nb.classList.remove('hidden');
         $('g-prog-' + si).style.width = ((i + 1) / current.sections[si].items.length * 100) + '%';
     }, delay);
@@ -1113,6 +1319,9 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbwv5u-ogoJgX-HmVzI7td
 const LETTERS = ['أ', 'ب', 'ج', 'د'];
 const CIRCLED = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩', '⑪', '⑫', '⑬', '⑭', '⑮'];
 const $ = id => document.getElementById(id);
+const EN = () => !!(current && current.lang === 'en');
+const tr = (ar, en) => EN() ? en : ar;
+function letterOf(it, k) { return (it.letters || (EN() ? ['A', 'B', 'C', 'D'] : LETTERS))[k]; }
 const store = {
     get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -1147,7 +1356,7 @@ function renderHome() {
         const done = store.get('sent-' + ex.id);
         return `<button class="exam-card btn-bounce" onclick="openExam(${ex.id})">
             <span class="exam-no">${ex.id}</span>
-            <span class="exam-info"><b>${esc(ex.card || ex.title)}</b><small>${nM} اختيار من متعدد${ex.game ? ' (' + GAME_NAMES[ex.game].t + ')' : ''} • ${nW} أسئلة مقالية</small></span>
+            <span class="exam-info"><b>${esc(ex.card || ex.title)}</b><small>${nM} اختيار من متعدد${ex.game ? ' (' + GAME_NAMES[ex.game].t + ')' : ''}${nW ? ' • ' + nW + ' أسئلة مقالية' : ''}</small></span>
             ${done ? '<span class="done-badge"><i class="fa-solid fa-circle-check"></i> تم الإرسال</span>' : '<i class="fa-solid fa-chevron-left go"></i>'}
         </button>`;
     }).join('');
@@ -1178,23 +1387,23 @@ function openExam(id) {
 
 // ---------- ورقة الاختبار ----------
 function renderExam(ex, name) {
-    let html = `<div class="paper theme-${ex.theme}">
+    let html = `<div class="paper theme-${ex.theme}" dir="${ex.dir || 'rtl'}">
         <div class="paper-title">${esc(ex.title)}${ex.sub ? '<span class="paper-sub">' + esc(ex.sub) + '</span>' : ''}</div>
-        <div class="paper-student"><i class="fa-solid fa-user-graduate"></i> اسم الطالب: <b>${esc(name)}</b></div>`;
+        <div class="paper-student"><i class="fa-solid fa-user-graduate"></i> ${tr('اسم الطالب:', 'Student:')} <b>${esc(name)}</b></div>`;
     ex.sections.forEach((sec, si) => {
         html += `<h3 class="sec-title ${sec.type === 'mcq' ? 'sec-mcq' : 'sec-written'}">${esc(sec.title)}</h3>`;
         const gameMode = sec.type === 'mcq' && ex.game;
-        if (gameMode) html += gamePanel(ex, si) + `<div class="mcq-review hidden" id="review-${si}"><p class="review-head"><i class="fa-solid fa-clipboard-check"></i> إجاباتك فى أسئلة الاختيار من متعدد</p>`;
+        if (gameMode) html += gamePanel(ex, si) + `<div class="mcq-review hidden" id="review-${si}"><p class="review-head"><i class="fa-solid fa-clipboard-check"></i> ${tr('إجاباتك فى أسئلة الاختيار من متعدد', 'Your answers')}</p>`;
         sec.items.forEach((it, i) => {
             const key = `s${si}q${i}`;
             if (sec.type === 'mcq') {
-                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span>${fmt(it.q)}</span></div>${qExtras(it)}
+                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span class="q-body">${fmtQ(it.q)}</span></div>${qExtras(it)}
                     <div class="opts">${it.opts.map((o, k) => `
                         <label class="opt" data-k="${k}"><input type="radio" name="${key}" value="${k}" onchange="pickMCQ(${si}, ${i}, ${k})">
-                        <span class="opt-l">${LETTERS[k]})</span> <span class="opt-v">${fmtOpt(o)}</span></label>`).join('')}
+                        <span class="opt-l">${letterOf(it, k)})</span> <span class="opt-v">${fmtOpt(o)}</span></label>`).join('')}
                     </div><div class="fb hidden" id="fb-${key}"></div></div>`;
             } else {
-                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span>${fmt(it.q)}</span>
+                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span class="q-body">${fmtQ(it.q)}</span>
                     ${it.figure === 'numline' ? numLine() : ''}</div>${qExtras(it)}
                     ${it.list ? `<div class="num-list"><span class="m" dir="ltr">${esc(it.list)}</span></div>` : ''}
                     ${isOrderQ(ex, si, i) ? orderWidget(key, it) : ''}
@@ -1207,30 +1416,36 @@ function renderExam(ex, name) {
         });
         if (gameMode) html += '</div>';
     });
-    html += `<button class="send-btn btn-bounce" id="send-btn" onclick="submitExam()"><i class="fa-solid fa-paper-plane"></i> إرسال الإجابات للمستر</button></div>`;
+    html += `<button class="send-btn btn-bounce" id="send-btn" onclick="submitExam()"><i class="fa-solid fa-paper-plane"></i> ${tr('إرسال الإجابات للمستر', 'Send my answers')}</button></div>`;
     $('exam-body').innerHTML = html;
     document.querySelectorAll('.ord-wrap').forEach(w => initOrder(w));
+    setTimeout(() => fitMath(), 0);
     ex.sections.forEach((sec, si) => { if (sec.type === 'mcq' && ex.game) { GS[si] = 0; loadGameQ(si); } });
 }
 function qExtras(it) {
     let h = '';
+    if (it.opts && it.figure === 'numline-ab') h += `<div class="q-fig">${numLine('a', 'b')}</div>`;
     if (it.sub) h += `<div class="q-sub">${fmt(it.sub)}</div>`;
-    if (it.table || it.xline) h += '<div class="q-fig">';
+    if (it.table || it.xline || it.vsub) h += '<div class="q-fig">';
     if (it.table) h += `<table class="x-table" dir="ltr"><tr><td colspan="2">${esc(it.table.top)}</td></tr><tr><td>${esc(it.table.left)}</td><td>${esc(it.table.right)}</td></tr></table>`;
-    if (it.xline) h += '<span class="m x-line" dir="ltr">X = .............</span>';
-    if (it.table || it.xline) h += '</div>';
+    if (it.xline) h += `<span class="m x-line" dir="ltr">${typeof it.xline === 'string' ? it.xline : 'X'} = .............</span>`;
+    if (it.vsub) h += `<div class="vsub" dir="ltr"><div>${esc(it.vsub[0])}</div><div class="vsub-b">${esc(it.vsub[1])}</div><div>……….</div></div>`;
+    if (it.table || it.xline || it.vsub) h += '</div>';
     return h;
 }
-function numLine() {
-    return `<svg class="numline" viewBox="0 0 200 50" aria-label="خط أعداد عليه b على اليسار و a على اليمين">
+function numLine(left, right) {
+    left = left || 'b'; right = right || 'a';
+    return `<svg class="numline" viewBox="0 0 200 50" aria-label="خط أعداد عليه ${left} على اليسار و ${right} على اليمين">
         <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#111" stroke-width="2"/></marker></defs>
         <line x1="8" y1="34" x2="192" y2="34" stroke="#111" stroke-width="2.5" marker-start="url(#ah)" marker-end="url(#ah)"/>
         <line x1="40" y1="24" x2="40" y2="44" stroke="#111" stroke-width="2.5"/><line x1="130" y1="24" x2="130" y2="44" stroke="#111" stroke-width="2.5"/>
-        <text x="40" y="16" text-anchor="middle" font-size="15" font-weight="700" font-family="Arial">b</text>
-        <text x="130" y="16" text-anchor="middle" font-size="15" font-weight="700" font-family="Arial">a</text></svg>`;
+        <text x="40" y="16" text-anchor="middle" font-size="15" font-weight="700" font-family="Arial">${left}</text>
+        <text x="130" y="16" text-anchor="middle" font-size="15" font-weight="700" font-family="Arial">${right}</text></svg>`;
 }
+
 // اختيار نهائى: يُقفل السؤال فورًا ويُظهر الإجابة الصحيحة عند الخطأ
-function pickMCQ(si, i, k) {
+function pickMCQ(si, i, k) { _pickMCQ(si, i, k); fitMath($(`blk-s${si}q${i}`)); }
+function _pickMCQ(si, i, k) {
     const key = `s${si}q${i}`, it = current.sections[si].items[i], ok = it.ans.includes(k);
     const blk = $('blk-' + key);
     if (blk.dataset.locked) return;
@@ -1245,12 +1460,13 @@ function pickMCQ(si, i, k) {
     });
     const fb = $('fb-' + key);
     fb.className = 'fb ' + (ok ? 'fb-ok' : 'fb-no');
-    fb.innerHTML = ok ? '<i class="fa-solid fa-circle-check"></i> إجابة صحيحة .. أحسنت!'
-        : '<i class="fa-solid fa-circle-xmark"></i> إجابة خاطئة .. الإجابة الصحيحة: ' +
-          it.ans.map(n => `<b>${LETTERS[n]}) <span class="opt-v">${fmtOpt(it.opts[n])}</span></b>`).join(' أو ');
+    fb.innerHTML = ok ? '<i class="fa-solid fa-circle-check"></i> ' + tr('إجابة صحيحة .. أحسنت!', 'Correct! Well done')
+        : '<i class="fa-solid fa-circle-xmark"></i> ' + tr('إجابة خاطئة .. الإجابة الصحيحة: ', 'Wrong .. The correct answer is: ') +
+          it.ans.map(n => `<b>${letterOf(it, n)}) <span class="opt-v">${fmtOpt(it.opts[n])}</span></b>`).join(tr(' أو ', ' or '));
 }
 // تأكيد إجابة مقالية: تُصحح وتُقفل فورًا
-function confirmWritten(si, i, silent) {
+function confirmWritten(si, i, silent) { const r = _confirmWritten(si, i, silent); fitMath($(`blk-s${si}q${i}`)); return r; }
+function _confirmWritten(si, i, silent) {
     const key = `s${si}q${i}`, blk = $('blk-' + key);
     if (blk.dataset.locked) return blk.dataset.res;
     const ta = blk.querySelector('textarea'), v = ta.value.trim();
@@ -1294,7 +1510,7 @@ function collect(ex) {
                 if (sel) {
                     const k = +sel.value, ok = it.ans.includes(k);
                     if (ok) score++;
-                    v = `${LETTERS[k]}) ${plain(it.opts[k])} ${ok ? '✔' : '✘'}`;
+                    v = `${letterOf(it, k)}) ${plain(it.opts[k])} ${ok ? '✔' : '✘'}`;
                 } else missing.push(key);
                 cols.push({ h: `اختيار ${i + 1}`, v });
             } else {
@@ -1339,7 +1555,7 @@ async function submitExam() {
     r = collect(ex);
     const btn = $('send-btn'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جارٍ الإرسال ...';
     const payload = {
-        sheet: 'الصف الخامس - ' + (ex.card || 'اختبار ' + ex.id), exam: ex.title, name,
+        sheet: ex.sheet || ('اختبار ' + ex.id), exam: ex.title, name,
         time: new Date().toLocaleString('en-GB', { hour12: true }),
         score: `${r.score} / ${r.total}` + (r.review ? ` (+${r.review} للمراجعة)` : ''), review: r.review, cols: r.cols
     };
