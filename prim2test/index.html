@@ -672,6 +672,130 @@ EXAMS.push({
 });
 KEYS[2] = [];
 
+// ===== GRADE (2) - Test 3 (Complete + Choose) =====
+const L4 = ["a", "b", "c", "d"];
+EXAMS.push({
+  id: 3, title: "GRADE (2)", card: "GRADE (2) - Test 3 (A.M & P.M)", sheet: "الصف الثانى - GRADE (2) - Test 3",
+  num: "paren", theme: "purple", game: "goal", dir: "ltr", lang: "en", letters: L4,
+  sections: [
+   { title: "Complete by using :", type: "complete", bank: ["A.M", "35", "12", "90", "P.M"], items: [
+     { q: "The duration from 7 : 00 A.M to 7 : 35 A.M is {_}", ans: "35", letter: "1" },
+     { q: "The number of hours in the evening period = {_} hours .", ans: "12", letter: "2" },
+     { q: "1 hour , 30 minutes = {_} minutes .", ans: "90", letter: "3" },
+     { q: "Bassem eats breakfast at 7 : 00 {_}", ans: "A.M", letter: "4" },
+     { q: "Doaa goes to sleep at 8 {_}", ans: "P.M", letter: "5" }
+   ]},
+   { title: "Choose the correct answer :", type: "mcq", items: [
+     { q: "If the program starts 4 : 00 p.m and ends at 4 : 20 p.m What is the program duration ?", opts: ["4 minutes", "20 minutes", "24 minutes", "420 minutes"], ans: [1] },
+     { q: "The time now is 5 : 00 , what is the time 25 minutes later ?", opts: ["5 : 35", "4 : 35", "5 : 25", "4 : 25"], ans: [2] },
+     { q: "which of the following activities can be done at 8 : 00 A.M ?", opts: ["Eating breakfast", "Eating lunch", "watching the stars", "sleeping"], ans: [0] },
+     { q: "1 hour , 15 minutes = ………… minutes", opts: ["75", "45", "70", "39"], ans: [0] },
+     { q: "58 + 25 = ……….. + 58", opts: ["83", "52", "25", "58"], ans: [2] },
+     { q: "97 – 65 = ……………", opts: ["41", "32", "23", "34"], ans: [1] },
+     { q: "[[1 hour {box} 60 minutes]]", opts: ["<", ">", "=", "≤"], ans: [2, 3] },
+     { q: "1 hour , 40 minutes = ……… minutes", opts: ["100", "50", "64", "140"], ans: [0] },
+     { q: "Number of hours in the morning period = ………. Hours", opts: ["10", "12", "6", "18"], ans: [1] },
+     { q: "Number of hours in the evening period = ………. Hours", opts: ["10", "12", "6", "18"], ans: [1] }
+   ]}
+  ]
+});
+
+// ===== ( Grade 2 ) Time and Duration (Test 4) =====
+EXAMS.push({
+  id: 4, title: "( Grade 2 ) Time and Duration (Test 4)", card: "Test 4 - Time and Duration", sheet: "الصف الثانى - Test 4 - Time and Duration",
+  num: "paren", theme: "purple", game: "goal", dir: "ltr", lang: "en", letters: L4,
+  sections: [
+   { title: "Choose", type: "mcq", items: [
+     { q: "1 day = ……….. hours", opts: ["24", "12", "60", "48"], ans: [0] },
+     { q: "The time now is 5 : 00 , what time will it be 40 minutes later ?", opts: ["5:4", "4:20", "5:40", "5:25"], ans: [2] },
+     { q: "I have break fast at 8 : 30 …………", opts: ["A:M", "P:M", "M", "night"], ans: [0] },
+     { q: "I go to bed at 9 : 00 ………..", opts: ["A:M", "P:M", "M", "morning"], ans: [1] },
+     { q: "which of the following activities can be done at 7 : 00 A.M ?", opts: ["Going to the cinema", "Going to school", "Having luch", "watching the steurs"], ans: [1] },
+     { q: "34 + 81 = ………….", opts: ["115", "105", "52", "15"], ans: [0] },
+     { q: "Doaa goes to sleep at 8 ………..", opts: ["A:M", "P:M", "afternoon", "midnight"], ans: [1] },
+     { q: "[[(15 + 5) + 8 {box} 15 + (5 + 8)]]", opts: [">", "<", "=", "≥"], ans: [2, 3] },
+     { q: "97 – 65 = ………..", opts: ["41", "32", "33", "825"], ans: [1] },
+     { q: "14 + ………. = 20 + 14", opts: ["41", "20", "34", "42"], ans: [1] },
+     { q: "The duration from 7 : 00 A.M to 7 : 00 P.M is …………..", opts: ["12 hours", "12 minutes", "24 hours", "24 minutes"], ans: [0] },
+     { q: "The time now is 8 : 00 , what was the time 5 minutes before ?", opts: ["8:05", "7:55", "7:50", "7:55"], ans: [1, 3] },
+     { q: "The value of the digit 8 in the number 381 is ………….", opts: ["8", "80", "800", "tens"], ans: [1] },
+     { q: "54 + 33 = 87 , which of the following gives the same result without calculating (using the commutative property) ?", opts: ["43 + 35", "45 + 42", "33 + 54", "87 + 33"], ans: [2] },
+     { q: "99 + 63 = ……….", opts: ["52", "36", "162", "152"], ans: [2] },
+     { q: "76 – 73 = ………..", opts: ["3", "73", "30", "31"], ans: [0] },
+     { q: "40 + 17 is ……….. 17 + 40", opts: ["greater than", "less than", "equal to"], ans: [2] },
+     { q: "what is the duration from 6 : 00 until 7 : 00", opts: ["70 minutes", "one hour", "5 minutes", "50 minutes"], ans: [1] },
+     { q: "what is the time 20 minutes before 9 : 00 ?", opts: ["9 : 40", "8 : 40", "9 : 20", "8 : 20"], ans: [1] },
+     { q: "How many hours is P.M ?", opts: ["12 hours", "11 hours", "24 hours", "8 hours"], ans: [0] },
+     { q: "What time is 1 hour before noon ?", opts: ["11 P.M", "11 A.M", "1 A.M", "1 P.M"], ans: [1] },
+     { q: "How many hours is A.M ?", opts: ["12 hours", "11 hours", "24 hours", "8 hours"], ans: [0] }
+   ]}
+  ]
+});
+
+// ===== ( Grade 2 ) unit of length (Test 5) =====
+EXAMS.push({
+  id: 5, title: "( Grade 2 ) unit of length (Test 5)", card: "Test 5 - Unit of Length", sheet: "الصف الثانى - Test 5 - Unit of Length",
+  num: "paren", theme: "purple", game: "goal", dir: "ltr", lang: "en", letters: L4,
+  sections: [
+   { title: "Choose the correct answer :", type: "mcq", items: [
+     { q: "The centimeter is used to measure the lengths of …………", opts: ["very short objects", "short objects", "long objects"], ans: [1] },
+     { q: "The millimeter is used to measure the lengths of …………", opts: ["very short objects", "short objects", "long objects"], ans: [0] },
+     { q: "Ahmed wakes up to go to school at 6 : 00 …………", opts: ["A:M", "P:M", "night"], ans: [0], letters: ["a", "b", "d"] },
+     { q: "The length of anail 3 ………..", opts: ["CM", "mm"], ans: [0] },
+     { q: "The thickness of a mobile 8 ……..", opts: ["CM", "mm"], ans: [1] },
+     { q: "The length of a key 5 ………….", opts: ["CM", "mm"], ans: [0] },
+     { q: "The suitable unit for measuring the length of an insect is ………..", opts: ["centimeter", "millimeter", "cm"], ans: [1] },
+     { q: "5 cm = ………. mm", opts: ["500", "50", "5"], ans: [1] },
+     { q: "The best unit for measuring The thickness of a coin is ………..", opts: ["milliliter", "centimeter", "millimeter", "liter"], ans: [2] },
+     { q: "The length of a key = 5 ………….", opts: ["cm", "mm", "L", "ml"], ans: [0] },
+     { q: "2 cm = ………….. mm", opts: ["2", "20", "200", "2000"], ans: [1] },
+     { q: "The centimeter is a unit for measuring ………….", opts: ["capacity", "weight", "time", "length"], ans: [3] },
+     { q: "which of the following activities can be done at 9 : 00 p.m ?", opts: ["Eating breakfast", "Eating lunch", "Going to school", "watching the stars"], ans: [3] },
+     { q: "The ………… is a unit of length", opts: ["minute", "millimeter", "deciliter", "milliliter"], ans: [1] },
+     { q: "[[4 cm {box} 400 mm]]", opts: [">", "<", "="], ans: [1] },
+     { q: "7 cm , 9 mm = ………… mm", opts: ["79", "97", "970", "16"], ans: [0] },
+     { q: "10 + 26 = ……….. + 10", opts: ["10", "26", "36", "62"], ans: [1] },
+     { q: "which addition sentence can you use to check the result of 45 – 13 = 32 ?", opts: ["32 + 13", "45 + 13", "32 + 45", "23 + 31"], ans: [0] },
+     { q: "5 cm , 1 mm + 8 mm = ……………", opts: ["19 cm , 9 mm", "6 cm , 8 mm", "5 cm , 9 mm", "5 cm , 18 mm"], ans: [2] },
+     { q: "15 cm , 9 mm – 3 mm = …………….", opts: ["18 cm, 9 mm", "12 cm, 9 mm", "15 cm, 6 mm", "12 cm, 6 mm"], ans: [2] },
+     { q: "The thickness of a notebook is 5 ………….", opts: ["cm", "mm", "L", "ml"], ans: [1] },
+     { q: "18 + 7 = …………", opts: ["15", "25", "88", "718"], ans: [1] }
+   ]}
+  ]
+});
+
+// ===== ( Grade 2 ) (Test 6) — آخر صفحتين فى ملف الـ PDF ليستا من الاختبار =====
+EXAMS.push({
+  id: 6, title: "( Grade 2 )", sub: "(Test 6)", card: "Test 6", sheet: "الصف الثانى - Test 6",
+  num: "paren", theme: "purple", game: "goal", dir: "ltr", lang: "en", letters: L4,
+  sections: [
+   { title: "Choose :", type: "mcq", items: [
+     { q: "63 + 30 = …………", opts: ["33", "90", "99", "93"], ans: [3] },
+     { q: "29 + ………… = 60 + 29", opts: ["69", "89", "29", "60"], ans: [3] },
+     { q: "75 – 45 = …………", opts: ["20", "130", "21", "30"], ans: [3] },
+     { q: "what is the result ?", vsub: ["63", "- 42"], opts: ["11", "12", "21", "78"], ans: [2] },
+     { q: "How do you check that 5 – 3 = 2 using addition ?", opts: ["2 + 5", "2 + 3", "5 + 3", "2 + 2"], ans: [1] },
+     { q: "[[62 – 18 = 44 then …………. + 18 = 62]]", opts: ["62", "18", "80", "44"], ans: [3] },
+     { q: "The time now is 5 : 00 , what is the time 25 minutes later ?", opts: ["5 : 35", "4 : 35", "5 : 25", "4 : 25"], ans: [2] },
+     { q: "60 minutes = ………….. hour", opts: ["2", "1", "3", "4"], ans: [1] },
+     { q: "If the program stars at 4 : 00 p.m ends at 4 : 20 p.m What is the program duration ?", opts: ["4 minutes", "20 minutes", "24 minutes", "420 minutes"], ans: [1] },
+     { q: "1 hour , 15 minutes = …………. minutes", opts: ["75", "45", "70", "39"], ans: [0] },
+     { q: "Number of hours in the morning period = ……….. Hours", opts: ["10", "12", "6", "18"], ans: [1] },
+     { q: "Number of hours in the evening period = ……….. Hours", opts: ["10", "12", "6", "18"], ans: [1] },
+     { q: "1 day = …………. hours", opts: ["24", "12", "60", "48"], ans: [0] },
+     { q: "The time now is 5 : 00 , what time will it be 40 minutes later ?", opts: ["5 : 4", "4 : 20", "5 : 40", "5 : 25"], ans: [2] },
+     { q: "I have breakfast at 8 : 30 ……….", opts: ["A.M", "P.M", "M", "night"], ans: [0] },
+     { q: "I go to bed at 9 : 00 ………….", opts: ["A.M", "P.M", "M", "morning"], ans: [1] },
+     { q: "The duration from 7 : 00 A.M to 7 : 00 P.M is …………..", opts: ["12 hours", "12 minutes", "24 hours", "24 minutes"], ans: [0] },
+     { q: "The ……….. is a unit of length", opts: ["minute", "millimeter", "deciliter", "milliliter"], ans: [1] },
+     { q: "5 cm = …………… mm", opts: ["5", "50", "500", "5000"], ans: [1] },
+     { q: "The thickness of a notebook is 5 …………….", opts: ["cm", "mm", "L", "ml"], ans: [1] },
+     { q: "70 m.m = …………. c.m", opts: ["17", "7", "700", "7000"], ans: [1] }
+   ]}
+  ]
+});
+KEYS[3] = []; KEYS[4] = []; KEYS[5] = []; KEYS[6] = [];
+
 </script>
 <script>
 // ===== تصحيح الأسئلة المقالية آليًا =====
@@ -939,7 +1063,7 @@ function fmtQ(q) {
     // سؤال إنجليزى فيه معادلة داخل الجملة (مثل: check that 5 - 3 = 2 using) => المعادلة كتلة واحدة لا تنقسم
     if (!/\[\[/.test(q) && !AR_LETTERS.test(q))
         { const opnd = '\\(?(?:\\d[\\d.]*|\\.{2,}|…+)\\)?';
-          q = q.replace(new RegExp(opnd + '(?:\\s*[-+=×÷–<>]\\s*' + opnd + ')+', 'g'), m => '[[' + m + ']]'); }
+          q = q.replace(new RegExp(opnd + '(?:\\s*[-+=×÷–<>:]\\s*' + opnd + ')+', 'g'), m => '[[' + m + ']]'); }
     return fmt(q);
 }
 const ONE_LINE_MIN = 13;   // أصغر خط مقبول لعرض السؤال كله فى سطر واحد
@@ -1245,7 +1369,7 @@ const CIRCLED = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', 
 const $ = id => document.getElementById(id);
 const EN = () => !!(current && current.lang === 'en');
 const tr = (ar, en) => EN() ? en : ar;
-function letterOf(it, k) { return (it.letters || (EN() ? ['A', 'B', 'C', 'D'] : LETTERS))[k]; }
+function letterOf(it, k) { return (it.letters || (current && current.letters) || (EN() ? ['A', 'B', 'C', 'D'] : LETTERS))[k]; }
 const store = {
     get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
