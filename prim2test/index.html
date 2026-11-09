@@ -482,6 +482,26 @@ textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0
 .cmp-wrap .confirm-btn { display: flex; margin: 10px auto 0; }
 @media (max-width: 480px) { .cmp-item { font-size: 16px; gap: 6px; } .cmp-wrap .cmp-slot { width: 60px; height: 38px; } .cmp-wrap .cmp-slot .ord-chip { font-size: 16px; } }
 
+/* ===== التصنيف بالسحب والإفلات ===== */
+.srt-pool { flex-direction: column; align-items: stretch; }
+.srt-chip { justify-content: flex-start; height: auto; min-height: 42px; padding: 6px 10px; font-size: 16px; text-align: left; white-space: normal; line-height: 1.25; }
+.srt-chip .srt-n { color: #be123c; margin-right: 4px; }
+.srt-chip.srt-sel { border-color: #be123c; background: #fff1f2; box-shadow: 0 0 0 3px rgba(190,18,60,.2); }
+.srt-table { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.srt-col { display: flex; flex-direction: column; gap: 6px; background: #fff; border: 2px solid #e2e8f0; border-radius: 12px; padding: 6px; min-width: 0; }
+.srt-head { text-align: center; font-weight: 900; font-size: 18px; color: #6b21a8; background: #fde4cf; border-radius: 8px; padding: 4px; }
+.srt-row { display: flex; align-items: center; gap: 4px; }
+.srt-k { font-weight: 800; color: #475569; font-size: 14px; flex-shrink: 0; }
+.srt-wrap .srt-slot { flex: 1; height: auto; min-height: 46px; min-width: 0; }
+.srt-wrap .srt-slot .ord-chip { font-size: 13px; padding: 4px 6px; height: auto; min-height: 42px; }
+.srt-chip.srt-ok { border-color: #16a34a; background: #dcfce7; color: #166534; }
+.srt-chip.srt-no { border-color: #dc2626; background: #fee2e2; color: #991b1b; }
+.srt-fix { color: #166534; white-space: nowrap; }
+.srt-chip.missing { border-color: #fca5a5; background: #fef2f2; }
+.srt-wrap .confirm-btn { display: flex; margin: 10px auto 0; }
+.srt-slot .srt-n { display: none; }
+.srt-chip { flex-wrap: wrap; } .srt-fix { flex-basis: 100%; font-size: 12px; margin-top: 2px; }
+
 </style>
 </head>
 <body class="text-gray-800 min-h-screen pb-20 relative">
@@ -852,7 +872,7 @@ EXAMS.push({
      { q: "The thickness of a notebook is 5 ……………", opts: ["cm", "mm", "L", "ml"], ans: [1] },
      { q: "[[1 day = ………….. hours]]", opts: ["60", "12", "24", "30"], ans: [2] },
      { q: "[[272 {box} 278]]", opts: [">", "<", "="], ans: [1] },
-     { q: "[[318 > ………..]]", opts: ["143", "37", "73", "133"], ans: [0, 1, 2, 3] },
+     { q: "[[318 < ………..]]", opts: ["143", "37", "73", "333"], ans: [3] },
      { q: "The duration from [[11 : 00 A.M]] to [[11 : 00 P.M]] is ………..", opts: ["12 minutes", "12 hours", "24 hours"], ans: [1] },
      { q: "403 is the number made by combining ………… and 3", opts: ["4", "40", "400", "43"], ans: [2] },
      { q: "[[1 hour , 15 minutes = …………. minutes]]", opts: ["75", "45", "70", "35"], ans: [0] },
@@ -865,6 +885,31 @@ EXAMS.push({
   ]
 });
 KEYS[8] = [];
+
+// ===== Test (9) - Grade 2 - تصنيف بالسحب والإفلات (كما هو فى ورقة المدرس) =====
+EXAMS.push({
+  id: 9, title: "Test (9)", sub: "Grade 2", card: "GRADE (2) - Test 9", sheet: "الصف الثانى - GRADE (2) - Test 9",
+  num: "paren", theme: "purple", dir: "ltr", lang: "en", letters: L4,
+  sections: [
+   { title: "Choose (A.M. or P.M)", type: "sort", cats: ["A.M", "P.M"], items: [
+     { q: "I wake up", cat: 0 }, { q: "I watch the sun rice", cat: 0 }, { q: "I have lunch", cat: 1 },
+     { q: "I have dinner", cat: 1 }, { q: "coming back from school", cat: 1 }, { q: "The English class start", cat: 0 }
+   ]},
+   { title: "Choose (A.M. or P.M)", type: "sort", cats: ["A.M", "P.M"], items: [
+     { q: "I solve a math exam", cat: 0 }, { q: "I have break fast", cat: 0 }, { q: "I watch the starts", cat: 1 },
+     { q: "I go to bed", cat: 1 }, { q: "I participate in class", cat: 0 }, { q: "coming back from school", cat: 1 }
+   ]},
+   { title: "Choose (c.m. or m.m)", type: "sort", cats: ["C.M", "M.M"], items: [
+     { q: "The length of the pencil", cat: 0 }, { q: "The thickness of a note book", cat: 1 }, { q: "The Length of the eraser", cat: 0 },
+     { q: "The Length of an insect", cat: 1 }, { q: "The Length of a key", cat: 0 }, { q: "The thickness of a coin", cat: 1 }
+   ]},
+   { title: "Choose (c.m. or m.m)", type: "sort", cats: ["C.M", "M.M"], items: [
+     { q: "The length of the paper clip", cat: 0 }, { q: "The width of a pencil tip", cat: 1 },
+     { q: "The Length of a book", cat: 0 }, { q: "The thickness of a note book", cat: 1 }
+   ]}
+  ]
+});
+KEYS[9] = [];
 
 </script>
 <script>
@@ -1104,6 +1149,11 @@ function initOrder(wrap) {
                 } else {
                     // نقرة: من المجموعة لأول خانة فارغة (من الشمال) ، ومن الخانة للمجموعة
                     if (chip.parentElement.classList.contains('ord-slot')) placeChip(wrap, chip, null);
+                    else if (wrap.classList.contains('srt-wrap')) {   // التصنيف: نقرة تختار الجملة ثم نقرة على الخانة
+                        const was = wrap._sel === chip;
+                        wrap.querySelectorAll('.srt-sel').forEach(c => c.classList.remove('srt-sel'));
+                        wrap._sel = was ? null : chip; if (!was) chip.classList.add('srt-sel');
+                    }
                     else { const empty = [...wrap.querySelectorAll('.ord-slot')].find(s => !s.querySelector('.ord-chip')); if (empty) placeChip(wrap, chip, empty); }
                 }
             };
@@ -1225,6 +1275,66 @@ function confirmComplete(si, silent) {
     fitMath(w);
 }
 function norm2(v) { return String(v || '').replace(/\s/g, ''); }
+
+</script>
+<script>
+// ===== تصنيف بالسحب والإفلات: كل جملة تتسحب للعمود الصحيح (مثل A.M / P.M أو c.m / m.m) =====
+// يستخدم نفس محرك السحب فى order.js (ord-wrap / ord-pool / ord-chip / ord-slot)
+function sortWidget(ex, si, sec) {
+    const key = `srt${si}`;
+    const chips = sec.items.map((it, i) => `<span class="ord-chip srt-chip" id="blk-s${si}q${i}" data-v="${esc(it.q)}" data-id="${i}"><span class="srt-n">${i + 1})</span> ${esc(it.q)}</span>`).join('');
+    const cols = sec.cats.map((c, ci) => {
+        const n = sec.items.filter(it => it.cat === ci).length;
+        let slots = '';
+        for (let k = 0; k < n; k++) slots += `<div class="srt-row"><span class="srt-k">${k + 1})</span><div class="ord-slot srt-slot" data-pos="${ci}-${k}" data-cat="${ci}"></div></div>`;
+        return `<div class="srt-col"><div class="srt-head">${esc(c)}</div>${slots}</div>`;
+    }).join('');
+    return `<div class="ord-wrap srt-wrap" id="ord-${key}" data-key="${key}" data-n="${sec.items.length}" data-si="${si}" dir="ltr">
+        <p class="ord-help" dir="rtl"><i class="fa-solid fa-hand-pointer"></i> ${tr('اسحب كل جملة وضعها فى العمود الصحيح (أو انقر عليها)', 'Drag each sentence to the right column (or tap it)')}</p>
+        <div class="ord-pool srt-pool">${chips}</div>
+        <div class="srt-table">${cols}</div>
+        <button type="button" class="ord-reset" onclick="resetOrder('${key}')"><i class="fa-solid fa-rotate-left"></i> ${tr('إعادة', 'Reset')}</button>
+        <textarea name="${key}" class="hidden"></textarea>
+        <button class="confirm-btn btn-bounce" id="cb-${key}" onclick="confirmSort(${si})"><i class="fa-solid fa-check"></i> ${tr('تأكيد الإجابة', 'Check my answers')}</button>
+        <div class="fb hidden" id="fb-${key}"></div>
+    </div>`;
+}
+// اسم العمود اللى اتحطت فيه كل جملة ('' لو لسه فى البنك)
+function sortValues(si) {
+    const w = $('ord-srt' + si), sec = current.sections[si];
+    return sec.items.map((it, i) => { const c = w.querySelector(`.ord-chip[data-id="${i}"]`), s = c && c.closest('.srt-slot'); return s ? sec.cats[+s.dataset.cat] : ''; });
+}
+function confirmSort(si, silent) {
+    const w = $('ord-srt' + si); if (!w || w.dataset.locked) return;
+    const sec = current.sections[si], vals = sortValues(si), fb = $('fb-srt' + si);
+    if (!silent && vals.some(v => !v)) {
+        fb.className = 'fb fb-rev';
+        fb.innerHTML = '<i class="fa-solid fa-circle-info"></i> ' + tr('ضع كل الجمل فى الجدول أولًا ثم اضغط تأكيد', 'Put every sentence in the table first, then press Check');
+        return;
+    }
+    w.dataset.locked = '1'; w.classList.add('ord-locked');
+    const rb = w.querySelector('.ord-reset'); if (rb) rb.remove();
+    const cb = $('cb-srt' + si); if (cb) cb.remove();
+    let ok = 0;
+    sec.items.forEach((it, i) => {
+        const chip = w.querySelector(`.ord-chip[data-id="${i}"]`), right = vals[i] === sec.cats[it.cat];
+        chip.classList.add(right ? 'srt-ok' : 'srt-no');
+        if (right) ok++;
+        else chip.insertAdjacentHTML('beforeend', ` <b class="srt-fix"><i class="fa-solid fa-arrow-right"></i> ${esc(sec.cats[it.cat])}</b>`);
+        markAnswered(`s${si}q${i}`);
+    });
+    const n = sec.items.length;
+    fb.className = 'fb ' + (ok === n ? 'fb-ok' : 'fb-no');
+    fb.innerHTML = ok === n ? '<i class="fa-solid fa-circle-check"></i> ' + tr('كل الإجابات صحيحة .. أحسنت!', 'All correct! Well done')
+        : '<i class="fa-solid fa-circle-xmark"></i> ' + tr(`${ok} من ${n} صحيحة .. العمود الصحيح مكتوب بجوار كل خطأ`, `${ok} of ${n} correct .. the right column is shown next to each mistake`);
+    try { ok === n ? SFX.correct() : SFX.wrong(); } catch (e) {}
+}
+function initSort(w) {
+    w.querySelectorAll('.srt-slot').forEach(slot => slot.addEventListener('click', () => {
+        if (w.dataset.locked || !w._sel || slot.querySelector('.ord-chip')) return;
+        const c = w._sel; c.classList.remove('srt-sel'); w._sel = null; placeChip(w, c, slot);
+    }));
+}
 
 </script>
 <script>
@@ -1472,10 +1582,11 @@ function renderHome() {
         const nM = ex.sections.filter(s => s.type === 'mcq').reduce((t, s) => t + s.items.length, 0);
         const nW = ex.sections.filter(s => s.type === 'written').reduce((t, s) => t + s.items.length, 0);
         const nC = ex.sections.filter(s => s.type === 'complete').reduce((t, s) => t + s.items.length, 0);
+        const nS = ex.sections.filter(s => s.type === 'sort').reduce((t, s) => t + s.items.length, 0);
         const done = store.get('sent-' + ex.id);
         return `<button class="exam-card btn-bounce" onclick="openExam(${ex.id})">
             <span class="exam-no">${ex.id}</span>
-            <span class="exam-info"><b>${esc(ex.card || ex.title)}</b><small>${nC ? nC + ' أكمل (سحب وإفلات) • ' : ''}${nM} اختيار من متعدد${ex.game ? ' (' + GAME_NAMES[ex.game].t + ')' : ''}${nW ? ' • ' + nW + ' أسئلة مقالية' : ''}</small></span>
+            <span class="exam-info"><b>${esc(ex.card || ex.title)}</b><small>${nC ? nC + ' أكمل (سحب وإفلات) • ' : ''}${nS ? nS + ' تصنيف (سحب وإفلات)' : ''}${nM ? nM + ' اختيار من متعدد' : ''}${ex.game ? ' (' + GAME_NAMES[ex.game].t + ')' : ''}${nW ? ' • ' + nW + ' أسئلة مقالية' : ''}</small></span>
             ${done ? '<span class="done-badge"><i class="fa-solid fa-circle-check"></i> تم الإرسال</span>' : '<i class="fa-solid fa-chevron-left go"></i>'}
         </button>`;
     }).join('');
@@ -1512,6 +1623,7 @@ function renderExam(ex, name) {
     ex.sections.forEach((sec, si) => {
         html += `<h3 class="sec-title ${sec.type === 'mcq' ? 'sec-mcq' : 'sec-written'}">${esc(sec.title)}</h3>`;
         if (sec.type === 'complete') { html += completeWidget(ex, si, sec); return; }
+        if (sec.type === 'sort') { html += sortWidget(ex, si, sec); return; }
         const gameMode = sec.type === 'mcq' && ex.game;
         if (gameMode) html += gamePanel(ex, si) + `<div class="mcq-review hidden" id="review-${si}"><p class="review-head"><i class="fa-solid fa-clipboard-check"></i> ${tr('إجاباتك فى أسئلة الاختيار من متعدد', 'Your answers')}</p>`;
         sec.items.forEach((it, i) => {
@@ -1539,6 +1651,7 @@ function renderExam(ex, name) {
     html += `<button class="send-btn btn-bounce" id="send-btn" onclick="submitExam()"><i class="fa-solid fa-paper-plane"></i> ${tr('إرسال الإجابات للمستر', 'Send my answers')}</button></div>`;
     $('exam-body').innerHTML = html;
     document.querySelectorAll('.ord-wrap').forEach(w => initOrder(w));
+    document.querySelectorAll('.srt-wrap').forEach(w => initSort(w));
     setTimeout(() => fitMath(), 0);
     ex.sections.forEach((sec, si) => { if (sec.type === 'mcq' && ex.game) { GS[si] = 0; loadGameQ(si); } });
 }
@@ -1621,6 +1734,17 @@ function collect(ex) {
     const cols = [], missing = [];
     let score = 0, total = 0, review = 0;
     ex.sections.forEach((sec, si) => {
+        if (sec.type === 'sort') {
+            const vals = sortValues(si), sn = ex.sections.slice(0, si + 1).filter(x => x.type === 'sort').length;
+            sec.items.forEach((it, i) => {
+                total++;
+                const v = vals[i], ok = v === sec.cats[it.cat];
+                if (ok) score++;
+                if (!v) missing.push(`s${si}q${i}`);
+                cols.push({ h: `تصنيف ${sn}-${i + 1}`, v: v ? `${it.q} → ${v} ${ok ? '✔' : '✘'}` : '' });
+            });
+            return;
+        }
         if (sec.type === 'complete') {
             const vals = completeValues(si), cn = ex.sections.slice(0, si + 1).filter(x => x.type === 'complete').length;
             sec.items.forEach((it, i) => {
@@ -1681,7 +1805,7 @@ async function submitExam() {
             return;
         }
     }
-    ex.sections.forEach((sec, si) => { if (sec.type === 'written') sec.items.forEach((it, i) => confirmWritten(si, i, true)); if (sec.type === 'complete') confirmComplete(si, true); });
+    ex.sections.forEach((sec, si) => { if (sec.type === 'written') sec.items.forEach((it, i) => confirmWritten(si, i, true)); if (sec.type === 'complete') confirmComplete(si, true); if (sec.type === 'sort') confirmSort(si, true); });
     document.querySelectorAll('.opts').forEach(o => o.querySelectorAll('input').forEach(inp => inp.disabled = true));
     r = collect(ex);
     const btn = $('send-btn'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جارٍ الإرسال ...';
