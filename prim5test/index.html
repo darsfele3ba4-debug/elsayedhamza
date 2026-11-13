@@ -421,6 +421,24 @@ textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0
 .paper[dir="ltr"] .sec-title { text-decoration-color: #c2410c; }
 .vsub { display: inline-flex; flex-direction: column; align-items: flex-end; font-weight: 800; font-size: 20px; line-height: 1.35; font-family: 'Calibri','Carlito','Tajawal',sans-serif; }
 .vsub .vsub-b { border-bottom: 2.5px solid #111; padding: 0 0 2px 22px; }
+/* ===== مسائل الضرب الرأسية + بنك الإجابات ===== */
+.mt-bank { flex-wrap: wrap; justify-content: center; }
+.mt-bank .ord-chip, .mt-slot .ord-chip { min-width: 86px; }
+.mt-bn { color: #be123c; font-size: 13px; font-weight: 800; }
+.mt-slot .mt-bn { display: none; }
+.mt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+@media (max-width: 520px) { .mt-grid { grid-template-columns: repeat(2, 1fr); } }
+.mt-card { display: flex; flex-direction: column; align-items: center; gap: 8px; background: #fff; border: 2px solid #e2e8f0; border-radius: 14px; padding: 10px 6px; }
+.mt-card.missing { border-color: #fca5a5; background: #fef2f2; }
+.mt-v { font-size: 22px; }
+.mt-wrap .mt-slot { width: 100%; max-width: 120px; min-height: 48px; }
+.mt-fix { color: #166534; font-weight: 800; font-size: 15px; }
+.cmp-ok { border-color: #16a34a !important; background: #dcfce7 !important; }
+.cmp-no { border-color: #dc2626 !important; background: #fee2e2 !important; }
+.mt-wrap .confirm-btn { display: flex; margin: 10px auto 0; }
+.mt-wrap .ord-chip { font-size: 18px; font-weight: 800; height: auto; min-height: 44px; }
+.mt-slot .ord-chip { width: 100%; justify-content: center; }
+
 .g-goal .goal-target.long { max-width: 46%; min-width: 120px; padding: 6px 6px; }
 .g-goal .goal-target.long .opt-v { font-size: 12px; white-space: normal; }
 .g-goal .goal-target.long .m { white-space: normal; }
@@ -955,6 +973,37 @@ EXAMS.push({
   ]
 });
 KEYS[9] = []; KEYS[10] = []; KEYS[11] = [];
+// ===== اختبارات الصف الخامس (12) (13) (14) - مسائل ضرب رأسية + اختيار الناتج (كما هى فى ورق المدرس) =====
+EXAMS.push({
+  id: 12, title: "اختبار الصف الخامس (12)", card: "اختبار الصف الخامس (12) - مسائل الضرب",
+  sheet: "الصف الخامس - اختبار (12) - مسائل الضرب", num: "paren", theme: "purple",
+  sections: [
+   { title: "اختر الإجابة الصحيحة :-", type: "match", bank: ["1092", "1440", "4455", "1102", "7636", "1768"], items: [
+     { v: ["52", "× 34"], ans: "1768" }, { v: ["45", "× 32"], ans: "1440" }, { v: ["83", "× 92"], ans: "7636" },
+     { v: ["38", "× 29"], ans: "1102" }, { v: ["28", "× 39"], ans: "1092" }, { v: ["99", "× 45"], ans: "4455" }
+   ]}
+  ]
+}, {
+  id: 13, title: "اختبار الصف الخامس (13)", card: "اختبار الصف الخامس (13) - مسائل الضرب",
+  sheet: "الصف الخامس - اختبار (13) - مسائل الضرب", num: "paren", theme: "purple",
+  sections: [
+   { title: "اختر الإجابة الصحيحة :-", type: "match", bank: ["7,560", "1,536", "4,968", "9,372", "6,084", "4,950"], items: [
+     { v: ["275", "× 18"], ans: "4,950" }, { v: ["128", "× 12"], ans: "1,536" }, { v: ["234", "× 26"], ans: "6,084" },
+     { v: ["108", "× 46"], ans: "4,968" }, { v: ["213", "× 44"], ans: "9,372" }, { v: ["135", "× 56"], ans: "7,560" }
+   ]}
+  ]
+}, {
+  id: 14, title: "اختبار الصف الخامس (14)", card: "اختبار الصف الخامس (14) - مسائل الضرب",
+  sheet: "الصف الخامس - اختبار (14) - مسائل الضرب", num: "paren", theme: "purple",
+  sections: [
+   { title: "اختر الإجابة الصحيحة :-", type: "match", bank: ["26,784", "4,950", "1,768", "13,692", "1,440", "1,536"], items: [
+     { v: ["52", "× 34"], ans: "1,768" }, { v: ["45", "× 32"], ans: "1,440" }, { v: ["128", "× 12"], ans: "1,536" },
+     { v: ["275", "× 18"], ans: "4,950" }, { v: ["326", "× 42"], ans: "13,692" }, { v: ["432", "× 62"], ans: "26,784" }
+   ]}
+  ]
+});
+KEYS[12] = []; KEYS[13] = []; KEYS[14] = [];
+
 
 </script>
 <script>
@@ -1500,15 +1549,64 @@ function qNum(exam, i) {
 }
 
 // ---------- الشاشة الرئيسية ----------
+
+// ===== مسائل ضرب رأسية + بنك إجابات: الطالب يسحب الناتج تحت كل مسألة (سحب وإفلات) =====
+function matchWidget(ex, si, sec) {
+    const key = `mt${si}`;
+    const bank = sec.bank.map((t, idx) => `<span class="ord-chip" data-v="${esc(t)}" data-id="${idx}"><span class="mt-bn">(${idx + 1})</span> <span class="m" dir="ltr">${esc(t)}</span></span>`).join('');
+    const cards = sec.items.map((it, i) => `<div class="mt-card" id="blk-s${si}q${i}">
+            <div class="vsub mt-v" dir="ltr"><div>${esc(it.v[0])}</div><div class="vsub-b">${esc(it.v[1])}</div></div>
+            <div class="ord-slot mt-slot" data-pos="${i}"></div>
+            <div class="mt-fix hidden" id="mtfix-s${si}q${i}"></div></div>`).join('');
+    return `<div class="ord-wrap mt-wrap" id="ord-${key}" data-key="${key}" data-n="${sec.items.length}" data-si="${si}">
+        <p class="ord-help"><i class="fa-solid fa-hand-pointer"></i> ${tr('اسحب الناتج الصحيح وضعه تحت كل مسألة (أو انقر عليه)', 'Drag the right answer under each problem (or tap it)')}</p>
+        <div class="ord-pool mt-bank" dir="rtl">${bank}</div>
+        <div class="mt-grid" dir="rtl">${cards}</div>
+        <button type="button" class="ord-reset" onclick="resetOrder('${key}')"><i class="fa-solid fa-rotate-left"></i> ${tr('إعادة', 'Reset')}</button>
+        <textarea name="${key}" class="hidden"></textarea>
+        <button class="confirm-btn btn-bounce" id="cb-${key}" onclick="confirmMatch(${si})"><i class="fa-solid fa-check"></i> ${tr('تأكيد الإجابة', 'Check my answers')}</button>
+        <div class="fb hidden" id="fb-${key}"></div>
+    </div>`;
+}
+function matchValues(si) {
+    const w = $('ord-mt' + si);
+    return [...w.querySelectorAll('.mt-slot')].map(s => { const c = s.querySelector('.ord-chip'); return c ? c.dataset.v : ''; });
+}
+function confirmMatch(si, silent) {
+    const w = $('ord-mt' + si); if (!w || w.dataset.locked) return;
+    const sec = current.sections[si], vals = matchValues(si), fb = $('fb-mt' + si);
+    if (!silent && vals.some(v => !v)) {
+        fb.className = 'fb fb-rev';
+        fb.innerHTML = '<i class="fa-solid fa-circle-info"></i> ' + tr('ضع ناتجًا تحت كل مسألة أولًا ثم اضغط تأكيد', 'Put an answer under every problem first, then press Check');
+        return;
+    }
+    w.dataset.locked = '1'; w.classList.add('ord-locked');
+    const rb = w.querySelector('.ord-reset'); if (rb) rb.remove();
+    const cb = $('cb-mt' + si); if (cb) cb.remove();
+    let ok = 0;
+    sec.items.forEach((it, i) => {
+        const slot = w.querySelector(`.mt-slot[data-pos="${i}"]`), right = vals[i] === it.ans;
+        slot.classList.add(right ? 'cmp-ok' : 'cmp-no');
+        if (right) ok++;
+        else { const f = $(`mtfix-s${si}q${i}`); f.classList.remove('hidden'); f.innerHTML = '<i class="fa-solid fa-arrow-up"></i> <b class="m" dir="ltr">' + esc(it.ans) + '</b>'; }
+        markAnswered(`s${si}q${i}`);
+    });
+    const n = sec.items.length;
+    fb.className = 'fb ' + (ok === n ? 'fb-ok' : 'fb-no');
+    fb.innerHTML = ok === n ? '<i class="fa-solid fa-circle-check"></i> ' + tr('كل الإجابات صحيحة .. أحسنت!', 'All correct! Well done')
+        : '<i class="fa-solid fa-circle-xmark"></i> ' + tr(`${ok} من ${n} صحيحة .. الناتج الصحيح مكتوب تحت كل خطأ`, `${ok} of ${n} correct .. the right answer is under each mistake`);
+    try { ok === n ? SFX.correct() : SFX.wrong(); } catch (e) {}
+}
 function renderHome() {
     $('student-name').value = store.get('student-name') || '';
     $('exam-grid').innerHTML = EXAMS.map(ex => {
         const nM = ex.sections.filter(s => s.type === 'mcq').reduce((t, s) => t + s.items.length, 0);
         const nW = ex.sections.filter(s => s.type === 'written').reduce((t, s) => t + s.items.length, 0);
+        const nX = ex.sections.filter(s => s.type === 'match').reduce((t, s) => t + s.items.length, 0);
         const done = store.get('sent-' + ex.id);
         return `<button class="exam-card btn-bounce" onclick="openExam(${ex.id})">
             <span class="exam-no">${ex.id}</span>
-            <span class="exam-info"><b>${esc(ex.card || ex.title)}</b><small>${nM} اختيار من متعدد${ex.game ? ' (' + GAME_NAMES[ex.game].t + ')' : ''}${nW ? ' • ' + nW + ' أسئلة مقالية' : ''}</small></span>
+            <span class="exam-info"><b>${esc(ex.card || ex.title)}</b><small>${nX ? nX + ' مسائل ضرب (سحب وإفلات)' : nM + ' اختيار من متعدد' + (ex.game ? ' (' + GAME_NAMES[ex.game].t + ')' : '')}${nW ? ' • ' + nW + ' أسئلة مقالية' : ''}</small></span>
             ${done ? '<span class="done-badge"><i class="fa-solid fa-circle-check"></i> تم الإرسال</span>' : '<i class="fa-solid fa-chevron-left go"></i>'}
         </button>`;
     }).join('');
@@ -1544,6 +1642,7 @@ function renderExam(ex, name) {
         <div class="paper-student"><i class="fa-solid fa-user-graduate"></i> ${tr('اسم الطالب:', 'Student:')} <b>${esc(name)}</b></div>`;
     ex.sections.forEach((sec, si) => {
         html += `<h3 class="sec-title ${sec.type === 'mcq' ? 'sec-mcq' : 'sec-written'}">${esc(sec.title)}</h3>`;
+        if (sec.type === 'match') { html += matchWidget(ex, si, sec); return; }
         const gameMode = sec.type === 'mcq' && ex.game;
         if (gameMode) html += gamePanel(ex, si) + `<div class="mcq-review hidden" id="review-${si}"><p class="review-head"><i class="fa-solid fa-clipboard-check"></i> ${tr('إجاباتك فى أسئلة الاختيار من متعدد', 'Your answers')}</p>`;
         sec.items.forEach((it, i) => {
@@ -1656,6 +1755,17 @@ function collect(ex) {
     const cols = [], missing = [];
     let score = 0, total = 0, review = 0;
     ex.sections.forEach((sec, si) => {
+        if (sec.type === 'match') {
+            const vals = matchValues(si);
+            sec.items.forEach((it, i) => {
+                total++;
+                const v = vals[i], ok = v === it.ans;
+                if (ok) score++;
+                if (!v) missing.push(`s${si}q${i}`);
+                cols.push({ h: `مسألة ${i + 1}`, v: v ? `${it.v[0]} ${it.v[1]} = ${v} ${ok ? '✔' : '✘'}` : '' });
+            });
+            return;
+        }
         sec.items.forEach((it, i) => {
             const key = `s${si}q${i}`;
             if (sec.type === 'mcq') {
@@ -1705,7 +1815,7 @@ async function submitExam() {
             return;
         }
     }
-    ex.sections.forEach((sec, si) => { if (sec.type === 'written') sec.items.forEach((it, i) => confirmWritten(si, i, true)); });
+    ex.sections.forEach((sec, si) => { if (sec.type === 'written') sec.items.forEach((it, i) => confirmWritten(si, i, true)); if (sec.type === 'match') confirmMatch(si, true); });
     document.querySelectorAll('.opts').forEach(o => o.querySelectorAll('input').forEach(inp => inp.disabled = true));
     r = collect(ex);
     const btn = $('send-btn'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جارٍ الإرسال ...';
