@@ -348,6 +348,22 @@ textarea.ta-review { background: #fffbeb !important; border-bottom-color: #f59e0
 .q-fig { display: flex; align-items: center; justify-content: center; gap: 28px; flex-wrap: wrap; margin: 6px 0 4px; }
 .x-table { border-collapse: collapse; font-weight: 800; font-size: 20px; font-family: 'Calibri','Carlito','Tajawal',sans-serif; }
 .x-table td { border: 1.5px solid #333; padding: 4px 22px; text-align: center; min-width: 70px; }
+/* ===== جدول X / y ===== */
+.xy-table { border-collapse: collapse; font-weight: 800; font-size: 18px; font-family: 'Calibri','Carlito','Tajawal',sans-serif; }
+.xy-table th, .xy-table td { border: 1.5px solid #333; padding: 4px 8px; text-align: center; min-width: 40px; height: 34px; }
+.xy-table th { background: #f1f5f9; white-space: nowrap; }
+@media (max-width: 400px) { .xy-table { font-size: 15px; } .xy-table th, .xy-table td { padding: 3px 5px; min-width: 32px; } }
+/* ===== الميزان ===== */
+.scale-fig { position: relative; display: grid; grid-template-columns: 1fr 1fr; column-gap: 70px; width: 260px; padding-bottom: 54px; }
+.sc-pan { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; z-index: 1; }
+.sc-items { display: flex; flex-wrap: wrap-reverse; justify-content: center; gap: 2px; max-width: 72px; margin-bottom: 2px; }
+.sc-box { width: 22px; height: 22px; border: 1.5px solid #b91c1c; color: #b91c1c; background: #fff; font-weight: 800; font-size: 14px; line-height: 19px; text-align: center; }
+.sc-x .sc-box { font-family: Georgia, serif; }
+.sc-plate { width: 95px; height: 12px; background: #facc15; border-radius: 0 0 50px 50px; }
+.sc-beam { position: absolute; left: 30px; right: 30px; bottom: 44px; height: 8px; background: #1e3a8a; border-radius: 4px; }
+.sc-post { position: absolute; left: 50%; bottom: 8px; width: 12px; height: 40px; margin-left: -6px; background: #1e40af; }
+.sc-foot { position: absolute; left: 50%; bottom: 0; width: 100px; height: 10px; margin-left: -50px; background: #1e3a8a; border-radius: 4px; }
+
 .x-line { font-size: 19px; }
 
 /* ===== لوحة الألعاب ===== */
@@ -638,6 +654,179 @@ KEYS[1] = [
   { t: 'order', v: ['-3.4', '-0.5', '2.28', '3.4'], show: '-3.4 ، -0.5 ، 2.28 ، 3.4' },
   { t: 'order', v: ['-2.3', '2.8', '3.4', '3.5'], show: '-2.3 ، 2.8 ، 3.4 ، 3.5' }
 ];
+// ===== Grade (6) - Models (1) to (5) - as in the teacher's file =====
+const G6M_Q1 = "Question 1 Choose the correct answer :", G6M_Q2 = "Question 2 Answer the following questions :";
+const g6m = (n, mcq, written) => ({ id: n + 1, title: "Grade (6)", sub: `Model (${n})`, card: `Grade (6) - Model (${n})`, sheet: `الصف السادس لغات - Model (${n})`,
+  num: "paren", theme: "purple", game: "goal", dir: "ltr", lang: "en", letters: L4,
+  sections: [{ title: G6M_Q1, type: "mcq", items: mcq }, { title: G6M_Q2, type: "written", items: written }] });
+EXAMS.push(
+ g6m(1, [
+   { q: "All the following are solutions of the inequality: [[x ≤ −3]] except", opts: ["−3", "−4", "−2", "−6"], ans: [2] },
+   { q: "The number ............ is one of the solution of the inequality : [[x ≤ 5]]", opts: ["10", "−1", "12", "6"], ans: [1] },
+   { q: "The inequality representing negative numbers is", opts: ["x > 0", "x < 0", "x ≤ 0", "x ≥ 0"], ans: [1] },
+   { q: "The value of the expression \"[[3y + 5]]\" when [[y = 2]]", opts: ["12", "11", "10", "9"], ans: [1] },
+   { q: "[[5 × 5 × 5 × 5 =]]", opts: ["5⁴", "4⁵", "5 × 4", "20"], ans: [0] },
+   { q: "\"Subtract A From the number 14\" in algebraic expression is", opts: ["A − 14", "14 − A", "14A", "14 + A"], ans: [1] },
+   { q: "Three times the sum of the number m and 7 is ..........", opts: ["3m + 7", "3(m + 7)", "m + 21", "3m + 1"], ans: [1] },
+   { q: "The coefficient in the algebraic expression [[2 + 4x]] is .........", opts: ["2", "4", "6", "8"], ans: [1] },
+   { q: "The number of terms of the expression [[5x + 4y − 2x − 1]] is ........", opts: ["1", "2", "3", "4"], ans: [3] }
+ ], [
+   { q: "Identify the coefficient, variable, and constant in [[−6y + 8]]." },
+   { q: "Write an algebraic expression for: \"Three times a number less than 4\"" },
+   { q: "Simplify by combining like terms [[6y + 4 − 2y + 5]]" },
+   { q: "Solve the equation and check your answer [[4x − 6 = 34]]" },
+   { q: "Simplify: [[5² + 5(10 ÷ 2) ÷ 5]]" },
+   { q: "State three integers possible solutions for the inequality: [[x ≥ 8]] and represent the solution on the number line" },
+   { q: "Find the value of the algebraic expression [[10k + 2³ + 4]] when [[k = 5]]" }
+ ]),
+ g6m(2, [
+   { q: "The ordered pair (6 , ....) satisfies the equation : [[y = 5X − 2]]", opts: ["30", "32", "54", "28"], ans: [3] },
+   { q: "The number ....... doesn't belong to the solutions of the inequality [[y < 2]]", opts: ["1", "2", "−1", "0"], ans: [1] },
+   { q: "If [[2y = 8]] , then [[y + 2 = ........]]", opts: ["9", "6", "4", "5"], ans: [1] },
+   { q: "The dependent variable in the algebraic equation : [[b = {1/2}a + 3]] is ......", opts: ["4", "{1/2}", "b", "A"], ans: [2] },
+   { q: "\" 5 times m added to 6 equal n\" is equation ..............", opts: ["5m + 6 = n", "5n + 6 = m", "6m + 5 = n", "6n + 5 = m"], ans: [0] },
+   { q: "In the equation : [[X + 3 = y]] , if the input is 10 , then the output is .....", opts: ["13", "7", "8", "11"], ans: [0] },
+   { q: "The first step to simplify [[30 − 7 + 3²]] is......", opts: ["Subtraction", "Division", "The exponent", "Addition"], ans: [2] },
+   { q: "All of the following algebraic expressions are equivalent to the algebraic expression [[2(6X + 5)]] except .....", opts: ["12X + 10 + 5", "5X + 7X + 10", "10X + 2X + 10", "12X + 10"], ans: [0] },
+   { q: "In the equation [[y = 8X + 1]] , if X=1.5 , then y equals....", opts: ["11", "10.5", "12", "13"], ans: [3] }
+ ], [
+   { q: "Find the value of [[3(k² − 6)]] if [[k = 4]]" },
+   { n: "2-A", q: "Solve the following equations : A) [[{1/4}X − 8 = 4]]" },
+   { n: "2-B", q: "B) [[f − 12 = 15]]" },
+   { q: "Write 3possible solutions to the inequality [[X ≥ −3]] IN z and represent it on the number Line" },
+   { n: "4-A", q: "Find the result of the following A) [[3 × 4² − 7 × (4 + 1)]]" },
+   { n: "4-B", q: "B) [[20 ÷ 2² + 2 × 6]]" },
+   { n: "5", q: "The equation of the following balance scale is ..... and", scale: { l: 2, r: 8 } },
+   { n: "6", q: "Are the two algebraic expressions [[x+3x+4]] and [[2(2x+1)+2]] equivalent ?" },
+   { n: "7", q: "Complete the following tables , then make the graph the equation : [[y = 3X − 1]]", xy: { x: ["1", "3", "5", "7"], pair: true } }
+ ]),
+ g6m(3, [
+   { q: "The exponential form of a number with base 5 and exponent 3 is .......", opts: ["5³", "3⁵", "15", "3³"], ans: [0] },
+   { q: "Which of the following algebraic expressions is equivalent to [[3(x+5)]] ?", opts: ["2X + 5", "3X + 15", "2X + 15", "3X + 5"], ans: [1] },
+   { q: "The smallest Integer that satisfies the inequality [[X ≥ −6]] is .....", opts: ["-1", "-6", "-5", "0"], ans: [1] },
+   { q: "In the equation: [[y = 2X + 1]] the independent variable is .........", opts: ["Y", "2", "X", "1"], ans: [2] },
+   { q: "The expression that expresses X as greater than or equal to 6 is ........", opts: ["X > 6", "X < 6", "X ≤ 6", "X ≥ 6"], ans: [3] },
+   { q: "Which of the following equations has a solution of 7 .......", opts: ["y − 4 = 12", "d + 3 = 10", "X + 1 = 7", "A − 1 = 9"], ans: [1] },
+   { q: "The value of the expression [[5n − 4]] at [[n = 3]] is ........", opts: ["11", "4", "7", "10"], ans: [0] },
+   { q: "The ordered pair that satisfies the equation : [[y = 2X + 1]] is ......", opts: ["(1, 1)", "(1, 2)", "(1, 3)", "(1, 4)"], ans: [2] },
+   { q: "Double of a added to 2 equals 10\" as an equation is ......", opts: ["2a − 2 = 10", "2a + 2 = 10", "a − 2 = 10", "a + 2 = 10"], ans: [1] }
+ ], [
+   { q: "If [[y = 2X + 5]] , find the value of y for [[X = 3]]" },
+   { q: "If the rule is add 2 then multiply by 3 , write the equation that expresses this using the two variables y and X , where X is the independent variable . if [[x = 3]] , find the value of y ?", lines: 2 },
+   { q: "Are the algebraic expressions [[2(X + 2)]] and [[3X + 2]] equivalent ?" },
+   { n: "4-A", q: "Solve the following equations : A) [[5 + P = 19]]" },
+   { n: "4-B", q: "B) [[4C = 20]]" },
+   { n: "5-1", q: "Complete the following : 1) If [[|−5| = X]] , then [[X =]]" },
+   { n: "5-2", q: "2) If [[6y = 18]] , then [[{1/3}y =]]" },
+   { n: "5-3", q: "3) The equation that represents the opposite figure is", scale: { l: 2, r: 6 } },
+   { n: "6-1", q: "Find the result of the following : 1) [[(2 + 4) × 7 − 2³ ÷ 8]]" },
+   { n: "6-2", q: "2) [[9 × 5 − 3³]]" },
+   { n: "7", q: "Write two possible integers that could be a solution of the inequality : [[X < 4]]" }
+ ]),
+ g6m(4, [
+   { q: "The solution of the equation: [[2X − 1 = 9]] is ...........", opts: ["5", "6", "0", "4"], ans: [0] },
+   { q: "[[2³ = .........]]", opts: ["6", "5", "9", "8"], ans: [3] },
+   { q: "The independent variable in equation [[y = 4X]]", opts: ["Y", "X", "4", "4X"], ans: [1] },
+   { q: "The base of 6⁵ is ......", opts: ["5", "6", "13", "30"], ans: [1] },
+   { q: "[[10 + (5 − 3) × 2³ ÷ 4 = .......]]", opts: ["24", "14", "11", "41"], ans: [1] },
+   { q: "half the number B add to 5 is ......", opts: ["2B + 5", "2B − 5", "{1/2}B − 5", "{1/2}B + 5"], ans: [3] },
+   { q: "In the equation : [[y = 3X + 14]] , the ordered pair (1,b) satisfies the equation , then b = .........", opts: ["8", "12", "17", "19"], ans: [2] },
+   { q: "Which of the following does not belong to the solution set of the inequality [[X < 8]] in Z....", opts: ["-9", "-7", "8", "5"], ans: [2] },
+   { q: "In the equation : [[y = X + 3]] , if the output is 4 , then the input is .....", opts: ["0", "1", "2", "11"], ans: [1] }
+ ], [
+   { q: "Find the result of : [[(15 − 2) × 3 × 4² + 2]]" },
+   { q: "Solve the equation : [[7 + 2X = 15]]" },
+   { q: "Find the value of : [[3 × d³ + 3(6 − 3)²]] if d=2" },
+   { q: "If the rule is multiply by 2 and add 7 , write the equation that expresses this using the two variables X and y , where X is the independent variable , and if X=3 , find the value of y ?", lines: 2 },
+   { q: "Are the algebraic expressions [[2X+5]] and [[X+5+X]] equivalent ?" },
+   { q: "Complete the following table according to the equation : [[y = 3X − 2]]", xy: { x: ["1", "3", "7", "10", "11"] } },
+   { n: "7-1", q: "Complete the following : 1) If 3d=9 , then [[d+19 =]]" },
+   { n: "7-2", q: "2) The additive inverse of [[3² =]]" },
+   { n: "7-3", q: "3) The base of 8² is ...... and its exponent is ........" }
+ ]),
+ g6m(5, [
+   { q: "The number of notebooks you can buy depends on ......", opts: ["amount of money you have", "The location of the library", "name of your school", "Your address"], ans: [0] },
+   { q: "The number 5 is one of the solutions to the inequality .....", opts: ["X > 5", "X < 5", "X < 7", "X > 7"], ans: [2] },
+   { q: "If n+5=12 , then n= .......", opts: ["6", "7", "8", "17"], ans: [1] },
+   { q: "If the power is 5 and the base is 4 , then the exponential form is .....", opts: ["5⁴", "4⁴", "5⁵", "4⁵"], ans: [3] },
+   { q: "\"y equals the product of n and 12\" equation is .....", opts: ["y = 12 + n", "y = 12n", "y = 12 − n", "n = 12y"], ans: [1] },
+   { q: "The ordered pair (2,a) satisfies the equation :[[y = X² − 2]] , then a= .....", opts: ["2", "3", "4", "5"], ans: [0] },
+   { q: "In the equation [[X = 4Y + 3]] the independent variable is .....", opts: ["X", "y", "3", "4"], ans: [1] },
+   { q: "The inequality that represents the following graph is ......", nl: { from: -3, to: 3, dots: [-1, 0, 1, 2] }, opts: ["X < −1", "X ≥ −1", "X < −1", "X ≤ −1"], ans: [1] },
+   { q: "If [[X + 3 = 7]] , then [[{1/4}X = .....]]", opts: ["1", "2", "4", "5"], ans: [0] }
+ ], [
+   { q: "Find the result of : [[(5 × 9 − 2a) + 5²]] when a=10" },
+   { n: "2-A", q: "Solve each of the following equations: A) [[{1/2}n = 3]]" },
+   { n: "2-B", q: "B) [[7X − 8 = 20]]" },
+   { n: "3", q: "Using the following table using the two variables X and y , where X is an inpendent variable , write the equation that expresses the table :", xy: { x: ["3", "4", "5", "6", "7"], y: ["0", "1", "2", "3", "4"] } },
+   { n: "4", q: "Write 3 possible solutions To the inequality [[X ≥ −2]] in Z" },
+   { n: "5", q: "Write the algebraic expression : the sum of 5 times b and 3" },
+   { n: "6-A", q: "Write a verbal phrases for each of the following : A) [[2n + 6 = m]]" },
+   { n: "6-B", q: "B) [[X + 3 = Y]]" },
+   { n: "7-1", q: "Complete :- 1) If [[y = X − 5]] and [[X = 8]] then [[y = ......]]" },
+   { n: "7-2", q: "2) [[3³ = ............]]" },
+   { n: "7-3", q: "3) If [[2(a − 3) = 4]] , then the value of a = ............" }
+ ])
+);
+// ===== مفاتيح التصحيح (بالترتيب داخل Question 2) =====
+KEYS[2] = [
+  { t: 'cvc', n: [-6, 8], l: 'y', show: 'coefficient = −6 , variable = y , constant = 8' },
+  { t: 'expr', e: '3*v-4', rev: ['4-3*v'], show: '3x − 4' },
+  { t: 'expr', e: '4*v+9', show: '4y + 9' },
+  { t: 'val', v: '10', any: true, show: 'x = 10' },
+  { t: 'val', v: '30', show: '30' },
+  { t: 'ineq', op: '>=', b: 8, n: 3, show: '8 , 9 , 10 (any integers ≥ 8)' },
+  { t: 'val', v: '62', show: '62' }
+];
+KEYS[3] = [
+  { t: 'val', v: '30', show: '30' },
+  { t: 'val', v: '48', show: 'X = 48' },
+  { t: 'val', v: '27', show: 'f = 27' },
+  { t: 'ineq', op: '>=', b: -3, n: 3, show: '−3 , −2 , −1 (any integers ≥ −3)' },
+  { t: 'val', v: '13', show: '13' },
+  { t: 'val', v: '17', show: '17' },
+  { t: 'set', v: ['2', '8', '4'], show: '2x = 8 and x = 4' },
+  { t: 'yesno', want: 'yes', show: 'Yes (both = 4x + 4)' },
+  { t: 'seq', v: [2, 8, 14, 20], show: 'y : 2 , 8 , 14 , 20' }
+];
+KEYS[4] = [
+  { t: 'val', v: '11', show: 'y = 11' },
+  { t: 'rule', dep: 'y', e: '3*(v+2)', val: 15, show: 'y = 3(X + 2) , y = 15' },
+  { t: 'yesno', want: 'no', show: 'No (2X + 4 ≠ 3X + 2)' },
+  { t: 'val', v: '14', show: 'P = 14' },
+  { t: 'val', v: '5', show: 'C = 5' },
+  { t: 'val', v: '5', show: 'X = 5' },
+  { t: 'val', v: '1', show: '1' },
+  { t: 'set', v: ['2', '6'], show: '2x = 6' },
+  { t: 'val', v: '41', show: '41' },
+  { t: 'val', v: '18', show: '18' },
+  { t: 'ineq', op: '<', b: 4, n: 2, show: '3 , 2 (any integers < 4)' }
+];
+KEYS[5] = [
+  { t: 'val', v: '626', show: '626' },
+  { t: 'val', v: '4', show: 'X = 4' },
+  { t: 'val', v: '51', show: '51' },
+  { t: 'rule', dep: 'y', e: '2*v+7', val: 13, show: 'y = 2X + 7 , y = 13' },
+  { t: 'yesno', want: 'yes', show: 'Yes (both = 2X + 5)' },
+  { t: 'seq', v: [1, 7, 19, 28, 31], show: 'y : 1 , 7 , 19 , 28 , 31' },
+  { t: 'val', v: '22', show: '22' },
+  { t: 'val', v: '-9', show: '−9' },
+  { t: 'order', v: ['8', '2'], show: 'base = 8 , exponent = 2' }
+];
+KEYS[6] = [
+  { t: 'val', v: '50', show: '50' },
+  { t: 'val', v: '6', show: 'n = 6' },
+  { t: 'val', v: '4', show: 'X = 4' },
+  { t: 'rule', dep: 'y', e: 'v-3', show: 'y = X − 3' },
+  { t: 'ineq', op: '>=', b: -2, n: 3, show: '−2 , −1 , 0 (any integers ≥ −2)' },
+  { t: 'expr', e: '5*v+3', show: '5b + 3' },
+  { t: 'review', show: 'm equals 6 more than twice n' },
+  { t: 'review', show: 'Y equals 3 more than X' },
+  { t: 'val', v: '3', show: 'y = 3' },
+  { t: 'val', v: '27', show: '27' },
+  { t: 'val', v: '5', show: 'a = 5' }
+];
+
 
 </script>
 <script>
@@ -793,6 +982,84 @@ const GRADE = (() => {
         return 'review';
     }
     return { grade, nums, norm };
+})();
+
+// ===== تصحيح إضافى: مقادير جبرية ، معادلات القاعدة ، حلول المتباينات ، نعم/لا ، جداول =====
+(() => {
+    const base = GRADE.grade, nums = GRADE.nums, norm = GRADE.norm;
+    const eqv = (a, b) => Math.abs(a - b) < 1e-9;
+    // مقدار فيه متغير واحد => دالة نقدر نحسبها
+    function toFn(src) {
+        let s = norm(src).toLowerCase().replace(/[×·✕]/g, '*').replace(/²/g, '^2').replace(/³/g, '^3').replace(/⁴/g, '^4').replace(/⁵/g, '^5').replace(/\s+/g, '');
+        const letters = [...new Set(s.match(/[a-z]/g) || [])];
+        if (letters.length > 1) return null;
+        if (letters.length) s = s.split(letters[0]).join('v');
+        s = s.replace(/(\d|\)|v)(?=\(|v)/g, '$1*').replace(/\)(?=\d)/g, ')*').replace(/v(?=\d)/g, 'v*').replace(/\^/g, '**');
+        if (!s || !/^[0-9v+\-*/().]+$/.test(s)) return null;
+        try { const f = new Function('v', 'return (' + s + ');'); f(1); return f; } catch (e) { return null; }
+    }
+    function same(src, target) {
+        const f = toFn(src), g = toFn(target);
+        if (!f || !g) return null;
+        try { return [2, 3, 5, 7.5, -4].every(v => eqv(f(v), g(v))); } catch (e) { return null; }
+    }
+    const rhs = a => { const parts = String(a).split('='); return parts.length > 1 && /^\s*[A-Za-z]?\s*$/.test(parts[0]) ? parts[parts.length - 1] : parts[parts.length - 1]; };
+    function grade(k, ans) {
+        const a = String(ans || '').trim();
+        if (!a) return 'no';
+        if (k.t === 'review') return 'review';
+        if (k.t === 'expr') {
+            const e = rhs(a), r = same(e, k.e);
+            if (r === null) return 'review';
+            if (r) return 'ok';
+            return (k.rev || []).some(x => same(e, x)) ? 'review' : 'no';
+        }
+        if (k.t === 'rule') {
+            const s = norm(a);
+            let eqOk = false, eqSeen = false;
+            s.split(/[\n,،;]|\band\b|\bthen\b|\bif\b/i).forEach(seg => {
+                const parts = seg.split('=').map(x => x.trim());
+                if (parts.length < 2 || !new RegExp('^' + k.dep + '$', 'i').test(parts[0])) return;
+                eqSeen = true;
+                if (parts.slice(1).some(x => /[a-z]/i.test(x) && same(x, k.e))) eqOk = true;
+            });
+            if (k.val === undefined) return eqOk ? 'ok' : (eqSeen ? 'no' : 'review');
+            const valOk = nums(a).some(n => eqv(n.v, k.val));
+            if (eqOk && valOk) return 'ok';
+            if (eqOk || valOk) return 'review';
+            return eqSeen ? 'no' : 'review';
+        }
+        if (k.t === 'ineq') {
+            const s = norm(a).replace(/[a-z]\s*(<=|>=|<|>|≤|≥)\s*-?\s*\d+(\.\d+)?/gi, ' ');
+            const vs = nums(s).map(n => n.v);
+            if (!vs.length) return 'review';
+            const test = v => k.op === '>=' ? v >= k.b : k.op === '>' ? v > k.b : k.op === '<=' ? v <= k.b : v < k.b;
+            if (vs.some(v => !Number.isInteger(v) || !test(v))) return 'no';
+            return new Set(vs).size >= k.n ? 'ok' : 'review';
+        }
+        if (k.t === 'cvc') {
+            const vs = nums(a).map(n => n.v);
+            const hasL = new RegExp('(^|[^a-z])' + k.l + '([^a-z]|$)', 'i').test(a);
+            if (k.n.every(x => vs.some(v => eqv(v, x))) && hasL) return 'ok';
+            return vs.length ? 'no' : 'review';
+        }
+        if (k.t === 'yesno') {
+            const s = a.toLowerCase();
+            let got = null;
+            if (/\bno\b|\bnot\b|غير|ليس|^لا|\sلا\s/.test(s)) got = 'no';
+            else if (/\byes\b|equivalent|نعم|متكافئ/.test(s)) got = 'yes';
+            if (!got) return 'review';
+            return got === k.want ? 'ok' : 'no';
+        }
+        if (k.t === 'seq') {
+            const got = nums(a, true).map(n => n.v), want = k.v.map(Number);
+            if (!got.length) return 'review';
+            let j = 0; got.forEach(v => { if (j < want.length && eqv(v, want[j])) j++; });
+            return j === want.length ? 'ok' : 'no';
+        }
+        return base(k, ans);
+    }
+    GRADE.grade = grade;
 })();
 
 </script>
@@ -1300,8 +1567,9 @@ function fmtOpt(o) { return hasArabic(o) ? fmt(o) : '<span class="m" dir="ltr">'
 function plain(raw) {   // نص مبسط يُرسل للشيت
     return String(raw).replace(/\[\[|\]\]/g, '').replace(/\{box\}/g, '□').replace(/\{([^{}\/]+)\/([^{}]+)\}/g, '$1/$2');
 }
-function qNum(exam, i) {
-    return exam.num === 'circle' ? `<span class="qn-circle">${i + 1}</span>` : `<span class="qn-paren">${i + 1})</span>`;
+function qNum(exam, i, it) {
+    const n = it && it.n ? it.n : i + 1;
+    return exam.num === 'circle' ? `<span class="qn-circle">${n}</span>` : `<span class="qn-paren">${n})</span>`;
 }
 
 // ---------- الشاشة الرئيسية ----------
@@ -1364,12 +1632,12 @@ function renderExam(ex, name) {
                         <span class="opt-l">${letterOf(it, k)})</span> <span class="opt-v">${fmtOpt(o)}</span></label>`).join('')}
                     </div><div class="fb hidden" id="fb-${key}"></div></div>`;
             } else {
-                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i)} <span class="q-body">${fmtQ(it.q)}</span>
+                html += `<div class="q-block" id="blk-${key}"><div class="q-text">${qNum(ex, i, it)} <span class="q-body">${fmtQ(it.q)}</span>
                     ${it.figure === 'numline' ? numLine() : ''}</div>${qExtras(it)}
                     ${it.list ? `<div class="num-list"><span class="m" dir="ltr">${esc(it.list)}</span></div>` : ''}
                     ${isOrderQ(ex, si, i) ? orderWidget(key, it) : ''}
                     <div class="w-ans ${isOrderQ(ex, si, i) ? 'hidden' : ''}">${it.label ? `<span class="w-label">${esc(it.label)}</span>` : ''}
-                    <textarea dir="auto" name="${key}" rows="${it.lines > 1 ? 3 : 1}" placeholder="اكتب إجابتك هنا ..." oninput="markAnswered('${key}')"></textarea></div>
+                    <textarea dir="auto" name="${key}" rows="${it.lines > 1 ? 3 : 1}" placeholder="${tr('اكتب إجابتك هنا ...', 'Write your answer here ...')}" oninput="markAnswered('${key}')"></textarea></div>
                     <button class="confirm-btn btn-bounce" id="cb-${key}" onclick="confirmWritten(${si}, ${i})"><i class="fa-solid fa-check"></i> ${tr('تأكيد الإجابة', 'Check my answer')}</button>
                     <div class="fb hidden" id="fb-${key}"></div>
                     </div>`;
@@ -1393,7 +1661,34 @@ function qExtras(it) {
     if (it.xline) h += '<span class="m x-line" dir="ltr">X = .............</span>';
     if (it.vsub) h += `<div class="vsub" dir="ltr"><div>${esc(it.vsub[0])}</div><div class="vsub-b">${esc(it.vsub[1])}</div><div>……….</div></div>`;
     if (it.table || it.xline || it.vsub) h += '</div>';
+    if (it.xy) h += xyTable(it.xy);
+    if (it.scale) h += scaleFig(it.scale);
+    if (it.nl) h += ineqLine(it.nl);
     return h;
+}
+// جدول قيم X و y (الخانات الفاضية يكملها الطالب فى الإجابة)
+function xyTable(t) {
+    const row = (h, vals) => `<tr><th>${esc(h)}</th>${vals.map(v => `<td>${esc(v)}</td>`).join('')}</tr>`;
+    return `<div class="q-fig"><table class="xy-table" dir="ltr">${row('X', t.x)}${row('y', t.y || t.x.map(() => ''))}${t.pair ? row('(x ,y)', t.x.map(() => '')) : ''}</table></div>`;
+}
+// ميزان: مربعات x فى كفة ، ومربعات 1 فى الكفة الأخرى
+function scaleFig(sc) {
+    const box = (t, n) => Array.from({ length: n }, () => `<span class="sc-box">${t}</span>`).join('');
+    return `<div class="q-fig"><div class="scale-fig" dir="ltr">
+        <div class="sc-pan"><div class="sc-items sc-x">${box('x', sc.l)}</div><div class="sc-plate"></div></div>
+        <div class="sc-pan"><div class="sc-items">${box('1', sc.r)}</div><div class="sc-plate"></div></div>
+        <div class="sc-beam"></div><div class="sc-post"></div><div class="sc-foot"></div></div></div>`;
+}
+// خط أعداد عليه نقاط مظللة وسهم (تمثيل متباينة)
+function ineqLine(nl) {
+    const X = v => 20 + (v - nl.from) * (200 / (nl.to - nl.from));
+    let t = '';
+    for (let v = nl.from; v <= nl.to; v++) t += `<line x1="${X(v)}" y1="22" x2="${X(v)}" y2="32" stroke="#111" stroke-width="1.5"/><text x="${X(v)}" y="47" font-size="11" text-anchor="middle" font-weight="700">${v}</text>`;
+    const dots = nl.dots.map(v => `<circle cx="${X(v)}" cy="27" r="5" fill="#111"/>`).join('');
+    return `<div class="q-fig"><svg class="numline" viewBox="0 0 240 52" style="max-width:300px">
+        <defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#111" stroke-width="2"/></marker></defs>
+        <line x1="6" y1="27" x2="234" y2="27" stroke="#111" stroke-width="1.5" marker-start="url(#ah2)" marker-end="url(#ah2)"/>${t}
+        <line x1="${X(nl.dots[0])}" y1="27" x2="232" y2="27" stroke="#111" stroke-width="4" marker-end="url(#ah2)"/>${dots}</svg></div>`;
 }
 function numLine(left, right) {
     left = left || 'b'; right = right || 'a';
@@ -1503,7 +1798,7 @@ function collect(ex) {
                 if (!v) missing.push(key);
                 const res = $('blk-' + key).dataset.res;
                 if (res === 'ok') score++; else if (res === 'review') review++;
-                cols.push({ h: `سؤال ${i + 1}`, v: v ? `${v} ${res === 'ok' ? '✔' : res === 'review' ? '⚠ للمراجعة' : '✘'}` : '' });
+                cols.push({ h: `سؤال ${it.n || i + 1}`, v: v ? `${v} ${res === 'ok' ? '✔' : res === 'review' ? '⚠ للمراجعة' : '✘'}` : '' });
             }
         });
     });
